@@ -102,7 +102,7 @@
 
   /* ---------- hero ---------- */
   .hero{padding-top:96px;padding-bottom:clamp(40px,7vw,80px)}
-  .stage{position:relative;width:100%;height:clamp(230px,40vw,440px)}
+  .stage{position:relative;width:100%;height:clamp(280px,40vw,440px)}
   #blocks{display:block;width:100%;height:100%;touch-action:pan-y}
 
   .pitch{
@@ -499,7 +499,7 @@ if (!reduced && "IntersectionObserver" in window) {
     canvas.height = H * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    gap = W < 560 ? 5 : W < 900 ? 6 : 7;
+    gap = W < 400 ? 4 : W < 560 ? 5 : W < 900 ? 6 : 7;
 
     // measure both lines so each fills the same width — stacked, flush left and right
     const off = document.createElement("canvas");
@@ -601,7 +601,7 @@ if (!reduced && "IntersectionObserver" in window) {
   let t;
   addEventListener("resize", () => { clearTimeout(t); t = setTimeout(build, 180); });
 
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(build);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { prevW = 0; build(); });
   build();
   frame();
 })();
