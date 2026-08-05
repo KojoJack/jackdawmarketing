@@ -228,19 +228,28 @@
   /* ---------- contact ---------- */
   .contact{background:var(--marigold);color:var(--plum);margin-top:clamp(50px,8vw,110px);padding:clamp(40px,7vw,90px) 0}
   .contact .label{opacity:.62}
-  .contact-inner{display:grid;grid-template-columns:1fr 1fr auto;gap:clamp(24px,4vw,64px);align-items:start}
-  .bird-lg{width:min(280px,22vw);height:auto;display:block;shape-rendering:crispEdges}
+  .contact-inner{display:grid;grid-template-columns:1fr 1.05fr auto;gap:clamp(28px,4.5vw,72px);align-items:center}
+  .bird-lg{width:min(240px,18vw);height:auto;display:block;shape-rendering:crispEdges;align-self:center}
   @media(max-width:960px){ .contact-inner{grid-template-columns:1fr 1fr} .bird-lg{display:none} }
   @media(max-width:600px){ .contact-inner{grid-template-columns:1fr} }
   .contact h2{
     font-family:var(--display);text-transform:uppercase;letter-spacing:-.02em;
-    font-size:clamp(30px,6vw,68px);line-height:.98;margin:14px 0 26px;max-width:14ch;
+    font-size:clamp(30px,6vw,60px);line-height:.98;margin:14px 0 18px;max-width:14ch;
   }
+  .contact-text > p{margin:0;max-width:38ch;opacity:.82;font-size:15.5px}
+  .contact-meta{margin-top:30px;padding-top:18px;border-top:2px solid rgba(34,16,36,.18)}
+  .contact-meta div{
+    display:flex;justify-content:space-between;gap:16px;padding:10px 0;
+    border-bottom:1px solid rgba(34,16,36,.18);font-family:var(--mono);font-size:12.5px;
+  }
+  .contact-meta div:last-child{border-bottom:none}
+  .contact-meta div b{font-weight:400;opacity:.6;text-transform:uppercase;letter-spacing:.09em;font-size:11px}
   .btn.dark{border-color:var(--plum);color:var(--plum)}
   .btn.dark:hover{background:var(--plum);color:var(--cream);box-shadow:5px 5px 0 rgba(34,16,36,.25)}
 
   /* ---------- contact form ---------- */
-  .contact-form{display:flex;flex-direction:column;gap:14px;padding-top:6px}
+  .contact-form{display:flex;flex-direction:column;gap:14px}
+  .contact-form > .label{margin-bottom:2px}
   .field{display:flex;flex-direction:column;gap:5px}
   .field label{
     font-family:var(--mono);font-size:11px;letter-spacing:.13em;
@@ -252,10 +261,12 @@
     font-family:var(--body);font-size:15px;line-height:1.4;
     padding:10px 12px;width:100%;box-sizing:border-box;
     -webkit-appearance:none;appearance:none;
+    transition:box-shadow .15s ease;
   }
+  .field input:focus-visible,.field textarea:focus-visible{box-shadow:4px 4px 0 rgba(34,16,36,.25)}
   .field textarea{resize:vertical;min-height:110px}
   .contact-form :focus-visible{outline:3px solid var(--plum);outline-offset:2px}
-  .reply-note{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;margin:6px 0 0;opacity:.65}
+  .reply-note{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;margin:2px 0 0;opacity:.65}
 
   /* ---------- footer ---------- */
   footer{padding:26px 0 34px;font-family:var(--mono);font-size:12px;letter-spacing:.08em}
@@ -280,6 +291,7 @@
   <nav>
     <a href="#work">Work</a>
     <a href="#services" class="about-link">Services</a>
+    <a href="/pricing/" class="about-link">Pricing</a>
     <a href="#about" class="about-link">About</a>
     <a href="#contact" class="hire">Start a project</a>
   </nav>
@@ -376,11 +388,18 @@
 
   <section id="contact" class="contact">
     <div class="wrap contact-inner">
-      <div class="contact-text">
+      <div class="contact-text rev">
         <span class="label">Contact</span>
         <h2>Got something to build?</h2>
+        <p>Tell me a bit about the project and I'll reply within one business day with next steps — no sales call required first.</p>
+        <div class="contact-meta">
+          <div><b>Reply time</b><span>1 business day</span></div>
+          <div><b>Based in</b><span>Newmarket, ON</span></div>
+          <div><b>Serving</b><span>Newmarket · Aurora · Bradford · GTA</span></div>
+        </div>
       </div>
-      <form class="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you">
+      <form class="contact-form rev" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you">
+        <span class="label">Send a message</span>
         <input type="hidden" name="form-name" value="contact">
         <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
         <div class="field">
@@ -400,7 +419,7 @@
           <textarea id="f-message" name="message" rows="5" required></textarea>
         </div>
         <button type="submit" class="btn dark">Send message</button>
-        <p class="reply-note">I reply within one business day.</p>
+        <p class="reply-note">Straight to my inbox — no forms getting lost in a queue.</p>
       </form>
       <svg class="bird-lg" viewBox="0 0 23 16" aria-hidden="true" focusable="false">
         <g fill="var(--plum)"><rect x="13" y="0" width="4" height="1"/><rect x="12" y="1" width="6" height="1"/><rect x="12" y="2" width="2" height="1"/><rect x="15" y="2" width="3" height="1"/><rect x="12" y="3" width="6" height="1"/><rect x="11" y="4" width="7" height="1"/><rect x="10" y="5" width="8" height="1"/><rect x="9" y="6" width="9" height="1"/><rect x="8" y="7" width="4" height="1"/><rect x="13" y="7" width="5" height="1"/><rect x="7" y="8" width="4" height="1"/><rect x="13" y="8" width="5" height="1"/><rect x="5" y="9" width="5" height="1"/><rect x="12" y="9" width="6" height="1"/><rect x="3" y="10" width="7" height="1"/><rect x="12" y="10" width="7" height="1"/><rect x="0" y="11" width="9" height="1"/><rect x="11" y="11" width="8" height="1"/><rect x="1" y="12" width="17" height="1"/><rect x="4" y="13" width="4" height="1"/><rect x="13" y="13" width="4" height="1"/><rect x="4" y="14" width="1" height="1"/><rect x="16" y="14" width="1" height="1"/><rect x="3" y="15" width="3" height="1"/><rect x="15" y="15" width="3" height="1"/></g>
