@@ -236,16 +236,8 @@
     font-family:var(--display);text-transform:uppercase;letter-spacing:-.02em;
     font-size:clamp(30px,6vw,68px);line-height:.98;margin:14px 0 26px;max-width:14ch;
   }
-  .mailto{
-    display:inline-block;font-family:var(--display);text-decoration:none;
-    font-size:clamp(19px,3.4vw,40px);letter-spacing:-.02em;word-break:break-all;
-    border-bottom:4px solid var(--plum);padding-bottom:3px;
-  }
-  .mailto:hover{color:var(--tomato);border-bottom-color:var(--tomato)}
-  .contact .row{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px;align-items:center}
   .btn.dark{border-color:var(--plum);color:var(--plum)}
   .btn.dark:hover{background:var(--plum);color:var(--cream);box-shadow:5px 5px 0 rgba(34,16,36,.25)}
-  #copied{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:0;transition:opacity .2s}
 
   /* ---------- contact form ---------- */
   .contact-form{display:flex;flex-direction:column;gap:14px;padding-top:6px}
@@ -387,13 +379,6 @@
       <div class="contact-text">
         <span class="label">Contact</span>
         <h2>Got something to build?</h2>
-        <a class="mailto" id="mailto" href="#">jack@jackdawmarketing.ca</a>
-        <div class="row">
-          <button class="btn dark" id="copy" type="button">Copy email</button>
-          <a class="btn dark" href="#" id="linkedin">LinkedIn</a>
-          <a class="btn dark" href="#" id="github">GitHub</a>
-          <span id="copied">Copied</span>
-        </div>
       </div>
       <form class="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you">
         <input type="hidden" name="form-name" value="contact">
@@ -442,8 +427,6 @@
 const CONFIG = {
   line1: "JACKDAW",   // set line2 to "" for a single-line wordmark
   line2: "MARKETING",
-  email: "jack@jackdawmarketing.ca",
-  links: { linkedin: "#", github: "#" },
   ticker: ["Web design","Front-end development","SEO","Brand identity","Landing pages","Web apps","Analytics","Available for work"],
   // stat + statLabel are optional — leave them out and the swatch stays plain
   projects: [
@@ -458,21 +441,8 @@ const CONFIG = {
 const C = { plum:"#221024", plum2:"#2E1631", cream:"#FCF3E3", marigold:"#FFC24B", jade:"#29C39A", tomato:"#FF5535" };
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/* ---------- contact + footer ---------- */
-const mail = document.getElementById("mailto");
-mail.textContent = CONFIG.email;
-mail.href = "mailto:" + CONFIG.email;
-document.getElementById("linkedin").href = CONFIG.links.linkedin;
-document.getElementById("github").href = CONFIG.links.github;
+/* ---------- footer ---------- */
 document.getElementById("year").textContent = "© " + new Date().getFullYear();
-
-document.getElementById("copy").addEventListener("click", async () => {
-  const flag = document.getElementById("copied");
-  try { await navigator.clipboard.writeText(CONFIG.email); flag.textContent = "Copied"; }
-  catch { flag.textContent = CONFIG.email; }
-  flag.style.opacity = 1;
-  setTimeout(() => flag.style.opacity = 0, 1800);
-});
 
 /* ---------- ticker ---------- */
 const track = document.getElementById("track");
