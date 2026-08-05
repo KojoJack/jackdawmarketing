@@ -479,7 +479,7 @@ if (!reduced && "IntersectionObserver" in window) {
   const PALETTE = [C.cream, C.marigold, C.jade, C.tomato];
   const WEIGHTS = [0.70, 0.16, 0.08, 0.06];
 
-  let parts = [], W = 0, H = 0, dpr = 1, gap = 7;
+  let parts = [], W = 0, H = 0, dpr = 1, gap = 7, prevW = 0, hasBuilt = false;
   const pointer = { x:-9999, y:-9999, on:false };
 
   function pickColor() {
@@ -490,7 +490,9 @@ if (!reduced && "IntersectionObserver" in window) {
 
   function build() {
     const rect = canvas.getBoundingClientRect();
-    W = Math.max(320, Math.floor(rect.width));
+    const newW = Math.max(320, Math.floor(rect.width));
+    if (hasBuilt && newW === prevW) return;
+    W = newW; prevW = W;
     H = Math.max(180, Math.floor(rect.height));
     dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = W * dpr;
@@ -536,7 +538,7 @@ if (!reduced && "IntersectionObserver" in window) {
         if (alpha > 128) {
           next.push({
             hx: x, hy: y,
-            x: Math.random() * W, y: Math.random() * H,
+            x: hasBuilt ? x : Math.random() * W, y: hasBuilt ? y : Math.random() * H,
             vx: 0, vy: 0,
             c: pickColor()
           });
@@ -546,6 +548,7 @@ if (!reduced && "IntersectionObserver" in window) {
     next.sort((a, b) => a.c - b.c);
     parts = next;
     if (reduced) parts.forEach(p => { p.x = p.hx; p.y = p.hy; });
+    hasBuilt = true;
   }
 
   function frame() {
