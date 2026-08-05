@@ -228,9 +228,10 @@
   /* ---------- contact ---------- */
   .contact{background:var(--marigold);color:var(--plum);margin-top:clamp(50px,8vw,110px);padding:clamp(40px,7vw,90px) 0}
   .contact .label{opacity:.62}
-  .contact-inner{display:grid;grid-template-columns:1fr auto;gap:clamp(24px,4vw,64px);align-items:center}
-  .bird-lg{width:min(330px,30vw);height:auto;display:block;shape-rendering:crispEdges}
-  @media(max-width:900px){ .contact-inner{grid-template-columns:1fr} .bird-lg{display:none} }
+  .contact-inner{display:grid;grid-template-columns:1fr 1fr auto;gap:clamp(24px,4vw,64px);align-items:start}
+  .bird-lg{width:min(280px,22vw);height:auto;display:block;shape-rendering:crispEdges}
+  @media(max-width:960px){ .contact-inner{grid-template-columns:1fr 1fr} .bird-lg{display:none} }
+  @media(max-width:600px){ .contact-inner{grid-template-columns:1fr} }
   .contact h2{
     font-family:var(--display);text-transform:uppercase;letter-spacing:-.02em;
     font-size:clamp(30px,6vw,68px);line-height:.98;margin:14px 0 26px;max-width:14ch;
@@ -245,6 +246,24 @@
   .btn.dark{border-color:var(--plum);color:var(--plum)}
   .btn.dark:hover{background:var(--plum);color:var(--cream);box-shadow:5px 5px 0 rgba(34,16,36,.25)}
   #copied{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:0;transition:opacity .2s}
+
+  /* ---------- contact form ---------- */
+  .contact-form{display:flex;flex-direction:column;gap:14px;padding-top:6px}
+  .field{display:flex;flex-direction:column;gap:5px}
+  .field label{
+    font-family:var(--mono);font-size:11px;letter-spacing:.13em;
+    text-transform:uppercase;font-weight:700;
+  }
+  .field input,.field textarea{
+    background:var(--cream);color:var(--plum);
+    border:2px solid var(--plum);border-radius:0;
+    font-family:var(--body);font-size:15px;line-height:1.4;
+    padding:10px 12px;width:100%;box-sizing:border-box;
+    -webkit-appearance:none;appearance:none;
+  }
+  .field textarea{resize:vertical;min-height:110px}
+  .contact-form :focus-visible{outline:3px solid var(--plum);outline-offset:2px}
+  .reply-note{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;margin:6px 0 0;opacity:.65}
 
   /* ---------- footer ---------- */
   footer{padding:26px 0 34px;font-family:var(--mono);font-size:12px;letter-spacing:.08em}
@@ -365,17 +384,39 @@
 
   <section id="contact" class="contact">
     <div class="wrap contact-inner">
-      <div>
-      <span class="label">Contact</span>
-      <h2>Got something to build?</h2>
-      <a class="mailto" id="mailto" href="#">jack@jackdawmarketing.ca</a>
-      <div class="row">
-        <button class="btn dark" id="copy" type="button">Copy email</button>
-        <a class="btn dark" href="#" id="linkedin">LinkedIn</a>
-        <a class="btn dark" href="#" id="github">GitHub</a>
-        <span id="copied">Copied</span>
+      <div class="contact-text">
+        <span class="label">Contact</span>
+        <h2>Got something to build?</h2>
+        <a class="mailto" id="mailto" href="#">jack@jackdawmarketing.ca</a>
+        <div class="row">
+          <button class="btn dark" id="copy" type="button">Copy email</button>
+          <a class="btn dark" href="#" id="linkedin">LinkedIn</a>
+          <a class="btn dark" href="#" id="github">GitHub</a>
+          <span id="copied">Copied</span>
+        </div>
       </div>
-      </div>
+      <form class="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/">
+        <input type="hidden" name="form-name" value="contact">
+        <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
+        <div class="field">
+          <label for="f-name">Name</label>
+          <input type="text" id="f-name" name="name" autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="f-business">Business name</label>
+          <input type="text" id="f-business" name="business" autocomplete="organization">
+        </div>
+        <div class="field">
+          <label for="f-email">Email *</label>
+          <input type="email" id="f-email" name="email" required autocomplete="email">
+        </div>
+        <div class="field">
+          <label for="f-message">Message *</label>
+          <textarea id="f-message" name="message" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn dark">Send message</button>
+        <p class="reply-note">I reply within one business day.</p>
+      </form>
       <svg class="bird-lg" viewBox="0 0 23 16" aria-hidden="true" focusable="false">
         <g fill="var(--plum)"><rect x="13" y="0" width="4" height="1"/><rect x="12" y="1" width="6" height="1"/><rect x="12" y="2" width="2" height="1"/><rect x="15" y="2" width="3" height="1"/><rect x="12" y="3" width="6" height="1"/><rect x="11" y="4" width="7" height="1"/><rect x="10" y="5" width="8" height="1"/><rect x="9" y="6" width="9" height="1"/><rect x="8" y="7" width="4" height="1"/><rect x="13" y="7" width="5" height="1"/><rect x="7" y="8" width="4" height="1"/><rect x="13" y="8" width="5" height="1"/><rect x="5" y="9" width="5" height="1"/><rect x="12" y="9" width="6" height="1"/><rect x="3" y="10" width="7" height="1"/><rect x="12" y="10" width="7" height="1"/><rect x="0" y="11" width="9" height="1"/><rect x="11" y="11" width="8" height="1"/><rect x="1" y="12" width="17" height="1"/><rect x="4" y="13" width="4" height="1"/><rect x="13" y="13" width="4" height="1"/><rect x="4" y="14" width="1" height="1"/><rect x="16" y="14" width="1" height="1"/><rect x="3" y="15" width="3" height="1"/><rect x="15" y="15" width="3" height="1"/></g>
         <g fill="var(--tomato)"><rect x="18" y="3" width="2" height="1"/><rect x="18" y="4" width="2" height="1"/></g>
