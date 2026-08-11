@@ -15,6 +15,16 @@
 <meta property="og:description" content="One-time build fees from $1,200 CAD, and monthly care plans from $200 CAD. Plain-English pricing, no surprises.">
 <meta property="og:image" content="https://jackdawmarketing.ca/og.png">
 <meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Home","item":"https://jackdawmarketing.ca/"},
+    {"@type":"ListItem","position":2,"name":"Pricing","item":"https://jackdawmarketing.ca/pricing/"}
+  ]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -101,13 +111,14 @@
   .btn{
     display:inline-block;text-decoration:none;padding:14px 22px;
     font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;
-    border:2px solid var(--cream);transition:transform .16s ease,background .16s ease,color .16s ease;
+    border:2px solid var(--cream);background:none;cursor:pointer;
+    transition:transform .16s ease,background .16s ease,color .16s ease,border-color .16s ease;
   }
   .btn:hover{transform:translate(-3px,-3px);box-shadow:5px 5px 0 var(--plum-3)}
   .btn.solid{background:var(--cream);color:var(--plum);border-color:var(--cream)}
   .btn.solid:hover{background:var(--marigold);border-color:var(--marigold)}
-  .btn.dark{border-color:var(--plum);color:var(--plum)}
-  .btn.dark:hover{background:var(--plum);color:var(--cream);box-shadow:5px 5px 0 rgba(34,16,36,.25)}
+  .btn.dark{background:var(--plum);border-color:var(--plum);color:var(--cream)}
+  .btn.dark:hover{background:var(--marigold);border-color:var(--marigold);color:var(--plum);box-shadow:5px 5px 0 rgba(34,16,36,.25)}
 
   /* ---------- page header ---------- */
   .page-head{padding-top:clamp(120px,16vw,150px);padding-bottom:clamp(30px,5vw,50px)}
@@ -140,7 +151,7 @@
   .price-note{font-family:var(--mono);font-size:12.5px;letter-spacing:.05em;opacity:.65;margin:14px 0 0;max-width:60ch}
   .pricing-group{margin-top:clamp(36px,5vw,54px)}
   .pricing-group .group-title{
-    font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+    font-family:var(--mono);font-weight:400;font-size:13px;letter-spacing:.1em;text-transform:uppercase;
     opacity:.7;margin:0 0 4px;
   }
   .pricing-group .group-sub{font-size:15px;opacity:.7;margin:0 0 18px;max-width:52ch}
@@ -244,25 +255,25 @@
         <span class="sq" style="background:var(--marigold)"></span>
         <span class="num">01</span>
         <h3>Audit</h3>
-        <p>I look at what you have now (or don't) and check what's slowing you down: speed, mobile experience, and how easy you are to find on Google.</p>
+        <p>I start with your business goals — who you're trying to reach and what you want them to do — then check what's holding the current site back: speed, mobile experience, and how easy you are to find on Google.</p>
       </div>
       <div class="step rev">
         <span class="sq" style="background:var(--jade)"></span>
         <span class="num">02</span>
         <h3>Design</h3>
-        <p>I design a layout that fits your business, not a generic template. You see it and approve it before anything gets built.</p>
+        <p>I design a custom layout built around your business and your customers, not a generic template. You see it and approve it before anything gets built.</p>
       </div>
       <div class="step rev">
         <span class="sq" style="background:var(--tomato)"></span>
         <span class="num">03</span>
         <h3>Build</h3>
-        <p>I hand-build the site so it's fast and responsive, on a stack you can keep running and update yourself afterwards.</p>
+        <p>I hand-build the site so it's fast and responsive on every device, on a stack you can keep running and update yourself afterwards.</p>
       </div>
       <div class="step rev">
         <span class="sq" style="background:var(--cream)"></span>
         <span class="num">04</span>
         <h3>Get found</h3>
-        <p>I set up local SEO, page speed and analytics — the technical work, or "SEO," that helps you show up when people search for what you do.</p>
+        <p>I set up the foundations — local SEO, page speed and analytics — so the site is built to be found by the people searching for what you do.</p>
       </div>
     </div>
   </section>
@@ -275,7 +286,7 @@
     <p class="price-note rev">Prices are starting points — every project gets a fixed quote after the audit.</p>
 
     <div class="pricing-group rev">
-      <p class="group-title">Build fee — one-time</p>
+      <h3 class="group-title">Build fee — one-time</h3>
       <p class="group-sub">The cost to design and build your site, paid once when the project starts.</p>
       <div class="tiers">
         <div class="tier">
@@ -293,10 +304,12 @@
           <h4>Standard</h4>
           <p class="price"><span class="from">From</span>$2,800 CAD</p>
           <ul>
-            <li>Multi-page site, custom design</li>
-            <li>Content management, so you can edit it yourself</li>
-            <li>Local SEO setup</li>
-            <li>Analytics wired up from day one</li>
+            <li>Custom multi-page site</li>
+            <li>Mobile-first design</li>
+            <li>Conversion-focused structure</li>
+            <li>Local SEO foundation</li>
+            <li>GA4 and Search Console set up</li>
+            <li>Lead forms and editable content</li>
           </ul>
         </div>
         <div class="tier">
@@ -313,8 +326,8 @@
     </div>
 
     <div class="pricing-group rev">
-      <p class="group-title">Monthly care — ongoing</p>
-      <p class="group-sub">Keeps the site online, secure and up to date after launch. Billed monthly, cancel any time.</p>
+      <h3 class="group-title">Monthly care — ongoing</h3>
+      <p class="group-sub">Keeps the site online, secure and up to date after launch. Billed monthly, cancel any time. Larger changes and new features are quoted separately.</p>
       <div class="tiers">
         <div class="tier">
           <h4>Essential</h4>
@@ -341,7 +354,7 @@
           <p class="price">$700<span class="per">/mo</span></p>
           <ul>
             <li>Everything in Growth</li>
-            <li>New pages or features as needed</li>
+            <li>Up to 3 hours/month of site updates</li>
             <li>Priority turnaround on requests</li>
             <li>Quarterly strategy call</li>
           </ul>
@@ -356,9 +369,9 @@
       <span class="label">A site isn't a one-time purchase</span>
     </div>
     <div class="prose rev" style="margin-top:28px">
-      <p>A website isn't a one-time purchase. Google changes how it ranks pages several times a year, competitors launch new sites, and your own content — prices, hours, projects, offers — goes out of date.</p>
-      <p>A site with nobody watching it slowly drops in search results and starts showing stale information. That's not a flaw in the build, it's just what happens when nothing is maintained.</p>
-      <p>The build fee gets you online. The monthly fee is what keeps you found — updates, monitoring and small improvements, so the site keeps working for you instead of quietly falling behind.</p>
+      <p>A website isn't a one-time purchase. Google changes how it ranks pages, competitors launch new sites, and your own content — prices, hours, projects, offers — goes out of date. None of that stops once the site goes live.</p>
+      <p>Monthly care covers what keeps a site running well after launch: security and software updates, small content changes, performance checks, and analytics so you can see what's actually happening — who's visiting, what they're doing, and what's working.</p>
+      <p>The build fee gets you online. The monthly fee is the ongoing maintenance and attention that keeps the site working for you, instead of slowly becoming one more thing nobody has time to look after.</p>
     </div>
   </section>
 

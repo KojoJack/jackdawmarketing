@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>JackDaw Marketing — Web Design & Marketing, Newmarket & GTA</title>
-<meta name="description" content="JackDaw Marketing — a one-person web studio serving Newmarket, Aurora, Bradford, East Gwillimbury, Toronto and the GTA. Websites designed, built and marketed end to end.">
+<meta name="description" content="JackDaw Marketing designs, builds and optimizes fast, modern websites that help local businesses in Newmarket, Aurora, Bradford and the GTA get found and turn visitors into customers.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 16'%3E%3Crect width='20' height='16' fill='%23221024'/%3E%3Cg fill='%23FCF3E3'%3E%3Crect x='13' y='0' width='4' height='1'/%3E%3Crect x='12' y='1' width='6' height='1'/%3E%3Crect x='12' y='2' width='2' height='1'/%3E%3Crect x='15' y='2' width='3' height='1'/%3E%3Crect x='12' y='3' width='6' height='1'/%3E%3Crect x='11' y='4' width='7' height='1'/%3E%3Crect x='10' y='5' width='8' height='1'/%3E%3Crect x='9' y='6' width='9' height='1'/%3E%3Crect x='8' y='7' width='4' height='1'/%3E%3Crect x='13' y='7' width='5' height='1'/%3E%3Crect x='7' y='8' width='4' height='1'/%3E%3Crect x='13' y='8' width='5' height='1'/%3E%3Crect x='5' y='9' width='5' height='1'/%3E%3Crect x='12' y='9' width='6' height='1'/%3E%3Crect x='3' y='10' width='7' height='1'/%3E%3Crect x='12' y='10' width='7' height='1'/%3E%3Crect x='0' y='11' width='9' height='1'/%3E%3Crect x='11' y='11' width='8' height='1'/%3E%3Crect x='1' y='12' width='17' height='1'/%3E%3Crect x='4' y='13' width='4' height='1'/%3E%3Crect x='13' y='13' width='4' height='1'/%3E%3Crect x='4' y='14' width='1' height='1'/%3E%3Crect x='16' y='14' width='1' height='1'/%3E%3Crect x='3' y='15' width='3' height='1'/%3E%3Crect x='15' y='15' width='3' height='1'/%3E%3C/g%3E%3Cg fill='%23FF5535'%3E%3Crect x='18' y='3' width='2' height='1'/%3E%3Crect x='18' y='4' width='2' height='1'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="canonical" href="https://jackdawmarketing.ca/">
 <meta name="theme-color" content="#221024">
@@ -12,7 +12,7 @@
 <meta property="og:url" content="https://jackdawmarketing.ca/">
 <meta property="og:site_name" content="JackDaw Marketing">
 <meta property="og:title" content="JackDaw Marketing — Web Design & Marketing, Newmarket & GTA">
-<meta property="og:description" content="A one-person web studio serving Newmarket, Aurora, Bradford, East Gwillimbury and the GTA. Design, build and the marketing that gets you found.">
+<meta property="og:description" content="Fast, modern websites that help local businesses in Newmarket, Aurora, Bradford and the GTA get found and turn visitors into customers.">
 <meta property="og:image" content="https://jackdawmarketing.ca/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
@@ -22,7 +22,7 @@
   "name":"JackDaw Marketing",
   "url":"https://jackdawmarketing.ca/",
   "email":"jack@jackdawmarketing.ca",
-  "description":"Websites, apps and brands designed, built and marketed end to end.",
+  "description":"Websites designed, built and optimized to help local businesses get found and turn visitors into customers.",
   "founder":{"@type":"Person","name":"Jack"},
   "address":{"@type":"PostalAddress","addressRegion":"ON","addressCountry":"CA"},
   "areaServed":[
@@ -119,9 +119,18 @@
   .pitch h1{
     font-family:var(--body);font-weight:500;
     font-size:clamp(23px,3.4vw,40px);line-height:1.22;letter-spacing:-.02em;
-    margin:0;max-width:26ch;
+    margin:0;max-width:34ch;
   }
   .pitch h1 em{font-style:normal;color:var(--marigold)}
+  .pitch .sub{
+    font-size:clamp(15px,1.6vw,18px);line-height:1.55;opacity:.78;
+    margin:0;max-width:52ch;
+  }
+  .pitch .secondary{
+    display:flex;align-items:center;gap:10px;
+    font-family:var(--mono);font-size:12.5px;letter-spacing:.05em;opacity:.68;margin:0;
+  }
+  .pitch .secondary::before{content:"";display:block;width:8px;height:8px;background:var(--jade);flex-shrink:0}
   .actions{display:flex;flex-wrap:wrap;gap:12px}
   .btn{
     display:inline-block;text-decoration:none;padding:14px 22px;
@@ -288,9 +297,11 @@
     </div>
 
     <div class="pitch">
-      <h1>I design, build and market websites, apps and brands — <em>end to end</em>, by myself.</h1>
+      <h1>Websites built to help local businesses <em>get found</em> — and turn visitors into customers.</h1>
+      <p class="sub">I design, build and optimize fast, modern websites for businesses in Newmarket, Aurora, Bradford and the GTA.</p>
+      <p class="secondary">One person from strategy to launch — no agency handoffs.</p>
       <div class="actions">
-        <a href="#work" class="btn solid">See the work</a>
+        <a href="#work" class="btn solid">See the builds</a>
         <a href="#contact" class="btn">Get in touch</a>
       </div>
     </div>
@@ -302,8 +313,8 @@
 
   <section id="work" class="wrap">
     <div class="head rev">
-      <h2>Selected work</h2>
-      <span class="label" id="work-count">Four projects</span>
+      <h2>Selected builds</h2>
+      <span class="label" id="work-count">Two portfolio builds</span>
     </div>
     <div class="grid" id="grid"></div>
   </section>
@@ -314,8 +325,8 @@
       <div>
         <p class="big">I'm Jack, based in Newmarket, Ontario. I make things that work as well as they look — then I make sure people actually find them.</p>
         <p>Most projects land on my desk half-formed: a rough idea, a brand that needs a spine, a product that needs to exist by next quarter. I take it from sketch to live site, handling the design and the code, so nothing gets lost in a handoff.</p>
-        <p>A good site that nobody visits is a hobby. So the build comes with the marketing side too — local SEO tuned for Newmarket, Aurora, Bradford and the wider GTA, page speed, structured data, copy written for search as well as for people, and analytics set up so you can see what's working.</p>
-        <p>Right now I'm taking on projects from businesses in Newmarket, Aurora, Bradford, East Gwillimbury, Toronto and across the GTA — and open to full-time roles.</p>
+        <p>A good site that nobody visits is a hobby. So every build comes with the technical foundation to actually get found — local SEO tuned for Newmarket, Aurora, Bradford and the wider GTA, fast page speed, structured data, copy written for search as well as for people, and analytics set up so you can see what's working.</p>
+        <p>Right now I'm taking on projects from businesses in Newmarket, Aurora, Bradford, East Gwillimbury, Toronto and across the GTA.</p>
       </div>
       <div class="stack">
         <div><b>Design</b><span>Figma · Identity · Motion</span></div>
@@ -393,10 +404,8 @@ const CONFIG = {
   ticker: ["Web design","Front-end development","SEO","Brand identity","Landing pages","Web apps","Analytics","Available for work"],
   // stat + statLabel are optional — leave them out and the swatch stays plain
   projects: [
-    { title:"Project One", blurb:"A short line about what it is and what you did on it.", tags:["Next.js","Design","SEO"], url:"#", accent:"marigold", stat:"+180%", statLabel:"organic traffic" },
-    { title:"Project Two", blurb:"Swap this for a real one — the client, the problem, the result.", tags:["Branding","Webflow"], url:"#", accent:"jade", stat:"0.9s", statLabel:"load time" },
-    { title:"Project Three", blurb:"One sentence is plenty. Let the thumbnail do the talking.", tags:["React","API"], url:"#", accent:"tomato", stat:"3x", statLabel:"enquiries per month" },
-    { title:"Project Four", blurb:"Add or remove cards here and the grid handles itself.", tags:["UI","Motion"], url:"#", accent:"marigold" }
+    { title:"Contractor Website", blurb:"A portfolio build for a local contracting business — a clean site that shows the work clearly and makes it easy to request a quote.", tags:["Portfolio","Web Design","Local SEO"], url:"#", accent:"marigold" },
+    { title:"Artist E-Commerce Website", blurb:"A portfolio build for an independent artist — an online shop to sell prints and originals directly, without a marketplace cut.", tags:["Portfolio","E-Commerce","Branding"], url:"#", accent:"jade" }
   ]
 };
 /* ========================================================== */
@@ -430,7 +439,7 @@ grid.innerHTML = CONFIG.projects.map(p => {
   </a>`;
 }).join("");
 const n = CONFIG.projects.length;
-document.getElementById("work-count").textContent = (words[n] || n) + (n === 1 ? " project" : " projects");
+document.getElementById("work-count").textContent = (words[n] || n) + (n === 1 ? " portfolio build" : " portfolio builds");
 
 /* ---------- scroll reveal + sticky bar ---------- */
 const bar = document.getElementById("bar");
