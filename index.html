@@ -234,6 +234,16 @@
     font-size:clamp(19px,2.3vw,26px);line-height:1.42;margin:0 0 22px;letter-spacing:-.01em;
   }
   .about p{max-width:46ch}
+  .photo-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:2px;background:var(--plum-3);margin-bottom:22px;
+  }
+  .photo-grid .photo{position:relative;display:block;aspect-ratio:4/3;overflow:hidden;background:var(--plum)}
+  .photo-grid img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    transition:transform .3s cubic-bezier(.2,.8,.2,1);
+  }
+  .photo-grid .photo:hover img{transform:scale(1.05)}
   .stack{border-top:2px solid var(--plum-3)}
   .stack div{
     display:flex;justify-content:space-between;gap:16px;padding:12px 0;
@@ -352,15 +362,18 @@
         <p>A good site that nobody visits is a hobby. So every build comes with the technical foundation to actually get found: local SEO tuned for Newmarket, Aurora, Bradford and the wider GTA, fast page speed, structured data, copy written for search as well as for people, and analytics set up so you can see what's working.</p>
         <p>Right now I'm taking on projects from businesses in Newmarket, Aurora, Bradford, East Gwillimbury, Toronto and across the GTA.</p>
       </div>
-      <div class="stack">
-        <div><b>Design</b><span>Figma · Identity · Motion</span></div>
-        <div><b>Build</b><span>HTML · CSS · JavaScript</span></div>
-        <div><b>Frameworks</b><span>React · Next.js</span></div>
-        <div><b>Backend</b><span>Node · Supabase</span></div>
-        <div><b>Marketing</b><span>Technical SEO · Copy</span></div>
-        <div><b>Measure</b><span>GA4 · Search Console</span></div>
-        <div><b>Based in</b><span>Newmarket, ON</span></div>
-        <div><b>Status</b><span style="color:var(--jade)">Taking on projects</span></div>
+      <div>
+        <div class="photo-grid" id="photoGrid"></div>
+        <div class="stack">
+          <div><b>Design</b><span>Figma · Identity · Motion</span></div>
+          <div><b>Build</b><span>HTML · CSS · JavaScript</span></div>
+          <div><b>Frameworks</b><span>React · Next.js</span></div>
+          <div><b>Backend</b><span>Node · Supabase</span></div>
+          <div><b>Marketing</b><span>Technical SEO · Copy</span></div>
+          <div><b>Measure</b><span>GA4 · Search Console</span></div>
+          <div><b>Based in</b><span>Newmarket, ON</span></div>
+          <div><b>Status</b><span style="color:var(--jade)">Taking on projects</span></div>
+        </div>
       </div>
     </div>
   </section>
@@ -426,6 +439,10 @@ const CONFIG = {
   line1: "JACKDAW",   // set line2 to "" for a single-line wordmark
   line2: "MARKETING",
   ticker: ["Web design","Front-end development","SEO","Brand identity","Landing pages","Web apps","Analytics","Available for work"],
+  // photos shown in the About section; add more entries to grow the grid
+  photos: [
+    { src:"Images/jack-1.jpg", alt:"Pixel art illustration of Jack sitting on a stone lookout above a mountain range" }
+  ],
   // stat + statLabel are optional; leave them out and the swatch stays plain
   projects: [
     { title:"Contractor Website", blurb:"A portfolio build for a local contracting business: a clean site that shows the work clearly and makes it easy to request a quote.", tags:["Portfolio","Web Design","Local SEO"], url:"#", accent:"marigold" },
@@ -444,6 +461,11 @@ document.getElementById("year").textContent = "© " + new Date().getFullYear();
 const track = document.getElementById("track");
 const strip = CONFIG.ticker.map(t => `<span>${t}</span><span>&#9632;</span>`).join("");
 track.innerHTML = strip + strip;
+
+/* ---------- photo grid ---------- */
+document.getElementById("photoGrid").innerHTML = CONFIG.photos.map(p =>
+  `<span class="photo"><img src="${p.src}" alt="${p.alt}" loading="lazy"></span>`
+).join("");
 
 /* ---------- project cards ---------- */
 const words = ["Zero","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten"];
