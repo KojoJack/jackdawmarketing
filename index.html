@@ -105,7 +105,30 @@
     border:2px solid var(--cream);border-bottom-width:2px;padding:7px 14px;
   }
   .bar nav a.hire:hover{background:var(--marigold);border-color:var(--marigold);color:var(--plum)}
-  @media(max-width:600px){ .bar nav a.about-link{display:none} }
+
+  .menu-btn{
+    display:none;align-items:center;
+    background:none;border:2px solid var(--cream);color:var(--cream);
+    font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+    padding:10px 16px;cursor:pointer;
+    transition:background .2s ease,color .2s ease,border-color .2s ease;
+  }
+  .menu-btn:hover{background:var(--marigold);border-color:var(--marigold);color:var(--plum)}
+
+  @media(max-width:700px){
+    .menu-btn{display:inline-flex}
+    .bar nav{
+      display:none;
+      position:absolute;top:100%;left:0;right:0;
+      flex-direction:column;align-items:stretch;gap:0;
+      background:rgba(34,16,36,.97);backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--plum-3);
+      padding:6px var(--pad) 20px;
+    }
+    .bar nav.open{display:flex}
+    .bar nav a{padding:14px 0;border-bottom:1px solid var(--plum-3)}
+    .bar nav a.hire{margin-top:12px;text-align:center}
+  }
 
   /* ---------- hero ---------- */
   .hero{padding-top:96px;padding-bottom:clamp(40px,7vw,80px)}
@@ -251,7 +274,7 @@
   .field input,.field textarea{
     background:var(--cream);color:var(--plum);
     border:2px solid var(--plum);border-radius:0;
-    font-family:var(--body);font-size:15px;line-height:1.4;
+    font-family:var(--body);font-size:16px;line-height:1.4;
     padding:10px 12px;width:100%;box-sizing:border-box;
     -webkit-appearance:none;appearance:none;
     transition:box-shadow .15s ease;
@@ -281,12 +304,13 @@
 
 <header class="bar" id="bar">
   <a href="#top" class="mark" aria-label="JackDaw Marketing, back to top"><svg viewBox="0 0 20 16" width="27" height="21.6" aria-hidden="true" focusable="false"><g fill="var(--cream)"><rect x="13" y="0" width="4" height="1"/><rect x="12" y="1" width="6" height="1"/><rect x="12" y="2" width="2" height="1"/><rect x="15" y="2" width="3" height="1"/><rect x="12" y="3" width="6" height="1"/><rect x="11" y="4" width="7" height="1"/><rect x="10" y="5" width="8" height="1"/><rect x="9" y="6" width="9" height="1"/><rect x="8" y="7" width="4" height="1"/><rect x="13" y="7" width="5" height="1"/><rect x="7" y="8" width="4" height="1"/><rect x="13" y="8" width="5" height="1"/><rect x="5" y="9" width="5" height="1"/><rect x="12" y="9" width="6" height="1"/><rect x="3" y="10" width="7" height="1"/><rect x="12" y="10" width="7" height="1"/><rect x="0" y="11" width="9" height="1"/><rect x="11" y="11" width="8" height="1"/><rect x="1" y="12" width="17" height="1"/><rect x="4" y="13" width="4" height="1"/><rect x="13" y="13" width="4" height="1"/><rect x="4" y="14" width="1" height="1"/><rect x="16" y="14" width="1" height="1"/><rect x="3" y="15" width="3" height="1"/><rect x="15" y="15" width="3" height="1"/></g><g fill="var(--plum)"><rect x="18" y="3" width="2" height="1"/><rect x="18" y="4" width="2" height="1"/></g></svg></a>
-  <nav>
+  <nav id="nav">
     <a href="#work">Work</a>
-    <a href="/pricing/" class="about-link">Pricing</a>
-    <a href="#about" class="about-link">About</a>
+    <a href="/pricing/">Pricing</a>
+    <a href="#about">About</a>
     <a href="#contact" class="hire">Start a project</a>
   </nav>
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
 </header>
 
 <main id="top">
@@ -444,6 +468,22 @@ document.getElementById("work-count").textContent = (words[n] || n) + (n === 1 ?
 /* ---------- scroll reveal + sticky bar ---------- */
 const bar = document.getElementById("bar");
 addEventListener("scroll", () => bar.classList.toggle("stuck", scrollY > 24), { passive:true });
+
+/* ---------- mobile menu ---------- */
+const nav = document.getElementById("nav");
+const menuBtn = document.getElementById("menuBtn");
+function closeMenu() {
+  nav.classList.remove("open");
+  menuBtn.setAttribute("aria-expanded", "false");
+  menuBtn.textContent = "Menu";
+}
+menuBtn.addEventListener("click", () => {
+  const open = nav.classList.toggle("open");
+  menuBtn.setAttribute("aria-expanded", String(open));
+  menuBtn.textContent = open ? "Close" : "Menu";
+});
+nav.addEventListener("click", (e) => { if (e.target.closest("a")) closeMenu(); });
+addEventListener("resize", () => { if (innerWidth > 700) closeMenu(); });
 
 if (!reduced && "IntersectionObserver" in window) {
   const io = new IntersectionObserver((entries) => {
