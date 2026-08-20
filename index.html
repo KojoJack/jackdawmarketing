@@ -3,6 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7NPP9DSENG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7NPP9DSENG');
+</script>
 <title>JackDaw Marketing: Web Design & Marketing, Newmarket & GTA</title>
 <meta name="description" content="JackDaw Marketing designs, builds and optimizes fast, modern websites that help local businesses in Newmarket, Aurora, Bradford and the GTA get found and turn visitors into customers.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 16'%3E%3Crect width='20' height='16' fill='%23221024'/%3E%3Cg fill='%23FCF3E3'%3E%3Crect x='13' y='0' width='4' height='1'/%3E%3Crect x='12' y='1' width='6' height='1'/%3E%3Crect x='12' y='2' width='2' height='1'/%3E%3Crect x='15' y='2' width='3' height='1'/%3E%3Crect x='12' y='3' width='6' height='1'/%3E%3Crect x='11' y='4' width='7' height='1'/%3E%3Crect x='10' y='5' width='8' height='1'/%3E%3Crect x='9' y='6' width='9' height='1'/%3E%3Crect x='8' y='7' width='4' height='1'/%3E%3Crect x='13' y='7' width='5' height='1'/%3E%3Crect x='7' y='8' width='4' height='1'/%3E%3Crect x='13' y='8' width='5' height='1'/%3E%3Crect x='5' y='9' width='5' height='1'/%3E%3Crect x='12' y='9' width='6' height='1'/%3E%3Crect x='3' y='10' width='7' height='1'/%3E%3Crect x='12' y='10' width='7' height='1'/%3E%3Crect x='0' y='11' width='9' height='1'/%3E%3Crect x='11' y='11' width='8' height='1'/%3E%3Crect x='1' y='12' width='17' height='1'/%3E%3Crect x='4' y='13' width='4' height='1'/%3E%3Crect x='13' y='13' width='4' height='1'/%3E%3Crect x='4' y='14' width='1' height='1'/%3E%3Crect x='16' y='14' width='1' height='1'/%3E%3Crect x='3' y='15' width='3' height='1'/%3E%3Crect x='15' y='15' width='3' height='1'/%3E%3C/g%3E%3Cg fill='%23FF5535'%3E%3Crect x='18' y='3' width='2' height='1'/%3E%3Crect x='18' y='4' width='2' height='1'/%3E%3C/g%3E%3C/svg%3E">
@@ -78,6 +87,16 @@
     font-family:var(--mono);font-size:12px;letter-spacing:.14em;
     text-transform:uppercase;opacity:.62;
   }
+
+  /* ---------- mascot art ---------- */
+  .mascot{
+    transform:rotate(var(--rot,0deg));
+    transition:transform .35s cubic-bezier(.2,.8,.2,1);
+  }
+  .mascot:hover{transform:rotate(calc(var(--rot,0deg) + 8deg)) scale(1.12)}
+  @media(prefers-reduced-motion:reduce){ .mascot{transition:none} }
+  .outline-cream{filter:drop-shadow(2px 0 0 var(--cream)) drop-shadow(-2px 0 0 var(--cream)) drop-shadow(0 2px 0 var(--cream)) drop-shadow(0 -2px 0 var(--cream))}
+  .outline-plum{filter:drop-shadow(2px 0 0 var(--plum)) drop-shadow(-2px 0 0 var(--plum)) drop-shadow(0 2px 0 var(--plum)) drop-shadow(0 -2px 0 var(--plum))}
 
   /* ---------- top bar ---------- */
   .bar{
@@ -193,6 +212,9 @@
   }
 
   /* ---------- work ---------- */
+  #work{position:relative}
+  #work-mascot{position:absolute;top:10px;right:0;width:clamp(44px,5vw,60px);height:auto}
+  @media(max-width:760px){ #work-mascot{display:none} }
   .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:2px;background:var(--plum-3)}
   @media(max-width:760px){ .grid{grid-template-columns:1fr} }
   .card{
@@ -244,9 +266,7 @@
   .photo-wrap .mascot{
     position:absolute;top:-20px;right:-16px;z-index:2;
     width:clamp(56px,7vw,80px);height:auto;
-    transform:rotate(-9deg);
     filter:drop-shadow(3px 4px 0 var(--plum));
-    pointer-events:none;
   }
   .photo-grid{
     display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
@@ -291,8 +311,13 @@
   .btn.dark:hover{background:var(--marigold);border-color:var(--marigold);color:var(--plum);box-shadow:5px 5px 0 rgba(34,16,36,.25)}
 
   /* ---------- contact form ---------- */
-  .contact-form{display:flex;flex-direction:column;gap:14px}
+  .contact-form{position:relative;display:flex;flex-direction:column;gap:14px}
   .contact-form > .label{margin-bottom:2px}
+  .contact-form .mascot{
+    position:absolute;top:-18px;right:-6px;
+    width:clamp(46px,5.5vw,60px);height:auto;
+  }
+  @media(max-width:520px){ .contact-form .mascot{top:-14px;right:0} }
   .field{display:flex;flex-direction:column;gap:5px}
   .field label{
     font-family:var(--mono);font-size:11px;letter-spacing:.13em;
@@ -365,6 +390,7 @@
   </div>
 
   <section id="work" class="wrap">
+    <img class="mascot outline-cream" id="work-mascot" src="Images/bird-look.png" alt="" loading="lazy" style="--rot:-8deg">
     <div class="head rev">
       <h2>Selected builds</h2>
       <span class="label" id="work-count">Two portfolio builds</span>
@@ -385,7 +411,7 @@
         <p>And most days, I'm not completely working alone. My dog Hunter serves as JackDaw's unofficial assistant, which mostly involves sitting beside my desk and supervising the entire operation.</p>
       </div>
       <div class="photo-wrap">
-        <img class="mascot" src="Images/bird-marigold.png" alt="" loading="lazy">
+        <img class="mascot" src="Images/bird-marigold.png" alt="" loading="lazy" style="--rot:-9deg">
         <div class="photo-grid rev" id="photoGrid"></div>
       </div>
     </div>
@@ -404,6 +430,7 @@
         </div>
       </div>
       <form class="contact-form rev" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you">
+        <img class="mascot outline-plum" src="Images/bird-mail.png" alt="" loading="lazy" style="--rot:6deg">
         <span class="label">Send a message</span>
         <input type="hidden" name="form-name" value="contact">
         <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
@@ -438,7 +465,7 @@
 
 <footer>
   <div class="wrap">
-    <span class="foot-brand"><img src="Images/bird-marigold.png" alt="" loading="lazy">JackDaw Marketing</span>
+    <span class="foot-brand"><img class="mascot" src="Images/bird-marigold.png" alt="" loading="lazy">JackDaw Marketing</span>
     <span>A bird that collects bright things</span>
     <span id="year"></span>
   </div>
