@@ -144,7 +144,10 @@
     font-size:clamp(23px,3.4vw,40px);line-height:1.22;letter-spacing:-.02em;
     margin:0;max-width:34ch;
   }
-  .pitch h1 em{font-style:normal;color:var(--marigold)}
+  em.tomato,em.marigold,em.jade{font-style:normal}
+  em.tomato{color:var(--tomato)}
+  em.marigold{color:var(--marigold)}
+  em.jade{color:var(--jade)}
   .pitch .sub{
     font-size:clamp(15px,1.6vw,18px);line-height:1.55;opacity:.78;
     margin:0;max-width:52ch;
@@ -234,9 +237,20 @@
     font-size:clamp(19px,2.3vw,26px);line-height:1.42;margin:0 0 22px;letter-spacing:-.01em;
   }
   .about p{max-width:46ch}
+  .photo-wrap{position:relative;margin:6px 0 34px}
+  @media(min-width:861px){
+    .photo-wrap{position:sticky;top:110px;align-self:start}
+  }
+  .photo-wrap .mascot{
+    position:absolute;top:-20px;right:-16px;z-index:2;
+    width:clamp(56px,7vw,80px);height:auto;
+    transform:rotate(-9deg);
+    filter:drop-shadow(3px 4px 0 var(--plum));
+    pointer-events:none;
+  }
   .photo-grid{
     display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-    gap:28px;margin:6px 0 34px;
+    gap:28px;
   }
   .photo-grid .photo{
     position:relative;display:block;aspect-ratio:4/3;overflow:hidden;
@@ -254,13 +268,6 @@
     font-style:normal;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
     text-transform:uppercase;padding:6px 11px;
   }
-  .stack{border-top:2px solid var(--plum-3)}
-  .stack div{
-    display:flex;justify-content:space-between;gap:16px;padding:12px 0;
-    border-bottom:1px solid var(--plum-3);font-family:var(--mono);font-size:13px;
-  }
-  .stack div b{font-weight:400;opacity:.5;text-transform:uppercase;letter-spacing:.1em;font-size:11px;align-self:center}
-
   /* ---------- contact ---------- */
   .contact{background:var(--marigold);color:var(--plum);margin-top:clamp(50px,8vw,110px);padding:clamp(40px,7vw,90px) 0}
   .contact .label{opacity:.62}
@@ -307,6 +314,8 @@
   /* ---------- footer ---------- */
   footer{padding:26px 0 34px;font-family:var(--mono);font-size:12px;letter-spacing:.08em}
   footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;opacity:.55;text-transform:uppercase}
+  .foot-brand{display:inline-flex;align-items:center;gap:8px}
+  .foot-brand img{width:15px;height:auto;display:block}
 
   /* ---------- reveal ---------- */
   .rev{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
@@ -341,8 +350,8 @@
     </div>
 
     <div class="pitch">
-      <h1>Websites built to help local businesses <em>get found</em>, and turn visitors into customers.</h1>
-      <p class="sub">I design, build and optimize fast, modern websites for businesses in Newmarket, Aurora, Bradford and the GTA.</p>
+      <h1>Websites that make local businesses <em class="tomato">easier to find</em>, <em class="marigold">easier to trust</em>, and <em class="jade">easier to choose</em>.</h1>
+      <p class="sub">I design, build and manage fast, modern websites for businesses in Newmarket, Aurora, Bradford and across the GTA.</p>
       <p class="secondary">One person from strategy to launch, no agency handoffs.</p>
       <div class="actions">
         <a href="#work" class="btn solid">See the builds</a>
@@ -367,23 +376,17 @@
     <div class="head rev"><h2>Who's building</h2><span class="label">JackDaw Marketing</span></div>
     <div class="about rev">
       <div>
-        <p class="big">I'm Jack, based in Newmarket, Ontario. I make things that work as well as they look, then I make sure people actually find them.</p>
-        <p>Most projects land on my desk half-formed: a rough idea, a brand that needs a spine, a product that needs to exist by next quarter. I take it from sketch to live site, handling the design and the code, so nothing gets lost in a handoff.</p>
-        <p>A good site that nobody visits is a hobby. So every build comes with the technical foundation to actually get found: local SEO tuned for Newmarket, Aurora, Bradford and the wider GTA, fast page speed, structured data, copy written for search as well as for people, and analytics set up so you can see what's working.</p>
-        <p>Right now I'm taking on projects from businesses in Newmarket, Aurora, Bradford, East Gwillimbury, Toronto and across the GTA.</p>
+        <p class="big">I'm Jack, the person behind JackDaw Marketing.</p>
+        <p>I studied Marketing Management at the University of Guelph, specializing in digital marketing, web design and SEO, and also studied at MCI (Management Center Innsbruck) in Austria.</p>
+        <p>I've always been interested in what makes businesses grow: how they present themselves, how customers find them, and what makes someone choose one business over another. That interest eventually turned into building websites and digital strategies for local businesses.</p>
+        <p>I've also had the chance to appear on Dragons' Den, which gave me an even greater appreciation for entrepreneurship, strong branding and the work that goes into building a successful business.</p>
+        <p>Today, I'm based in York Region and focused on helping local businesses build a stronger presence online, whether that means a better website, stronger local visibility, clearer messaging or an overall digital presence that better reflects the quality of the business behind it.</p>
+        <p>I genuinely enjoy working with local business owners and helping good businesses reach more of the people looking for what they do.</p>
+        <p>And most days, I'm not completely working alone. My dog Hunter serves as JackDaw's unofficial assistant, which mostly involves sitting beside my desk and supervising the entire operation.</p>
       </div>
-      <div>
+      <div class="photo-wrap">
+        <img class="mascot" src="Images/bird-marigold.png" alt="" loading="lazy">
         <div class="photo-grid rev" id="photoGrid"></div>
-        <div class="stack">
-          <div><b>Design</b><span>Figma · Identity · Motion</span></div>
-          <div><b>Build</b><span>HTML · CSS · JavaScript</span></div>
-          <div><b>Frameworks</b><span>React · Next.js</span></div>
-          <div><b>Backend</b><span>Node · Supabase</span></div>
-          <div><b>Marketing</b><span>Technical SEO · Copy</span></div>
-          <div><b>Measure</b><span>GA4 · Search Console</span></div>
-          <div><b>Based in</b><span>Newmarket, ON</span></div>
-          <div><b>Status</b><span style="color:var(--jade)">Taking on projects</span></div>
-        </div>
       </div>
     </div>
   </section>
@@ -435,7 +438,7 @@
 
 <footer>
   <div class="wrap">
-    <span>JackDaw Marketing</span>
+    <span class="foot-brand"><img src="Images/bird-marigold.png" alt="" loading="lazy">JackDaw Marketing</span>
     <span>A bird that collects bright things</span>
     <span id="year"></span>
   </div>
@@ -451,7 +454,7 @@ const CONFIG = {
   ticker: ["Web design","Front-end development","SEO","Brand identity","Landing pages","Web apps","Analytics","Available for work"],
   // photos shown in the About section; add more entries to grow the grid
   photos: [
-    { src:"Images/jack-1.jpg", alt:"Pixel art illustration of Jack sitting on a stone lookout above a mountain range", tag:"Jack · Newmarket, ON" }
+    { src:"Images/jack-1.jpg", alt:"Pixel art illustration of Jack sitting on a stone lookout above a mountain range", tag:"Jack · York Region, ON" }
   ],
   // stat + statLabel are optional; leave them out and the swatch stays plain
   projects: [
