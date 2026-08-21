@@ -1085,25 +1085,21 @@ body.modal-open .actionbar{transform:translateY(120%)}
         <p class="eyebrow">Reviews</p>
         <h2>What patients say.</h2>
       </div>
-      <div class="flag-note">
-        <span class="flag">Placeholder content</span>
-        <p style="margin-top:12px"><b>These three reviews are written examples, not real quotes.</b> Before this page goes live they must be replaced with genuine reviews, either pulled from the clinic's Google Business Profile with the reviewer's first name and last initial, or collected directly from patients with their permission. Quotes should describe the experience rather than promise a particular result.</p>
-      </div>
       <div class="grid g3">
         <article class="quote">
           <div class="stars" aria-label="Five stars">★★★★★</div>
-          <blockquote>"They explained my results properly instead of rushing me into buying something. I left understanding my own hearing for the first time."</blockquote>
-          <cite>Sample Review <span class="place">Placeholder, replace before launch</span></cite>
+          <blockquote>"This is a family owned business. The owner is the audiologist. If you need hearing aids, this is the place to be. Ben will work with you on a price that's within your budget and fit you with the perfect hearing aids. I'm so happy with mine. I will never go anywhere else."</blockquote>
+          <cite>Shirley <span class="place">Google review</span></cite>
         </article>
         <article class="quote">
           <div class="stars" aria-label="Five stars">★★★★★</div>
-          <blockquote>"I've been back three times for adjustments and never once felt like I was a bother. That's why I recommend them."</blockquote>
-          <cite>Sample Review <span class="place">Placeholder, replace before launch</span></cite>
+          <blockquote>"EarCare is a phenomenal hearing aid dealer. Ben offers unparalleled service! Highly recommend to anyone looking for hearing aids, hearing test or to deal with any hearing related issues."</blockquote>
+          <cite>Martyn <span class="place">Google review</span></cite>
         </article>
         <article class="quote">
           <div class="stars" aria-label="Five stars">★★★★★</div>
-          <blockquote>"Ben found something that worked for my budget and it made a real difference at family dinners."</blockquote>
-          <cite>Sample Review <span class="place">Placeholder, replace before launch</span></cite>
+          <blockquote>"My mom went here for her hearing aids and she's been very satisfied. Ben gives such personalized and good service. I have gone there on behalf of my mom, to pick up supplies, and he's always so pleasant and helpful."</blockquote>
+          <cite>Tania <span class="place">Google review</span></cite>
         </article>
       </div>
     </div>
@@ -1591,15 +1587,8 @@ body.modal-open .actionbar{transform:translateY(120%)}
           <div class="scale-ends" id="s1-ends"><span>1 = Not a priority right now</span><span>10 = Extremely important</span></div>
         </div>
 
-        <div class="slider-block">
-          <label for="s2">How confident do you feel about using hearing aids successfully?</label>
-          <div class="slider-value"><span id="s2-out">5</span><small id="s2-label">Getting there</small></div>
-          <input type="range" id="s2" min="1" max="10" step="1" value="5" aria-describedby="s2-ends">
-          <div class="scale-ends" id="s2-ends"><span>1 = Not confident yet</span><span>10 = Very confident</span></div>
-        </div>
-
         <button type="submit" class="btn btn-primary btn-block btn-lg" id="booking-submit">Request my appointment</button>
-        <p class="privacy">There's no wrong answer on the sliders. They just help us prepare for your visit. What you send is kept confidential and used only to arrange your appointment.</p>
+        <p class="privacy">There's no wrong answer on the slider. It just helps us prepare for your visit. What you send is kept confidential and used only to arrange your appointment.</p>
         <p style="margin-top:12px"><span class="flag">Concept build, the form doesn't send anywhere yet</span></p>
       </form>
     </div>
@@ -1737,8 +1726,6 @@ body.modal-open .actionbar{transform:translateY(120%)}
   var priority = ['','Not a priority right now','Not a priority right now','Something to look into','Something to look into',
                   'Somewhere in the middle','Somewhere in the middle','Fairly important to me','Fairly important to me',
                   'Very important to me','Extremely important'];
-  var confidence = ['','Not confident yet','Not confident yet','A bit unsure','A bit unsure','Getting there','Getting there',
-                    'Reasonably confident','Reasonably confident','Quite confident','Very confident'];
   function wire(id,outId,labId,words){
     var el = d.getElementById(id), out = d.getElementById(outId), lab = d.getElementById(labId);
     function up(){
@@ -1749,7 +1736,6 @@ body.modal-open .actionbar{transform:translateY(120%)}
     el.addEventListener('input', up); up();
   }
   wire('s1','s1-out','s1-label',priority);
-  wire('s2','s2-out','s2-label',confidence);
 
   /* ---------- forms (concept only, no backend) ---------- */
   d.getElementById('booking-form').addEventListener('submit', function(e){
