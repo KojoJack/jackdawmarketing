@@ -288,8 +288,9 @@ lockForm.addEventListener("submit", (e) => {
 
 exitBtn.addEventListener("click", relock);
 
-const remembered = sessionStorage.getItem(STORE_KEY);
-if (remembered && VAULTS[remembered]) unlock(remembered);
+// Every fresh visit starts locked, the password is required every time,
+// not just remembered from a previous unlock in this tab.
+sessionStorage.removeItem(STORE_KEY);
 </script>
 </body>
 </html>

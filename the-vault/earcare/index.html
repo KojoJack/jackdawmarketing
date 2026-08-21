@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>
+  /* Only reachable through /the-vault/ — this flag is set right before
+     the preview loads and cleared on exit, so a direct link to this
+     page without going through the password gate bounces back there. */
+  if (sessionStorage.getItem("jackdaw-vault-unlocked") !== "earcare") {
+    location.replace("/the-vault/");
+  }
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>EarCare Hearing Center | Independent Hearing Care in Scarborough</title>
