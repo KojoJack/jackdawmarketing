@@ -468,7 +468,7 @@ input[type=range]::-moz-range-thumb{
 /* ---------- modal ---------- */
 .modal{
   position:fixed;inset:0;z-index:200;background:rgba(2,23,58,.5);backdrop-filter:blur(6px);
-  padding:24px;overflow-y:auto;opacity:0;visibility:hidden;transition:opacity .3s var(--ease), visibility .3s
+  padding:24px;overflow-y:auto;overscroll-behavior:contain;opacity:0;visibility:hidden;transition:opacity .3s var(--ease), visibility .3s
 }
 .modal.open{opacity:1;visibility:visible}
 .modal-card{
@@ -1750,12 +1750,14 @@ body.modal-open .actionbar{transform:translateY(120%)}
     lastFocus = d.activeElement;
     setMode(mode);
     modal.classList.add('open'); modal.classList.remove('done');
+    d.documentElement.style.overflow = 'hidden';
     d.body.style.overflow = 'hidden';
     d.body.classList.add('modal-open');
     setTimeout(function(){ var f = d.getElementById('b-name'); if(f) f.focus(); }, 60);
   }
   function closeModal(){
     modal.classList.remove('open');
+    d.documentElement.style.overflow = '';
     d.body.style.overflow = '';
     d.body.classList.remove('modal-open');
     if(lastFocus) lastFocus.focus();
