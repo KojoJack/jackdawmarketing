@@ -13,6 +13,53 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Living Dex — card binder</title>
+<script>
+  // Resolved once the Firebase module below finishes initializing, so the
+  // classic script's boot() can wait for it regardless of load order
+  // (module scripts are deferred and may run after this inline one).
+  window.cloudReady = new Promise(res => { window.cloudReadyResolve = res; });
+</script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+  import { getDatabase, ref, get, set, onValue } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyB18pzuys5ZealUvLi9cB5zTrW5NVjCYsY",
+    authDomain: "pokedex-86fa2.firebaseapp.com",
+    databaseURL: "https://pokedex-86fa2-default-rtdb.firebaseio.com",
+    projectId: "pokedex-86fa2",
+    storageBucket: "pokedex-86fa2.firebasestorage.app",
+    messagingSenderId: "885969809185",
+    appId: "1:885969809185:web:e9a69da3e93ade8f379860"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const ROOT = "livingdex/";
+  let lastLocalWriteAt = 0;
+
+  window.cloudStore = {
+    async get(key) {
+      const snap = await get(ref(db, ROOT + key));
+      return snap.exists() ? snap.val() : null;
+    },
+    async set(key, value) {
+      lastLocalWriteAt = Date.now();
+      return set(ref(db, ROOT + key), value);
+    },
+  };
+
+  // First callback fires immediately with whatever is already there (not a
+  // remote change); only fires after are someone else's edit landing.
+  let firstSnapshot = true;
+  onValue(ref(db, ROOT), () => {
+    if (firstSnapshot) { firstSnapshot = false; return; }
+    if (Date.now() - lastLocalWriteAt < 3000) return; // our own write echoing back
+    window.dispatchEvent(new CustomEvent("livingdex:remote-update"));
+  });
+
+  window.cloudReadyResolve(true);
+</script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Outfit:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap');
 
@@ -944,17 +991,37 @@ const store = {
   },
 };
 
+// The collection itself (as opposed to the API-response caches above) goes
+// through the shared Firebase database when it's reachable, so you and dad
+// see the same binder no matter whose device made the change. localStorage
+// is kept as a mirror/fallback for when the database can't be reached.
+const cloud = {
+  async get(k) {
+    if (window.cloudStore) {
+      try {
+        const v = await window.cloudStore.get(k);
+        if (v !== null && v !== undefined) return v;
+      } catch (e) {}
+    }
+    return localStorage.getItem(k);
+  },
+  async set(k, v) {
+    localStorage.setItem(k, v);
+    if (window.cloudStore) await window.cloudStore.set(k, v);
+  },
+};
+
 let saveTimer = null;
 function queueSave() {
   flag("on", "saving");
   clearTimeout(saveTimer);
   saveTimer = setTimeout(async () => {
     try {
-      await store.set(KEY, S.status.join(""));
-      await store.set(LOGKEY, JSON.stringify(S.log));
-      await store.set(CARDKEY, JSON.stringify(S.cards));
-      await store.set(PREFKEY, JSON.stringify({ artMode: S.artMode }));
-      await store.set(SETOWNKEY, JSON.stringify(S.setOwned));
+      await cloud.set(KEY, S.status.join(""));
+      await cloud.set(LOGKEY, JSON.stringify(S.log));
+      await cloud.set(CARDKEY, JSON.stringify(S.cards));
+      await cloud.set(PREFKEY, JSON.stringify({ artMode: S.artMode }));
+      await cloud.set(SETOWNKEY, JSON.stringify(S.setOwned));
       S.storageOk = true;
       flag("on", "saved");
       setTimeout(() => flag("", ""), 1600);
@@ -971,28 +1038,35 @@ function flag(cls, text) {
 }
 
 async function boot() {
+  try { await Promise.race([window.cloudReady, new Promise(res => setTimeout(res, 4000))]); } catch (e) {}
   try {
-    const v = await store.get(KEY);
+    const v = await cloud.get(KEY);
     if (typeof v === "string" && v.length === TOTAL) S.status = [...v].map(Number);
   } catch (e) {}
   try {
-    const l = await store.get(LOGKEY);
+    const l = await cloud.get(LOGKEY);
     if (l) { const p = JSON.parse(l); if (Array.isArray(p)) S.log = p; }
   } catch (e) {}
   try {
-    const c = await store.get(CARDKEY);
+    const c = await cloud.get(CARDKEY);
     if (c) { const p = JSON.parse(c); if (p && typeof p === "object") S.cards = p; }
   } catch (e) {}
   try {
-    const so = await store.get(SETOWNKEY);
+    const so = await cloud.get(SETOWNKEY);
     if (so) { const p = JSON.parse(so); if (p && typeof p === "object") S.setOwned = p; }
   } catch (e) {}
   try {
-    const pf = await store.get(PREFKEY);
+    const pf = await cloud.get(PREFKEY);
     if (pf) { const p = JSON.parse(pf); if (p && typeof p.artMode === "boolean") S.artMode = p.artMode; }
   } catch (e) {}
   renderAll();
   probeSprites();
+  // Seeds the database with whatever this device already had on the very
+  // first load after setup, so the binder is shared before anyone edits.
+  if (window.cloudStore) queueSave();
+  window.addEventListener("livingdex:remote-update", () => {
+    flag("on", "updated elsewhere · reload to see it");
+  });
 }
 
 /* ---------------- derived ---------------- */
