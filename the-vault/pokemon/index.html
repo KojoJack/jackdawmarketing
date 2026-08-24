@@ -1,0 +1,2055 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>
+  /* Only reachable through /the-vault/: this flag is set right before
+     the preview loads and cleared on exit, so a direct link to this
+     page without going through the password gate bounces back there. */
+  if (sessionStorage.getItem("jackdaw-vault-unlocked") !== "pokemon") {
+    location.replace("/the-vault/");
+  }
+</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Living Dex — card binder</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Outfit:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap');
+
+:root{--base:#12141F;--panel:#1A1D2B;--line:#2E3348;--text:#F0EBE0;--dim:#868CA6;--gold:#E8B14C}
+*{box-sizing:border-box}
+body{margin:0;background:
+    radial-gradient(120% 80% at 15% -10%,#1E2237 0%,transparent 60%),
+    radial-gradient(100% 70% at 100% 0%,#191B2C 0%,transparent 55%),
+    var(--base) fixed;
+  color:var(--text);font-family:'Outfit',system-ui,-apple-system,sans-serif;font-weight:300;
+  padding:26px clamp(14px,3vw,34px) 40px;min-height:100vh;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;color:inherit;cursor:pointer;background:none;border:none;padding:0}
+button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:4px}
+h1,h2{font-family:'Bricolage Grotesque',system-ui,sans-serif;margin:0}
+
+/* header */
+.head{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:flex-end;
+  padding-bottom:18px;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim)}
+.title{font-size:clamp(30px,5vw,46px);font-weight:800;letter-spacing:-.03em;line-height:1;margin-top:6px}
+.count{flex:0 1 330px;min-width:min(330px,100%)}
+.count-n{font-family:'Space Mono',monospace;text-align:right;line-height:1}
+.count-n b{font-size:34px;color:var(--gold)}
+.count-n span{font-size:15px;color:var(--dim)}
+.track{position:relative;padding-top:32px;margin-top:6px}
+.bar{height:4px;background:#262A3D;border-radius:2px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:2px;background:linear-gradient(90deg,#B8863A,var(--gold));transition:width .55s cubic-bezier(.25,.9,.3,1)}
+.pika{position:absolute;bottom:6px;width:36px;height:auto;transform:translateX(-50%);
+  image-rendering:pixelated;filter:drop-shadow(0 3px 4px #000a);
+  transition:left .55s cubic-bezier(.25,.9,.3,1);pointer-events:none}
+.count-sub{font-size:11.5px;color:var(--dim);text-align:right;margin-top:7px}
+.save{font-family:'Space Mono',monospace;font-size:9.5px;text-transform:uppercase;letter-spacing:.14em;margin-left:8px;opacity:0;transition:opacity .25s}
+.save.on{opacity:.75}
+.save.err{opacity:1;color:#D9756A}
+
+/* nav */
+.tabs{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:18px 0 22px}
+.tab{font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:600;padding:7px 15px;border-radius:999px;color:var(--dim);transition:color .18s,background .18s}
+.tab:hover{color:var(--text)}
+.tab.on{background:#282D42;color:var(--text)}
+.spacer{flex:1}
+.chip{font-size:11.5px;padding:5px 11px;border-radius:999px;border:1px solid var(--line);color:var(--dim);transition:all .16s}
+.chip:hover{border-color:#3E445E;color:var(--text)}
+.chip.on{background:var(--gold);border-color:var(--gold);color:#15161F;font-weight:500}
+.chip.type.on{background:var(--tc);border-color:var(--tc);color:#15161F}
+
+/* search */
+.searchwrap{position:relative;flex:0 1 268px;min-width:190px}
+.search{width:100%;background:#1B1E2D;border:1px solid var(--line);border-radius:999px;padding:8px 15px;color:var(--text);font-family:inherit;font-size:13px;font-weight:300}
+.search::placeholder{color:#5D6480}
+.search:focus{outline:none;border-color:var(--gold)}
+.sug{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:40;background:#1C2030;border:1px solid var(--line);
+  border-radius:10px;padding:5px;box-shadow:0 22px 46px -18px #000;animation:sugin .14s ease-out;max-height:340px;overflow:auto}
+@keyframes sugin{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
+.sugrow{display:flex;align-items:center;gap:9px;width:100%;padding:7px 9px;border-radius:6px;text-align:left}
+.sugrow:hover,.sugrow.on{background:#282E45}
+.sugrow img{width:26px;height:26px;object-fit:contain;image-rendering:pixelated;flex:0 0 26px}
+.sugrow .sn{flex:1;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sugrow .sm{font-family:'Space Mono',monospace;font-size:9.5px;color:var(--dim);white-space:nowrap}
+.sugrow .pip{width:7px;height:7px;border-radius:50%;background:#39405C;flex:0 0 7px}
+.sugrow .pip.have{background:#7E8C5E}
+.sugrow .pip.special{background:var(--gold)}
+.sugnone{padding:9px 10px;font-size:12.5px;color:var(--dim)}
+@keyframes flashring{0%,100%{box-shadow:none}25%,70%{box-shadow:0 0 0 2px var(--gold),0 0 24px -4px var(--gold)}}
+.flash{animation:flashring 1.7s ease-in-out}
+
+/* card menu */
+#pop{position:fixed;z-index:60;display:none}
+#pop.open{display:block}
+#pop.anim{animation:popin .16s cubic-bezier(.2,.85,.3,1)}
+@keyframes popin{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+.popcard{background:#1C2030;border:1px solid #383E58;border-radius:11px;padding:6px;min-width:190px;box-shadow:0 26px 54px -20px #000,0 0 0 1px #00000055}
+.pophead{display:flex;align-items:center;gap:7px;padding:6px 9px 9px;border-bottom:1px solid #2B3048;margin-bottom:5px;font-size:13.5px}
+.pophead em{font-family:'Space Mono',monospace;font-size:9.5px;color:var(--dim);font-style:normal}
+.poptypes{display:flex;gap:3px;margin-left:auto}
+.poptypes i{width:8px;height:8px;border-radius:2px}
+.popopt{display:flex;align-items:center;gap:9px;width:100%;padding:8px 10px;border-radius:6px;font-size:13px;text-align:left;transition:background .13s,color .13s;color:var(--dim)}
+.popopt:hover{background:#282E45;color:var(--text)}
+.popopt .dot{width:8px;height:8px;border-radius:50%;border:1.5px solid #4A5170;flex:0 0 8px;transition:all .13s}
+.popopt.on{color:var(--text);font-weight:400}
+.popopt.on .dot{border-color:var(--gold);background:var(--gold);box-shadow:0 0 8px -1px var(--gold)}
+.popopt[data-opt="special"].on .dot{border-color:#E39EDC;background:linear-gradient(115deg,#6FE0D0,#8FB4FF,#E39EDC,#F0C75E);box-shadow:0 0 9px -1px #E39EDC}
+.popopt[data-opt="off"].on .dot{border-color:#4A5170;background:transparent;box-shadow:none}
+
+/* page nav */
+.pagenav{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:14px}
+.arrow{font-size:26px;line-height:1;width:38px;height:38px;border-radius:50%;color:var(--dim);border:1px solid var(--line);transition:all .16s}
+.arrow:hover:not(:disabled){color:var(--text);border-color:var(--gold)}
+.arrow:disabled{opacity:.25;cursor:default}
+.pagemeta{text-align:center;min-width:200px}
+.pageno{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:700;letter-spacing:-.02em}
+.pagerange{font-family:'Space Mono',monospace;font-size:10.5px;color:var(--dim);letter-spacing:.06em;margin-top:2px}
+.strip{display:flex;gap:1px;align-items:flex-end;height:26px;margin:0 auto 26px;max-width:860px}
+.sbar{flex:1;height:100%;position:relative;background:#1E2233;border-radius:1px;min-width:2px}
+.sbar::after{content:"";position:absolute;left:0;right:0;bottom:0;height:var(--fill);background:#4A5170;border-radius:1px;transition:height .3s}
+.sbar:hover::after{background:#666E92}
+.sbar.full::after{background:#7E8C5E}
+.sbar.on{background:#2C3247}
+.sbar.on::after{background:var(--gold)}
+.sbar.split{margin-left:9px}
+.sbar.split::before{content:"";position:absolute;left:-5px;top:0;bottom:0;width:1px;background:#3B4260}
+
+/* sheets */
+.sheets{display:flex;flex-wrap:wrap;gap:clamp(14px,2.4vw,30px);justify-content:center;animation:turn .38s cubic-bezier(.2,.7,.3,1)}
+@keyframes turn{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
+.sheet{background:#20243469;border:1px solid var(--line);border-radius:10px;padding:clamp(9px,1.4vw,15px);flex:1 1 300px;max-width:460px;box-shadow:0 18px 40px -22px #000,inset 0 1px 0 #FFFFFF08}
+.side{display:flex;align-items:baseline;gap:8px;font-family:'Space Mono',monospace;font-size:9px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:9px}
+.side b{font-size:11px;letter-spacing:.12em;color:var(--text);font-weight:700}
+.side span{letter-spacing:.1em;margin-left:auto;text-transform:none;font-size:9.5px}
+.sheet.ghost{background:none;border:1px dashed #22273A;box-shadow:none;opacity:.45}
+@media (max-width:760px){.sheet.ghost{display:none}}
+
+/* binder cover */
+.cover{flex:1 1 300px;max-width:460px;border-radius:10px;padding:clamp(16px,2.4vw,26px);
+  display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;
+  border:1px solid #333A54;
+  background:
+    radial-gradient(72% 52% at 50% 26%, color-mix(in srgb,var(--accent) 26%, transparent) 0%, transparent 68%),
+    linear-gradient(168deg,#252A3E 0%,#1A1E2E 62%,#171B29 100%);
+  box-shadow:0 18px 40px -22px #000, inset 0 1px 0 #FFFFFF10}
+.cover::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(122deg,#FFFFFF12 0%,#FFFFFF04 24%,transparent 46%)}
+.cover::before{content:"";position:absolute;inset:7px;border-radius:6px;pointer-events:none;
+  border:1px solid #FFFFFF0E}
+.cover-in{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;width:100%}
+.ball{width:clamp(74px,19%,104px);height:auto;margin-bottom:clamp(12px,2.2vw,20px);
+  filter:drop-shadow(0 10px 18px #0009);animation:bob 5.5s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.cover-kicker{font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:.28em;
+  text-transform:uppercase;color:color-mix(in srgb,var(--accent) 55%,var(--dim))}
+.cover-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(24px,4.4vw,34px);font-weight:800;
+  letter-spacing:-.035em;line-height:1;margin-top:7px}
+.cover-binder{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(12px,1.7vw,14px);font-weight:600;
+  letter-spacing:.02em;color:var(--gold);margin-top:5px}
+.cover-rule{width:38px;height:1px;background:#3B4260;margin:clamp(11px,2vw,16px) 0}
+.cover-range{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:var(--dim)}
+.cover-bar{width:min(160px,72%);height:3px;background:#262B3E;border-radius:2px;overflow:hidden;margin-top:11px}
+.cover-bar i{display:block;height:100%;border-radius:2px;background:linear-gradient(90deg,#B8863A,var(--gold));transition:width .5s cubic-bezier(.25,.9,.3,1)}
+.cover-count{font-size:11.5px;color:var(--dim);margin-top:8px}
+.cover-count b{font-family:'Space Mono',monospace;color:var(--text);font-weight:700}
+@media (prefers-reduced-motion:reduce){.ball{animation:none}}
+.cover.endplate{background:
+    radial-gradient(70% 50% at 50% 30%, color-mix(in srgb,var(--accent) 12%, transparent) 0%, transparent 70%),
+    linear-gradient(168deg,#1E2232 0%,#181C2A 70%);
+  border-style:dashed;border-color:#2C3248}
+.ball.faded{animation:none;opacity:.9}
+.endlink{margin-top:14px;font-size:12px;color:var(--gold);border:1px solid #4A4230;border-radius:999px;
+  padding:6px 14px;transition:all .16s}
+.endlink:hover{background:#2A2618;border-color:var(--gold)}
+.endnote{margin-top:12px;font-size:12px;color:var(--dim);line-height:1.5;max-width:230px}
+.endnote b{color:var(--gold);font-family:'Space Mono',monospace}
+
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(6px,1.1vw,11px)}
+
+/* pocket */
+.pocket{position:relative;aspect-ratio:5/7;border-radius:6px;overflow:hidden;background:linear-gradient(160deg,#1F2333,#191C2A);
+  border:1px dashed #333852;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:transform .16s,border-color .2s,box-shadow .25s}
+.pocket:hover{transform:translateY(-2px);border-color:#414863;z-index:2}
+.pocket.have{border:2px solid color-mix(in srgb,var(--glow) 60%,#171A27);
+  background:radial-gradient(85% 65% at 50% 32%,color-mix(in srgb,var(--glow) 30%,transparent) 0%,transparent 70%),linear-gradient(165deg,#242939,#1B1F2D)}
+.pocket.have:hover{box-shadow:0 0 0 1px var(--glow),0 12px 26px -14px var(--glow)}
+.pocket.special{border:2px solid #6E5525}
+.art{width:82%;max-height:70%;object-fit:contain;pointer-events:none;transition:filter .3s,opacity .3s}
+.pocket:not(.have) .art{filter:brightness(0) invert(1);opacity:.11}
+.pocket:not(.have):hover .art{opacity:.2}
+.pocket.have .art{filter:drop-shadow(0 5px 10px #0009)}
+.glyph{display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;
+  font-size:clamp(15px,3.4vw,23px);letter-spacing:-.02em;line-height:1;color:#3B4160;transition:color .25s;min-height:34px}
+.pocket.have .glyph{color:color-mix(in srgb,var(--glow) 78%,#FFF)}
+.no{position:absolute;top:5px;left:6px;font-family:'Space Mono',monospace;font-size:8.5px;color:var(--dim);opacity:.7}
+.pocket.special .no{color:var(--gold);opacity:1}
+.nm{position:absolute;bottom:10px;left:0;right:0;font-size:10px;text-align:center;color:var(--dim);padding:0 3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pocket.have .nm{color:var(--text)}
+.tstripe{position:absolute;bottom:0;left:0;right:0;height:3px;display:flex;opacity:.35;transition:opacity .25s}
+.pocket.have .tstripe{opacity:1}
+.tstripe i{flex:1}
+.sheen{position:absolute;inset:0;pointer-events:none;background:linear-gradient(128deg,#FFFFFF14 0%,#FFFFFF03 26%,transparent 47%)}
+.pocket .hunt{position:absolute;top:5px;right:6px;width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 6px var(--gold)}
+.foil{position:absolute;inset:0;pointer-events:none;padding:2px;background:linear-gradient(115deg,#6FE0D0,#8FB4FF,#E39EDC,#F0C75E,#6FE0D0);
+  background-size:340% 340%;animation:foil 7s linear infinite;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude}
+@keyframes foil{0%{background-position:0% 50%}100%{background-position:340% 50%}}
+
+/* card art in the pocket — a card is 2.5x3.5, the same ratio as the 5/7 pocket, so it fills it.
+   The scan is layered over the sprite and fades in on load, so the pocket never resizes
+   and never goes blank while the image is on its way. */
+.pocket.hascard{border-style:solid}
+.cardart{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;
+  opacity:0;transition:opacity .3s ease-out;z-index:1}
+.cardart.in{opacity:1}
+.pocket.hascard .cardtag{position:absolute;left:0;right:0;bottom:0;padding:10px 5px 3px;font-size:8px;z-index:2;
+  color:#E9E4D6;background:linear-gradient(transparent,#000000CC);white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;opacity:0;transition:opacity .18s}
+.pocket.hascard:hover .cardtag{opacity:1}
+.pocket.hascard .hunt,.pocket.hascard .foil{z-index:3}
+.pinfo{position:absolute;top:5px;right:5px;width:18px;height:18px;border-radius:50%;z-index:4;
+  background:#0B0D16D9;border:1px solid #FFFFFF2E;color:#E9E4D6;
+  font-family:'Space Mono',monospace;font-size:10px;line-height:1;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  opacity:0;transform:scale(.85);transition:opacity .16s,transform .16s,background .16s}
+.pocket:hover .pinfo,.pinfo:focus-visible{opacity:1;transform:scale(1)}
+.pinfo:hover{background:var(--gold);color:#15161F;border-color:var(--gold)}
+
+/* picker */
+#modal{display:none}
+#modal.open{display:block}
+.scrim{position:fixed;inset:0;background:#080A12CC;backdrop-filter:blur(3px);z-index:70;animation:fade .16s ease-out}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.sheetbox{position:fixed;z-index:71;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:min(980px,94vw);max-height:88vh;display:flex;flex-direction:column;
+  background:#181C2B;border:1px solid #363C56;border-radius:14px;overflow:hidden;
+  box-shadow:0 40px 90px -30px #000;animation:rise .2s cubic-bezier(.2,.8,.3,1)}
+@keyframes rise{from{opacity:0;transform:translate(-50%,-46%) scale(.98)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+.mhead{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #2B3048;flex:0 0 auto}
+.mhead img{width:38px;height:38px;object-fit:contain;image-rendering:pixelated}
+.mhead .cno{font-family:'Space Mono',monospace;font-size:11px;color:#4E5679;width:38px;text-align:center}
+.mtitle{display:flex;flex-direction:column;gap:2px}
+.mtitle b{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;letter-spacing:-.02em}
+.mtitle span{font-family:'Space Mono',monospace;font-size:9.5px;color:var(--dim);letter-spacing:.06em}
+.mclose{margin-left:auto;font-size:24px;line-height:1;width:34px;height:34px;border-radius:50%;color:var(--dim);
+  border:1px solid var(--line);transition:all .15s}
+.mclose:hover{color:var(--text);border-color:var(--gold)}
+.mbody{overflow:auto;padding:16px;flex:1 1 auto}
+.galbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:14px}
+.galbar .search{flex:1 1 200px;max-width:300px}
+.galcount{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-left:auto}
+.galgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:10px}
+.galgrid .yr{grid-column:1/-1;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--dim);
+  margin:10px 0 0;padding-bottom:5px;border-bottom:1px solid var(--line)}
+.gcard{display:flex;flex-direction:column;gap:4px;padding:6px;border-radius:9px;background:#20253A;
+  border:1px solid #2C3248;transition:transform .14s,border-color .14s,box-shadow .2s;text-align:center}
+.gcard:hover{transform:translateY(-2px);border-color:#4A5170;box-shadow:0 12px 24px -14px #000}
+.gcard img{width:100%;aspect-ratio:5/7;object-fit:cover;border-radius:5px;background:#171B29}
+.gc-set{font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gc-meta{font-family:'Space Mono',monospace;font-size:8.5px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gcard.on{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 12px 26px -14px var(--gold)}
+.galnote{padding:34px 10px;text-align:center;color:var(--dim);font-size:13.5px;line-height:1.6}
+.galnote.bad{color:var(--text)}
+.galnote code{font-family:'Space Mono',monospace;font-size:11px;background:#22273A;padding:2px 6px;border-radius:3px}
+.galnote p{font-size:12.5px;color:var(--dim);margin:10px 0 0}
+.galnote .ghost{margin-top:12px}
+.galpartial{background:#1E2233;border:1px solid var(--line);border-left:2px solid var(--gold);border-radius:7px;
+  padding:10px 14px;margin-bottom:14px;font-size:12.5px;color:var(--dim);line-height:1.5}
+.galpartial .ghost{margin-left:8px}
+.spin{display:inline-block;width:13px;height:13px;margin-right:9px;vertical-align:-2px;border-radius:50%;
+  border:2px solid #333A54;border-top-color:var(--gold);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* chosen card detail */
+.detail{display:flex;flex-wrap:wrap;gap:22px}
+.detail-art{flex:0 0 auto;width:min(260px,42%)}
+.detail-art img{width:100%;border-radius:10px;box-shadow:0 20px 40px -18px #000}
+.detail-info{flex:1 1 280px;min-width:260px}
+.dt-name{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:700;letter-spacing:-.02em}
+.dt-set{font-size:13px;color:var(--gold);margin-top:3px}
+.dt-meta{display:flex;flex-wrap:wrap;gap:18px;margin:16px 0;padding:13px 0;border-top:1px solid #2B3048;border-bottom:1px solid #2B3048}
+.dt-meta dt{font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.dt-meta dd{margin:3px 0 0;font-size:13px}
+.dt-fields{display:flex;flex-wrap:wrap;gap:10px}
+.fld{display:flex;flex-direction:column;gap:5px;flex:1 1 130px;margin-bottom:10px}
+.fld span{font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.fld input,.fld select{background:#1E2233;border:1px solid var(--line);border-radius:7px;padding:8px 10px;
+  color:var(--text);font-family:inherit;font-size:13px;font-weight:300;width:100%}
+.fld input:focus,.fld select:focus{outline:none;border-color:var(--gold)}
+.dt-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.ghost.danger{color:#C97A72;border-color:#4A3330}
+.ghost.danger:hover{color:#E08C83;border-color:#6E4741}
+.popsplit{height:1px;background:#2B3048;margin:5px 0}
+.popopt.pick .dot.on{border-color:var(--gold);background:var(--gold);box-shadow:0 0 8px -1px var(--gold)}
+.popopt.drop{color:#8A8FA8}
+.popopt.drop:hover{color:#E08C83}
+
+/* flip arrows either side of the spread */
+.spread{display:flex;align-items:center;gap:clamp(2px,.6vw,8px);justify-content:center}
+/* shrink-to-fit so the arrows sit beside the pages rather than out at the window edge */
+.spread .sheets{flex:0 1 auto;min-width:0}
+.flip{flex:0 0 auto;align-self:stretch;width:clamp(34px,4.5vw,54px);min-height:180px;
+  border-radius:12px;border:1px solid transparent;color:#565D7E;font-size:30px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .18s,color .18s,border-color .18s}
+.flip span{display:block;transition:transform .18s}
+.flip:hover:not(:disabled){background:#20243A;border-color:#39405C;color:var(--gold)}
+.flip.left:hover:not(:disabled) span{transform:translateX(-3px)}
+.flip.right:hover:not(:disabled) span{transform:translateX(3px)}
+.flip:active:not(:disabled){background:#262B44}
+.flip:disabled{opacity:.16;cursor:default}
+@media (max-width:620px){.flip{width:30px;min-height:120px;font-size:24px}}
+
+/* sets */
+.setgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:11px}
+.setgrid .yr{grid-column:1/-1;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;
+  color:var(--dim);margin:14px 0 0;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.settile{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 10px 11px;
+  background:#1E2233;border:1px solid #2C3248;border-radius:11px;text-align:center;
+  transition:transform .14s,border-color .14s,box-shadow .2s}
+.settile:hover{transform:translateY(-2px);border-color:#454D6C;box-shadow:0 14px 28px -16px #000}
+.setlogo{height:56px;display:flex;align-items:center;justify-content:center;width:100%}
+.setlogo img{max-height:56px;max-width:100%;object-fit:contain}
+.setlogo em{font-style:normal;font-size:12px;color:var(--dim)}
+.setname{font-size:12.5px;line-height:1.3}
+.setmeta{font-family:'Space Mono',monospace;font-size:8.5px;color:var(--dim);letter-spacing:.04em}
+.setmine{font-size:9.5px;color:var(--gold);background:#2A2618;border-radius:999px;padding:2px 9px;margin-top:2px}
+.setback{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.sethead{display:flex;flex-wrap:wrap;align-items:center;gap:18px;padding:16px 18px;margin-bottom:18px;
+  background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.sethero{max-height:66px;max-width:190px;object-fit:contain}
+.sethead-name{font-family:'Bricolage Grotesque',sans-serif;font-size:21px;font-weight:800;
+  letter-spacing:-.025em;text-transform:none;color:var(--text);margin:0}
+.sethead-meta{font-family:'Space Mono',monospace;font-size:10px;color:var(--dim);letter-spacing:.06em;margin-top:5px}
+.sethead-mine{font-size:12.5px;color:var(--dim);margin-top:7px}
+.sethead-mine b{color:var(--gold);font-family:'Space Mono',monospace}
+.galgrid .gcard{position:relative}
+.gcard.setcard{cursor:pointer}
+.gcard.mine{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold);background:#282C3C}
+.gcard.mine img{filter:none;opacity:1}
+.setcard:not(.mine) img{opacity:.45;filter:saturate(.55);transition:opacity .18s,filter .18s}
+.setcard:not(.mine):hover img{opacity:.9;filter:saturate(1)}
+.ownedtick{position:absolute;top:8px;right:8px;width:19px;height:19px;border-radius:50%;
+  background:var(--gold);color:#15161F;font-size:11px;display:flex;align-items:center;justify-content:center;
+  animation:tickin .18s cubic-bezier(.2,.9,.3,1)}
+@keyframes tickin{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+.dexflag{position:absolute;top:8px;left:8px;font-family:'Space Mono',monospace;font-size:8px;
+  background:#0B0D16D9;border:1px solid #FFFFFF26;color:var(--gold);border-radius:999px;padding:2px 6px}
+.chaseflag{position:absolute;bottom:52px;left:8px;font-size:10px;color:#F0C75E;
+  text-shadow:0 0 6px #000,0 0 10px #F0C75E80}
+.gcard.chase{border-color:#5A4A22}
+.gcard.chase.mine{border-color:var(--gold)}
+.sethead-bar{height:4px;background:#262B3E;border-radius:2px;overflow:hidden;margin-top:8px;max-width:240px}
+.sethead-bar i{display:block;height:100%;border-radius:2px;
+  background:linear-gradient(90deg,#B8863A,var(--gold));transition:width .4s}
+.sethead-hint{font-size:11px;color:#5D6480;margin-top:9px;line-height:1.45;max-width:340px}
+
+/* dex wall */
+.filters{display:flex;flex-direction:column;gap:9px;margin-bottom:16px}
+.frow{display:flex;flex-wrap:wrap;gap:5px}
+.wallcount{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(62px,1fr));gap:4px}
+.cell{position:relative;aspect-ratio:1;min-height:46px;border-radius:5px;background:#20253C;border:1px solid #313853;
+  display:flex;align-items:center;justify-content:center;transition:background .15s,border-color .15s;overflow:hidden}
+/* the number is always in normal flow, so a cell can never collapse to no height,
+   and the sprite is layered over it rather than replacing it */
+.cell .cno{font-family:'Space Mono',monospace;font-size:12px;color:#4E5679;letter-spacing:-.03em}
+.cell.have .cno{color:color-mix(in srgb,var(--tc) 55%,#9098B4)}
+.cell img{position:absolute;top:6%;left:6%;width:88%;height:88%;object-fit:contain;image-rendering:pixelated}
+.cell:not(.have) img{filter:brightness(0) invert(1);opacity:.22}
+.cell:hover{background:#22273A;border-color:#3B4159}
+.cell.have{background:#212637;border-color:color-mix(in srgb,var(--tc) 60%,transparent)}
+.cell.special{border-color:var(--gold);box-shadow:inset 0 0 12px -4px var(--gold)}
+.cell.wanted::after{content:"";position:absolute;top:4px;right:4px;width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 6px -1px var(--gold)}
+.cell .lbl{position:absolute;bottom:1px;left:0;right:0;font-size:7.5px;text-align:center;color:var(--dim);opacity:0;
+  transition:opacity .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 2px}
+.cell:hover .lbl{opacity:.9}
+.sentinel{height:40px;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#4A5170}
+.empty{padding:44px 0;text-align:center;color:var(--dim);font-size:14px}
+
+/* progress */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px}
+.wide{grid-column:1/-1}
+.card h2{font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-bottom:14px}
+.lede{font-size:14.5px;line-height:1.5;margin:0 0 14px}
+ul.plain{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px}
+.near button{display:flex;align-items:center;gap:11px;width:100%;padding:7px 8px;border-radius:6px;transition:background .15s}
+.near button:hover{background:#242940}
+.near-p{font-family:'Space Mono',monospace;font-size:11px;min-width:62px;text-align:left}
+.minibar{flex:1;height:5px;background:#262B3E;border-radius:3px;overflow:hidden}
+.minibar i{display:block;height:100%;background:var(--gold)}
+.near-n{font-size:11px;color:var(--dim);min-width:58px;text-align:right}
+.row{display:flex;align-items:center;gap:10px}
+.rl{font-family:'Space Mono',monospace;font-size:11px;color:var(--dim);min-width:34px}
+.rv{font-family:'Space Mono',monospace;font-size:11px;min-width:62px;text-align:right}
+.rv em{color:var(--dim);font-style:normal}
+.tn{font-size:12px;min-width:66px}
+.tv{font-family:'Space Mono',monospace;font-size:10.5px;color:var(--dim);min-width:34px;text-align:right}
+.facts{display:flex;flex-direction:column;gap:13px}
+.facts div{display:flex;align-items:baseline;gap:11px}
+.facts b{font-family:'Bricolage Grotesque',sans-serif;font-size:27px;font-weight:800;color:var(--gold);min-width:52px}
+.facts span{font-size:12.5px;color:var(--dim);line-height:1.35}
+.huntlist{display:flex;flex-wrap:wrap;gap:6px}
+.hitem{display:flex;align-items:center;gap:6px;background:#232840;border-radius:999px;padding:4px 12px;font-size:12px}
+.hitem img{width:24px;height:24px;image-rendering:pixelated;margin:-4px 0}
+.hitem em{font-family:'Space Mono',monospace;font-size:9.5px;color:var(--dim);font-style:normal}
+
+/* recent */
+.recent{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:3px}
+.recent li{animation:slidein .3s ease-out}
+@keyframes slidein{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
+.recent button{display:flex;align-items:center;gap:11px;width:100%;padding:7px 8px;border-radius:7px;transition:background .15s;text-align:left}
+.recent button:hover{background:#242940}
+.rsprite{width:38px;height:38px;flex:0 0 38px;display:flex;align-items:center;justify-content:center;
+  background:#20253A;border-radius:7px;border:1px solid #2C3248}
+.rsprite img{width:90%;height:90%;object-fit:contain;image-rendering:pixelated}
+.rsprite .cno{font-family:'Space Mono',monospace;font-size:10px;color:#4A5170}
+.rname{flex:1;min-width:0}
+.rname b{display:block;font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rname span{font-family:'Space Mono',monospace;font-size:9.5px;color:var(--dim)}
+.rwhen{font-size:11px;color:var(--dim);white-space:nowrap}
+.rstar{color:var(--gold);font-size:11px}
+
+/* footer */
+.foot{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:28px;padding-top:16px;border-top:1px solid var(--line)}
+.ghost{font-size:12px;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:6px 14px;transition:all .16s}
+.ghost:hover{color:var(--text);border-color:#434A66}
+.foot-note{font-size:11.5px;color:#5D6480;margin-left:auto;text-align:right}
+.banner{background:#1E2233;border:1px solid var(--line);border-left:2px solid var(--gold);border-radius:6px;padding:9px 14px;font-size:12.5px;color:var(--dim);margin-bottom:16px;line-height:1.45}
+@media (max-width:620px){
+  .strip{display:none}
+  .count{flex:1 1 100%}
+  .count-n,.count-sub{text-align:left}
+  .searchwrap{flex:1 1 100%;max-width:none;order:9}
+  .foot-note{margin-left:0;text-align:left;flex:1 1 100%}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="hdr"></div>
+<div id="view"></div>
+<div id="foot"></div>
+<div id="pop"></div>
+<div id="modal"></div>
+<script>
+/* ---------------- data ---------------- */
+const NAMES = "Bulbasaur,Ivysaur,Venusaur,Charmander,Charmeleon,Charizard,Squirtle,Wartortle,Blastoise,Caterpie,Metapod,Butterfree,Weedle,Kakuna,Beedrill,Pidgey,Pidgeotto,Pidgeot,Rattata,Raticate,Spearow,Fearow,Ekans,Arbok,Pikachu,Raichu,Sandshrew,Sandslash,Nidoran♀,Nidorina,Nidoqueen,Nidoran♂,Nidorino,Nidoking,Clefairy,Clefable,Vulpix,Ninetales,Jigglypuff,Wigglytuff,Zubat,Golbat,Oddish,Gloom,Vileplume,Paras,Parasect,Venonat,Venomoth,Diglett,Dugtrio,Meowth,Persian,Psyduck,Golduck,Mankey,Primeape,Growlithe,Arcanine,Poliwag,Poliwhirl,Poliwrath,Abra,Kadabra,Alakazam,Machop,Machoke,Machamp,Bellsprout,Weepinbell,Victreebel,Tentacool,Tentacruel,Geodude,Graveler,Golem,Ponyta,Rapidash,Slowpoke,Slowbro,Magnemite,Magneton,Farfetch'd,Doduo,Dodrio,Seel,Dewgong,Grimer,Muk,Shellder,Cloyster,Gastly,Haunter,Gengar,Onix,Drowzee,Hypno,Krabby,Kingler,Voltorb,Electrode,Exeggcute,Exeggutor,Cubone,Marowak,Hitmonlee,Hitmonchan,Lickitung,Koffing,Weezing,Rhyhorn,Rhydon,Chansey,Tangela,Kangaskhan,Horsea,Seadra,Goldeen,Seaking,Staryu,Starmie,Mr. Mime,Scyther,Jynx,Electabuzz,Magmar,Pinsir,Tauros,Magikarp,Gyarados,Lapras,Ditto,Eevee,Vaporeon,Jolteon,Flareon,Porygon,Omanyte,Omastar,Kabuto,Kabutops,Aerodactyl,Snorlax,Articuno,Zapdos,Moltres,Dratini,Dragonair,Dragonite,Mewtwo,Mew,Chikorita,Bayleef,Meganium,Cyndaquil,Quilava,Typhlosion,Totodile,Croconaw,Feraligatr,Sentret,Furret,Hoothoot,Noctowl,Ledyba,Ledian,Spinarak,Ariados,Crobat,Chinchou,Lanturn,Pichu,Cleffa,Igglybuff,Togepi,Togetic,Natu,Xatu,Mareep,Flaaffy,Ampharos,Bellossom,Marill,Azumarill,Sudowoodo,Politoed,Hoppip,Skiploom,Jumpluff,Aipom,Sunkern,Sunflora,Yanma,Wooper,Quagsire,Espeon,Umbreon,Murkrow,Slowking,Misdreavus,Unown,Wobbuffet,Girafarig,Pineco,Forretress,Dunsparce,Gligar,Steelix,Snubbull,Granbull,Qwilfish,Scizor,Shuckle,Heracross,Sneasel,Teddiursa,Ursaring,Slugma,Magcargo,Swinub,Piloswine,Corsola,Remoraid,Octillery,Delibird,Mantine,Skarmory,Houndour,Houndoom,Kingdra,Phanpy,Donphan,Porygon2,Stantler,Smeargle,Tyrogue,Hitmontop,Smoochum,Elekid,Magby,Miltank,Blissey,Raikou,Entei,Suicune,Larvitar,Pupitar,Tyranitar,Lugia,Ho-oh,Celebi,Treecko,Grovyle,Sceptile,Torchic,Combusken,Blaziken,Mudkip,Marshtomp,Swampert,Poochyena,Mightyena,Zigzagoon,Linoone,Wurmple,Silcoon,Beautifly,Cascoon,Dustox,Lotad,Lombre,Ludicolo,Seedot,Nuzleaf,Shiftry,Taillow,Swellow,Wingull,Pelipper,Ralts,Kirlia,Gardevoir,Surskit,Masquerain,Shroomish,Breloom,Slakoth,Vigoroth,Slaking,Nincada,Ninjask,Shedinja,Whismur,Loudred,Exploud,Makuhita,Hariyama,Azurill,Nosepass,Skitty,Delcatty,Sableye,Mawile,Aron,Lairon,Aggron,Meditite,Medicham,Electrike,Manectric,Plusle,Minun,Volbeat,Illumise,Roselia,Gulpin,Swalot,Carvanha,Sharpedo,Wailmer,Wailord,Numel,Camerupt,Torkoal,Spoink,Grumpig,Spinda,Trapinch,Vibrava,Flygon,Cacnea,Cacturne,Swablu,Altaria,Zangoose,Seviper,Lunatone,Solrock,Barboach,Whiscash,Corphish,Crawdaunt,Baltoy,Claydol,Lileep,Cradily,Anorith,Armaldo,Feebas,Milotic,Castform,Kecleon,Shuppet,Banette,Duskull,Dusclops,Tropius,Chimecho,Absol,Wynaut,Snorunt,Glalie,Spheal,Sealeo,Walrein,Clamperl,Huntail,Gorebyss,Relicanth,Luvdisc,Bagon,Shelgon,Salamence,Beldum,Metang,Metagross,Regirock,Regice,Registeel,Latias,Latios,Kyogre,Groudon,Rayquaza,Jirachi,Deoxys,Turtwig,Grotle,Torterra,Chimchar,Monferno,Infernape,Piplup,Prinplup,Empoleon,Starly,Staravia,Staraptor,Bidoof,Bibarel,Kricketot,Kricketune,Shinx,Luxio,Luxray,Budew,Roserade,Cranidos,Rampardos,Shieldon,Bastiodon,Burmy,Wormadam,Mothim,Combee,Vespiquen,Pachirisu,Buizel,Floatzel,Cherubi,Cherrim,Shellos,Gastrodon,Ambipom,Drifloon,Drifblim,Buneary,Lopunny,Mismagius,Honchkrow,Glameow,Purugly,Chingling,Stunky,Skuntank,Bronzor,Bronzong,Bonsly,Mime Jr.,Happiny,Chatot,Spiritomb,Gible,Gabite,Garchomp,Munchlax,Riolu,Lucario,Hippopotas,Hippowdon,Skorupi,Drapion,Croagunk,Toxicroak,Carnivine,Finneon,Lumineon,Mantyke,Snover,Abomasnow,Weavile,Magnezone,Lickilicky,Rhyperior,Tangrowth,Electivire,Magmortar,Togekiss,Yanmega,Leafeon,Glaceon,Gliscor,Mamoswine,Porygon-Z,Gallade,Probopass,Dusknoir,Froslass,Rotom,Uxie,Mesprit,Azelf,Dialga,Palkia,Heatran,Regigigas,Giratina,Cresselia,Phione,Manaphy,Darkrai,Shaymin,Arceus,Victini,Snivy,Servine,Serperior,Tepig,Pignite,Emboar,Oshawott,Dewott,Samurott,Patrat,Watchog,Lillipup,Herdier,Stoutland,Purrloin,Liepard,Pansage,Simisage,Pansear,Simisear,Panpour,Simipour,Munna,Musharna,Pidove,Tranquill,Unfezant,Blitzle,Zebstrika,Roggenrola,Boldore,Gigalith,Woobat,Swoobat,Drilbur,Excadrill,Audino,Timburr,Gurdurr,Conkeldurr,Tympole,Palpitoad,Seismitoad,Throh,Sawk,Sewaddle,Swadloon,Leavanny,Venipede,Whirlipede,Scolipede,Cottonee,Whimsicott,Petilil,Lilligant,Basculin,Sandile,Krokorok,Krookodile,Darumaka,Darmanitan,Maractus,Dwebble,Crustle,Scraggy,Scrafty,Sigilyph,Yamask,Cofagrigus,Tirtouga,Carracosta,Archen,Archeops,Trubbish,Garbodor,Zorua,Zoroark,Minccino,Cinccino,Gothita,Gothorita,Gothitelle,Solosis,Duosion,Reuniclus,Ducklett,Swanna,Vanillite,Vanillish,Vanilluxe,Deerling,Sawsbuck,Emolga,Karrablast,Escavalier,Foongus,Amoonguss,Frillish,Jellicent,Alomomola,Joltik,Galvantula,Ferroseed,Ferrothorn,Klink,Klang,Klinklang,Tynamo,Eelektrik,Eelektross,Elgyem,Beheeyem,Litwick,Lampent,Chandelure,Axew,Fraxure,Haxorus,Cubchoo,Beartic,Cryogonal,Shelmet,Accelgor,Stunfisk,Mienfoo,Mienshao,Druddigon,Golett,Golurk,Pawniard,Bisharp,Bouffalant,Rufflet,Braviary,Vullaby,Mandibuzz,Heatmor,Durant,Deino,Zweilous,Hydreigon,Larvesta,Volcarona,Cobalion,Terrakion,Virizion,Tornadus,Thundurus,Reshiram,Zekrom,Landorus,Kyurem,Keldeo,Meloetta,Genesect,Chespin,Quilladin,Chesnaught,Fennekin,Braixen,Delphox,Froakie,Frogadier,Greninja,Bunnelby,Diggersby,Fletchling,Fletchinder,Talonflame,Scatterbug,Spewpa,Vivillon,Litleo,Pyroar,Flabébé,Floette,Florges,Skiddo,Gogoat,Pancham,Pangoro,Furfrou,Espurr,Meowstic,Honedge,Doublade,Aegislash,Spritzee,Aromatisse,Swirlix,Slurpuff,Inkay,Malamar,Binacle,Barbaracle,Skrelp,Dragalge,Clauncher,Clawitzer,Helioptile,Heliolisk,Tyrunt,Tyrantrum,Amaura,Aurorus,Sylveon,Hawlucha,Dedenne,Carbink,Goomy,Sliggoo,Goodra,Klefki,Phantump,Trevenant,Pumpkaboo,Gourgeist,Bergmite,Avalugg,Noibat,Noivern,Xerneas,Yveltal,Zygarde,Diancie,Hoopa,Volcanion,Rowlet,Dartrix,Decidueye,Litten,Torracat,Incineroar,Popplio,Brionne,Primarina,Pikipek,Trumbeak,Toucannon,Yungoos,Gumshoos,Grubbin,Charjabug,Vikavolt,Crabrawler,Crabominable,Oricorio,Cutiefly,Ribombee,Rockruff,Lycanroc,Wishiwashi,Mareanie,Toxapex,Mudbray,Mudsdale,Dewpider,Araquanid,Fomantis,Lurantis,Morelull,Shiinotic,Salandit,Salazzle,Stufful,Bewear,Bounsweet,Steenee,Tsareena,Comfey,Oranguru,Passimian,Wimpod,Golisopod,Sandygast,Palossand,Pyukumuku,Type: Null,Silvally,Minior,Komala,Turtonator,Togedemaru,Mimikyu,Bruxish,Drampa,Dhelmise,Jangmo-o,Hakamo-o,Kommo-o,Tapu Koko,Tapu Lele,Tapu Bulu,Tapu Fini,Cosmog,Cosmoem,Solgaleo,Lunala,Nihilego,Buzzwole,Pheromosa,Xurkitree,Celesteela,Kartana,Guzzlord,Necrozma,Magearna,Marshadow,Poipole,Naganadel,Stakataka,Blacephalon,Zeraora,Meltan,Melmetal,Grookey,Thwackey,Rillaboom,Scorbunny,Raboot,Cinderace,Sobble,Drizzile,Inteleon,Skwovet,Greedent,Rookidee,Corvisquire,Corviknight,Blipbug,Dottler,Orbeetle,Nickit,Thievul,Gossifleur,Eldegoss,Wooloo,Dubwool,Chewtle,Drednaw,Yamper,Boltund,Rolycoly,Carkol,Coalossal,Applin,Flapple,Appletun,Silicobra,Sandaconda,Cramorant,Arrokuda,Barraskewda,Toxel,Toxtricity,Sizzlipede,Centiskorch,Clobbopus,Grapploct,Sinistea,Polteageist,Hatenna,Hattrem,Hatterene,Impidimp,Morgrem,Grimmsnarl,Obstagoon,Perrserker,Cursola,Sirfetch'd,Mr. Rime,Runerigus,Milcery,Alcremie,Falinks,Pincurchin,Snom,Frosmoth,Stonjourner,Eiscue,Indeedee,Morpeko,Cufant,Copperajah,Dracozolt,Arctozolt,Dracovish,Arctovish,Duraludon,Dreepy,Drakloak,Dragapult,Zacian,Zamazenta,Eternatus,Kubfu,Urshifu,Zarude,Regieleki,Regidrago,Glastrier,Spectrier,Calyrex,Wyrdeer,Kleavor,Ursaluna,Basculegion,Sneasler,Overqwil,Enamorus,Sprigatito,Floragato,Meowscarada,Fuecoco,Crocalor,Skeledirge,Quaxly,Quaxwell,Quaquaval,Lechonk,Oinkologne,Tarountula,Spidops,Nymble,Lokix,Pawmi,Pawmo,Pawmot,Tandemaus,Maushold,Fidough,Dachsbun,Smoliv,Dolliv,Arboliva,Squawkabilly,Nacli,Naclstack,Garganacl,Charcadet,Armarouge,Ceruledge,Tadbulb,Bellibolt,Wattrel,Kilowattrel,Maschiff,Mabosstiff,Shroodle,Grafaiai,Bramblin,Brambleghast,Toedscool,Toedscruel,Klawf,Capsakid,Scovillain,Rellor,Rabsca,Flittle,Espathra,Tinkatink,Tinkatuff,Tinkaton,Wiglett,Wugtrio,Bombirdier,Finizen,Palafin,Varoom,Revavroom,Cyclizar,Orthworm,Glimmet,Glimmora,Greavard,Houndstone,Flamigo,Cetoddle,Cetitan,Veluza,Dondozo,Tatsugiri,Annihilape,Clodsire,Farigiraf,Dudunsparce,Kingambit,Great Tusk,Scream Tail,Brute Bonnet,Flutter Mane,Slither Wing,Sandy Shocks,Iron Treads,Iron Bundle,Iron Hands,Iron Jugulis,Iron Moth,Iron Thorns,Frigibax,Arctibax,Baxcalibur,Gimmighoul,Gholdengo,Wo-Chien,Chien-Pao,Ting-Lu,Chi-Yu,Roaring Moon,Iron Valiant,Koraidon,Miraidon,Walking Wake,Iron Leaves,Dipplin,Poltchageist,Sinistcha,Okidogi,Munkidori,Fezandipiti,Ogerpon,Archaludon,Hydrapple,Gouging Fire,Raging Bolt,Iron Boulder,Iron Crown,Terapagos,Pecharunt";
+const TYPES = "ldldldj-j-jck-k-k-g-g-gcgdgdgdacacaca-a-acacd-d-m-m-e-e-d-d-ded-d-der-r-j-j-arardcdcldldldglglgdgde-e-a-a-k-k-b-b-j-j-k-k-kbn-n-n-b-b-b-ldldldkdkdfefefej-j-knknmimiacacack-kod-d-k-kohdhdhdfen-n-k-k-m-m-lnlne-e-b-b-a-d-d-efefa-l-a-k-k-k-k-k-knnrgconm-j-g-a-k-kckoa-a-k-m-j-a-fkfkfkfkfca-ocmcjcp-p-pcn-n-l-l-l-j-j-j-k-k-k-a-a-acacgcgcgdgddckmkmm-r-arr-rcncncm-m-m-l-krkrf-k-lclclca-l-l-gckeken-q-qcknh-n-n-ang-gia-ecier-r-kdgigfgbqoa-a-j-jfoeoekfk-k-ockcicqjqjkpe-e-a-a-a-b-b-onm-j-a-a-m-j-k-fefefqncjcnll-l-l-j-jbjbk-kekeq-q-a-a-g-g-gcg-gdklklkll-lqlqacackckcnrnrnrgkgcl-lba-a-a-gegcgha-a-a-b-b-arf-a-a-qhirifififbnbnm-m-m-m-g-g-ldd-d-kqkqk-k-jejej-n-n-a-e-epepl-lqacpca-d-fnfnkekek-kqenenflflfgfgk-k-a-a-h-h-h-h-lcn-q-n-o-o-okokokk-k-k-kfk-p-p-pcinininf-o-i-pnpnk-e-pcinn-l-l-lej-jbjbk-k-kiacacaca-akg-g-m-m-m-ldldf-f-fifig-glgcgcgcm-k-k-l-l-k-kea-hchca-a-h-qca-a-n-dqdqininf-nra-achqpepepea-b-bie-e-dgdqdbdbl-k-k-kcloloqomia-efl-m-j-rcgcl-o-ecoea-nbfih-ohmhn-n-n-ipkpjia-hpn-k-k-q-l-a-njl-l-l-j-jbjbk-k-k-a-a-a-a-a-q-q-l-l-j-j-k-k-n-n-acacacm-m-f-f-f-ncnce-eia-b-b-b-k-kekeb-b-glglglgdgdgdlrlrl-l-k-eqeqeqj-j-l-gfgfqbqbnch-h-kfkffcfcd-d-q-q-a-a-n-n-n-n-n-n-kckco-o-o-alalmcg-gildldkhkhk-gmgmlilii-i-i-m-m-m-n-n-hjhjhjp-p-p-o-o-o-g-g-emb-b-p-ehehqiqia-acacqcqcj-giqpqpqpgjgjibfblbc-mcpjpmecpokbangil-l-lbj-j-jnk-k-kqa-aeacjcjcg-g-gcjajar-r-r-l-l-b-bqa-n-n-ihihihr-r-r-r-qnqnfkfkdkdpk-k-mamafpfpfofor-bcmrfrp-p-p-irhlhlhlhlo-o-cpcpr-qcpefrnhjklclclhj-j-jqk-k-kracacaca-a-g-gmgmb-bojcgrgrf-f-k-dkdke-e-kgkgl-l-lrlrdjdjababl-l-l-r-anb-gkgkhehek-a-a-fca-jpmihrknaphlp-pbpbmrnrlrkrn-n-ninhfdgbgbm-icliqpn-irbhd-dpfijhm-i-i-l-l-l-j-j-j-k-k-k-a-a-c-c-cig-gngnq-q-l-l-a-a-k-kfm-m-f-fjfjlplplpe-e-ckk-k-mdmdjgjgb-b-h-h-n-n-nrqrqrqrqai-h-b-onehr-r-b-m-ogogf-o-namqi-i-mpmokpkoipphphphr-b-dpb-bqqlm-p-o-h-nlangfeakhbdqdrcl-l-lqj-j-jhk-k-kba-a-g-g-g-gqm-mbmba-a-r-r-lalalaacf-f-f-j-jnjhm-m-mcmcq-q-dadalhlhelelf-l-ljg-gnn-n-riririk-k-cqk-k-ididpai-fdfdh-h-cbo-o-knk-pkbhdeana-qiebrnlqhrgbmeeiokbmqcjdfmpopopoh-ihqlqoqeqjpqrbbpmpkplnlplhlhdbdndrl-iplpjpmpfnina-dh";
+const SEED = "54451114411111044411101031110001101113111111011101111111151111100554110001111111111001110111111100110131141101100101011101011111141034411000103414105141100141141011001111140010111111111000011011145111101131111110001101111001111110551010101111415114104104114104111101110111001000011011110001111101101110101411110000100111011111110100110110001011100011111111111010010000101001155140145555144440154111400011110101100001011000111111010100111000111100141100111011141100110101111001111000401001000144544154444111111111111100100111001110011011001011011111101111111111011130011101110110011111111110000011111111011111001011110111111111111101111113001010101031111111141111111111111001011111101111111001111110101111111131110111000111001001010011111111101110101010010111111100001111111011100110104000110000000000010000013151114114000001111101101011110100110101111111110010110000011001111111000001110445441001440000001151514141101111310101111011001111111111011113111011111111150111101110111111001311011010100000111101131100101540100011000";
+const CARDSEED = {"1":{"id":"me1-1","n":"Bulbasaur","num":"1","r":"Common","set":"Mega Evolution","date":"2025/01/01","img":"https://images.pokemontcg.io/me1/1.png"},"13":{"id":"me4-1","n":"Weedle","num":"1","r":"Common","set":"Chaos Rising","date":"2026/01/01","img":"https://images.pokemontcg.io/me4/1.png"},"103":{"id":"sv8-133","n":"Alolan Exeggutor ex","num":"133","r":"Double Rare","set":"Surging Sparks","date":"2024/01/01","img":"https://images.pokemontcg.io/sv8/133.png"},"181":{"id":"me4-29","n":"Ampharos","num":"29","r":"Rare","set":"Chaos Rising","date":"2026/01/01","img":"https://images.pokemontcg.io/me4/29.png"},"205":{"id":"sv4pt5-2","n":"Forretress ex","num":"2","r":"Double Rare","set":"Paldean Fates","date":"2024/01/01","img":"https://images.pokemontcg.io/sv4pt5/2.png"},"225":{"id":"me4-18","n":"Delibird","num":"18","r":"Uncommon","set":"Chaos Rising","date":"2026/01/01","img":"https://images.pokemontcg.io/me4/18.png"},"337":{"id":"me2pt5-105","n":"Lunatone","num":"105","r":"Rare","set":"Ascended Heroes","date":"2026/01/01","img":"https://images.pokemontcg.io/me2pt5/105.png"},"374":{"id":"me4-59","n":"Beldum","num":"59","r":"Common","set":"Chaos Rising","date":"2026/01/01","img":"https://images.pokemontcg.io/me4/59.png"},"375":{"id":"me4-60","n":"Metang","num":"60","r":"Common","set":"Chaos Rising","date":"2026/01/01","img":"https://images.pokemontcg.io/me4/60.png"},"376":{"id":"sv5-115","n":"Metagross","num":"115","r":"Uncommon","set":"Temporal Forces","date":"2024/01/01","img":"https://images.pokemontcg.io/sv5/115.png"},"435":{"id":"me4-54","n":"Skuntank","num":"54","r":"Uncommon","set":"Chaos Rising","date":"2026/01/01","img":"https://images.pokemontcg.io/me4/54.png"},"453":{"id":"swsh1-123","n":"Croagunk","num":"123","r":"Common","set":"Sword & Shield","date":"2020/01/01","img":"https://images.pokemontcg.io/swsh1/123.png"},"454":{"id":"me1-79","n":"Toxicroak","num":"79","r":"Common","set":"Mega Evolution","date":"2025/01/01","img":"https://images.pokemontcg.io/me1/79.png"},"455":{"id":"me4-4","n":"Carnivine","num":"4","r":"Common","set":"Chaos Rising","date":"2026/01/01","img":"https://images.pokemontcg.io/me4/4.png"},"568":{"id":"sm2-50","n":"Trubbish","num":"50","r":"Common","set":"Guardians Rising","date":"2017/01/01","img":"https://images.pokemontcg.io/sm2/50.png"},"572":{"id":"me4-72","n":"Minccino","num":"72","r":"Common","set":"Chaos Rising","date":"2026/01/01","img":"https://images.pokemontcg.io/me4/72.png"},"573":{"id":"zsv10pt5-76","n":"Cinccino","num":"76","r":"Uncommon","set":"Black Bolt","date":"2025/01/01","img":"https://images.pokemontcg.io/zsv10pt5/76.png"},"574":{"id":"rsv10pt5-41","n":"Gothita","num":"41","r":"Common","set":"White Flare","date":"2025/01/01","img":"https://images.pokemontcg.io/rsv10pt5/41.png"},"577":{"id":"zsv10pt5-37","n":"Solosis","num":"37","r":"Common","set":"Black Bolt","date":"2025/01/01","img":"https://images.pokemontcg.io/zsv10pt5/37.png"},"637":{"id":"xy7-18","n":"Volcarona","num":"18","r":"Rare","set":"Ancient Origins","date":"2015/01/01","img":"https://images.pokemontcg.io/xy7/18.png"},"638":{"id":"me4-64","n":"Cobalion ex","num":"64","r":"Double Rare","set":"Chaos Rising","date":"2026/01/01","img":"https://images.pokemontcg.io/me4/64.png"},"643":{"id":"me2-17","n":"Reshiram","num":"17","r":"Rare","set":"Phantasmal Flames","date":"2025/01/01","img":"https://images.pokemontcg.io/me2/17.png"},"647":{"id":"me4-19","n":"Keldeo","num":"19","r":"Rare","set":"Chaos Rising","date":"2026/01/01","img":"https://images.pokemontcg.io/me4/19.png"},"649":{"id":"zsv10pt5-67","n":"Genesect ex","num":"67","r":"Double Rare","set":"Black Bolt","date":"2025/01/01","img":"https://images.pokemontcg.io/zsv10pt5/67.png"},"650":{"id":"me4-5","n":"Chespin","num":"5","r":"Common","set":"Chaos Rising","date":"2026/01/01","img":"https://images.pokemontcg.io/me4/5.png"},"651":{"id":"me4-6","n":"Quilladin","num":"6","r":"Common","set":"Chaos Rising","date":"2026/01/01","img":"https://images.pokemontcg.io/me4/6.png"},"652":{"id":"me4-7","n":"Chesnaught","num":"7","r":"Rare","set":"Chaos Rising","date":"2026/01/01","img":"https://images.pokemontcg.io/me4/7.png"},"653":{"id":"me4-11","n":"Fennekin","num":"11","r":"Common","set":"Chaos Rising","date":"2026/01/01","img":"https://images.pokemontcg.io/me4/11.png"},"654":{"id":"me4-12","n":"Braixen","num":"12","r":"Common","set":"Chaos Rising","date":"2026/01/01","img":"https://images.pokemontcg.io/me4/12.png"},"655":{"id":"me4-13","n":"Delphox","num":"13","r":"Rare","set":"Chaos Rising","date":"2026/01/01","img":"https://images.pokemontcg.io/me4/13.png"},"656":{"id":"sv6-56","n":"Froakie","num":"56","r":"Common","set":"Twilight Masquerade","date":"2024/01/01","img":"https://images.pokemontcg.io/sv6/56.png"},"657":{"id":"xy8-47","n":"Frogadier","num":"47","r":"Uncommon","set":"BREAKthrough","date":"2015/01/01","img":"https://images.pokemontcg.io/xy8/47.png"},"670":{"id":"me4-35","n":"Mega Floette ex","num":"35","r":"Double Rare","set":"Chaos Rising","date":"2026/01/01","img":"https://images.pokemontcg.io/me4/35.png"},"706":{"id":"me4-68","n":"Goodra","num":"68","r":"Rare","set":"Chaos Rising","date":"2026/01/01","img":"https://images.pokemontcg.io/me4/68.png"},"712":{"id":"me4-23","n":"Bergmite","num":"23","r":"Common","set":"Chaos Rising","date":"2026/01/01","img":"https://images.pokemontcg.io/me4/23.png"},"809":{"id":"sv7-105","n":"Melmetal ex","num":"105","r":"Double Rare","set":"Stellar Crown","date":"2024/01/01","img":"https://images.pokemontcg.io/sv7/105.png"},"977":{"id":"sv10-66","n":"Dondozo ex","num":"66","r":"Double Rare","set":"Destined Rivals","date":"2025/01/01","img":"https://images.pokemontcg.io/sv10/66.png"},"984":{"id":"sv4pt5-53","n":"Great Tusk ex","num":"53","r":"Double Rare","set":"Paldean Fates","date":"2024/01/01","img":"https://images.pokemontcg.io/sv4pt5/53.png"},"1006":{"id":"sv4-89","n":"Iron Valiant ex","num":"89","r":"Double Rare","set":"Paradox Rift","date":"2023/01/01","img":"https://images.pokemontcg.io/sv4/89.png"}};
+
+const RANK = "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000111000120000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000111000112000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001111111122000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000111111111222222000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001111111112220000000000000000000000000000000000000000000000000000000000000000001112220000000000000000000000000000000000000000000000000011000000000001111111100000001220000222000000000000000000000000000000000000000000000000000000000000000000000000000000111112111110000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001111001100000111100000012";
+
+const NAME = NAMES.split(",");
+const TOTAL = NAME.length;
+const PER = 9;                              // one physical binder page = 9 pockets
+const PAGES = Math.ceil(TOTAL / PER);       // 114 pages
+const KEY = "pokebinder:status:v4";        // bumped so the new spreadsheet takes effect
+const LOGKEY = "pokebinder:log:v1";
+const CARDKEY = "pokebinder:cards:v2";     // which printing sits in each pocket
+const PREFKEY = "pokebinder:prefs:v1";
+const GALKEY = d => "pokebinder:gal:" + d; // cached gallery, one per Pokémon
+const GALINDEX = "pokebinder:galindex:v1";
+const GALMAX = 80;
+const GALTTL = 30 * 24 * 3600 * 1000;      // a cached gallery goes stale after a month
+const SETSKEY = "pokebinder:sets:v1";
+const SETOWNKEY = "pokebinder:setowned:v1";   // exact cards owned, set collecting only
+const SETKEY = id => "pokebinder:set2:" + id;   // v2 namespace: v1 held duplicate-ridden data
+const SETINDEX = "pokebinder:setindex:v1";
+const SETSTTL = 7 * 24 * 3600 * 1000;      // the set list checks for new releases weekly                         // galleries kept before the oldest is evicted
+const API = "https://api.pokemontcg.io/v2/cards";
+const CONDS = ["", "Near Mint", "Lightly Played", "Moderately Played", "Heavily Played", "Damaged", "Graded"];
+const HAVE = 1, SPECIAL = 2, HUNT = 4;
+const CHUNK = 150;
+
+const TKEYS = "abcdefghijklmnopqr";
+const TNAME = ["Normal","Fighting","Flying","Poison","Ground","Rock","Bug","Ghost","Steel","Fire","Water","Grass","Electric","Psychic","Ice","Dragon","Dark","Fairy"];
+const TCOL = ["#A0A29B","#C4574C","#8FA3E8","#A25FB0","#D6B461","#B6A85F","#9CB84A","#6B5A9E","#9AA8B8","#E8813C","#4F92D9","#5FBF63","#EFC53F","#E86A94","#79D0D2","#6B5BD6","#7A6A5E","#E39EDC"];
+const GENS = [["I",1,151],["II",152,251],["III",252,386],["IV",387,493],["V",494,649],["VI",650,721],["VII",722,809],["VIII",810,905],["IX",906,1025]];
+
+const isLegend = d => RANK[d-1] === "1";
+const isMythic = d => RANK[d-1] === "2";
+const STARTERS = [1,152,252,387,495,650,722,810,906].flatMap(a => [0,1,2,3,4,5,6,7,8].map(k => a+k));
+const EEVEE = [133,134,135,136,196,197,470,471,700];
+const typesOf = d => [...TYPES.slice((d-1)*2, d*2)].filter(c => c !== "-").map(c => TKEYS.indexOf(c));
+const genOf = d => GENS.findIndex(g => d >= g[1] && d <= g[2]);
+const pad = n => String(n).padStart(4, "0");
+const p3 = n => String(n).padStart(3, "0");
+const pageOf = d => Math.floor((d-1)/PER) + 1;
+
+/* The collection lives in two physical binders. Each one reads like a book: its first
+   page sits alone facing the inside cover, then pages pair up, and a trailing odd page
+   sits alone on the left. Openings are precomputed so both binders stay in step. */
+const BINDERS = [
+  { n: 1, word: "One", a: 1, b: 60, accent: "#D2544B", kind: "Poké Ball" },
+  { n: 2, word: "Two", a: 61, b: PAGES, accent: "#3F72C9", kind: "Great Ball" },
+];
+const VIEWS = [];
+for (const bd of BINDERS) {
+  VIEWS.push({ pages: [bd.a], bd, cover: true });
+  for (let p = bd.a + 1; p <= bd.b; p += 2)
+    VIEWS.push({ pages: [p, p + 1].filter(x => x <= bd.b), bd, cover: false });
+}
+const PAGEVIEW = {};
+VIEWS.forEach((v, i) => v.pages.forEach(p => { PAGEVIEW[p] = i; }));
+const viewOf = p => PAGEVIEW[p] || 0;
+const pagesOfView = v => VIEWS[v].pages;
+const binderOf = p => VIEWS[viewOf(p)].bd;
+const LASTVIEW = VIEWS.length - 1;
+
+function binderCount(bd) {
+  let have = 0, total = 0;
+  for (let p = bd.a; p <= bd.b; p++) { const c = pageCount(p); have += c.have; total += c.total; }
+  return { have, total };
+}
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+
+/* ---------------- sprites ---------------- */
+const HOSTS = [
+  { gh: 1, s: d => `https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/${d}.png`,
+    b: d => `https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/other/official-artwork/${d}.png`,
+    pika: "https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/versions/generation-v/black-white/animated/back/25.gif" },
+  { gh: 1, s: d => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${d}.png`,
+    b: d => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${d}.png`,
+    pika: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/back/25.gif" },
+  { gh: 1, s: d => `https://cdn.statically.io/gh/PokeAPI/sprites/master/sprites/pokemon/${d}.png`,
+    b: d => `https://cdn.statically.io/gh/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${d}.png`,
+    pika: "https://cdn.statically.io/gh/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/back/25.gif" },
+  { gh: 0, s: d => `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${p3(d)}.png`,
+    b: d => `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${p3(d)}.png`,
+    pika: "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/025.png" },
+];
+let HOST = null, HOSTI = 0, resolved = false, spriteFails = 0;
+
+function probeSprites() {
+  let i = 0;
+  const next = () => {
+    if (i >= HOSTS.length) { resolved = true; renderAll(); return; }
+    const h = HOSTS[i], img = new Image();
+    img.onload = () => { HOST = h; HOSTI = i; resolved = true; renderAll(); };
+    img.onerror = () => { i++; next(); };
+    img.src = h.s(25);
+  };
+  next();
+}
+
+/* a sprite that fails retries the other hosts, then bows out; the slot's number is
+   always drawn underneath, so a cell is never invisible either way */
+document.addEventListener("load", e => {
+  const el = e.target;
+  if (el.tagName === "IMG" && el.classList.contains("cardart")) el.classList.add("in");
+}, true);
+
+document.addEventListener("error", e => {
+  const el = e.target;
+  if (el.tagName === "IMG" && el.dataset.card) {
+    const pk = el.closest(".pocket");
+    if (pk) pk.classList.remove("hascard");
+    el.remove();
+    return;
+  }
+  if (el.tagName !== "IMG" || !el.dataset.sp) return;
+  const d = +el.dataset.sp;
+  const tries = (+el.dataset.try || 0) + 1;
+  const big = el.classList.contains("art");
+  if (tries < HOSTS.length) {
+    const h = HOSTS[(HOSTI + tries) % HOSTS.length];
+    el.dataset.try = tries;
+    el.src = big ? h.b(d) : h.s(d);
+    return;
+  }
+  if (big) {
+    const span = document.createElement("span");
+    span.className = "art glyph";
+    span.textContent = pad(d);
+    el.replaceWith(span);
+  } else {
+    el.style.display = "none";
+    spriteFails++;
+    updateDiag();
+  }
+}, true);
+
+/* ---------------- card galleries ---------------- */
+/* The TCG API is community-run and occasionally flaky, so every request retries with
+   backoff and every gallery is cached locally — a Pokémon is fetched once, ever. */
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+/* The card database goes down often enough that one or two retries isn't enough.
+   Five attempts on a rising delay with jitter, so a burst of 500s doesn't sink a lookup. */
+async function apiGet(url, tries = 5) {
+  let last = "";
+  for (let i = 1; i <= tries; i++) {
+    try {
+      const res = await fetch(url);
+      if (res.ok) return await res.json();
+      last = "HTTP " + res.status;
+      if (res.status < 500 && res.status !== 429) break;   // a real refusal, not a wobble
+    } catch (e) { last = e.message || e.name; }
+    if (i < tries) await sleep(500 * Math.pow(1.8, i - 1) + Math.random() * 300);
+  }
+  throw new Error(last || "no response");
+}
+
+async function readGallery(dex) {
+  try {
+    const raw = await store.get(GALKEY(dex));
+    if (!raw) return null;
+    const p = JSON.parse(raw);
+    if (Array.isArray(p)) return { list: p, t: 0 };        // written before caching kept dates
+    if (p && Array.isArray(p.c)) return { list: p.c, t: p.t || 0 };
+    return null;
+  } catch (e) { return null; }
+}
+
+async function writeGallery(dex, list) {
+  let index = [];
+  try { index = JSON.parse((await store.get(GALINDEX)) || "[]"); } catch (e) {}
+  index = index.filter(x => x !== dex);
+  index.push(dex);
+  while (index.length > GALMAX) {
+    const drop = index.shift();
+    try {
+      if (window.storage) await window.storage.delete(GALKEY(drop));
+      else localStorage.removeItem(GALKEY(drop));
+    } catch (e) {}
+  }
+  try {
+    await store.set(GALKEY(dex), JSON.stringify({ t: Date.now(), c: list }));
+    await store.set(GALINDEX, JSON.stringify(index));
+  } catch (e) { /* quota reached — that gallery simply refetches next time */ }
+}
+
+/* one card = [id, name, number, rarity, setName, releaseDate, image] */
+/* run tasks a few at a time — parallel enough to be quick, not so many that the
+   API starts refusing us */
+async function pool(tasks, width) {
+  const results = new Array(tasks.length);
+  let next = 0;
+  await Promise.all(Array.from({ length: Math.min(width, tasks.length) }, async () => {
+    while (next < tasks.length) {
+      const i = next++;
+      try { results[i] = { ok: true, v: await tasks[i]() }; }
+      catch (e) { results[i] = { ok: false }; }
+    }
+  }));
+  return results;
+}
+
+/* Page one comes back first and is handed straight to the UI; the rest are fetched
+   in parallel rather than one after another. */
+/* One paged fetch used by both the card gallery and the set list.
+   The API's pagination isn't perfectly stable: pages can overlap, which shows up as
+   duplicate cards AND as missing ones — and since secret rares carry the highest
+   numbers they sit in the last pages and vanish first. So: dedupe by card id, then
+   check the unique count against the reported total and sweep again if any are short. */
+async function fetchAllPages(base, map, onFirst) {
+  const SIZE = 50, MAXPAGES = 20;
+  const seen = Object.create(null);
+  const out = [];
+  const add = arr => {
+    for (const c of arr || []) {
+      if (!c || !c.id || seen[c.id]) continue;
+      seen[c.id] = 1;
+      out.push(map(c));
+    }
+  };
+
+  const first = await apiGet(`${base}&page=1&pageSize=${SIZE}`);
+  const total = first.totalCount || 0;
+  add(first.data);
+  const pages = Math.min(Math.ceil(total / SIZE), MAXPAGES);
+  if (onFirst) onFirst(out.slice(), total, pages > 1);
+  if (pages <= 1) return { list: out, total, missing: Math.max(0, total - out.length) };
+
+  const rest = await pool(Array.from({ length: pages - 1 },
+    (_, i) => () => apiGet(`${base}&page=${i + 2}&pageSize=${SIZE}`)), 4);
+  let failed = 0;
+  for (const r of rest) { if (r && r.ok) add(r.v.data); else failed++; }
+
+  /* Overlapping pages leave gaps. Sweep the whole range again while each pass is still
+     turning up new cards. */
+  for (let pass = 0; !failed && out.length < total && pass < 3; pass++) {
+    const before = out.length;
+    const sweep = await pool(Array.from({ length: pages },
+      (_, i) => () => apiGet(`${base}&page=${i + 1}&pageSize=${SIZE}`)), 3);
+    for (const r of sweep) if (r && r.ok) add(r.v.data);
+    if (out.length === before) break;             // no progress, stop asking
+  }
+
+  /* When the server's window drifts backwards, the final page starts before the true end
+     and the last few cards are unreachable however often we sweep — and those are exactly
+     the secret rares. So read past the calculated end until a page comes back empty. */
+  for (let extra = 1; !failed && out.length < total && extra <= 3; extra++) {
+    const page = pages + extra;
+    if (page > MAXPAGES) break;
+    let r;
+    try { r = await apiGet(`${base}&page=${page}&pageSize=${SIZE}`); }
+    catch (e) { break; }
+    const rows = r.data || [];
+    if (!rows.length) break;
+    add(rows);
+  }
+  return { list: out, total, missing: Math.max(0, total - out.length) };
+}
+
+async function fetchGallery(dex, onFirst) {
+  const base = `${API}?q=nationalPokedexNumbers:${dex}&select=id,name,number,rarity,set,images`;
+  const map = c => [c.id, c.name, c.number, c.rarity || "", (c.set && c.set.name) || "",
+                    (c.set && c.set.releaseDate) || "", (c.images && c.images.small) || ""];
+  const r = await fetchAllPages(base, map, onFirst);
+  return { list: r.list, partial: r.missing };
+}
+
+/* ---------------- sets ---------------- */
+async function loadSets(force) {
+  if (S.sets && !force) return;
+  S.setsBusy = true; S.setsErr = null;
+  if (S.tab === "sets") renderView();
+  try {
+    if (!force) {
+      const raw = await store.get(SETSKEY);
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (p && Array.isArray(p.c) && Date.now() - (p.t || 0) < SETSTTL) {
+          S.sets = p.c; S.setsBusy = false;
+          if (S.tab === "sets") renderView();
+          return;
+        }
+      }
+    }
+    const json = await apiGet(`${API.replace("/cards", "/sets")}?orderBy=-releaseDate`);
+    /* one entry = [id, name, series, releaseDate, total, logo] */
+    S.sets = (json.data || []).map(x => [x.id, x.name, x.series || "", x.releaseDate || "",
+                                         x.total || x.printedTotal || 0,
+                                         (x.images && x.images.logo) || ""]);
+    S.setsBusy = false;
+    try { await store.set(SETSKEY, JSON.stringify({ t: Date.now(), c: S.sets })); } catch (e) {}
+  } catch (err) {
+    try {
+      const raw = await store.get(SETSKEY);          // stale beats nothing
+      const p = raw && JSON.parse(raw);
+      if (p && Array.isArray(p.c)) { S.sets = p.c; S.setsErr = null; }
+      else S.setsErr = err.message;
+    } catch (e) { S.setsErr = err.message; }
+    S.setsBusy = false;
+  }
+  if (S.tab === "sets") renderView();
+}
+
+async function loadSetCards(id, force) {
+  S.openSet = id; S.setCards = null; S.setCardsErr = null; S.setCardsBusy = true; S.setMissing = 0;
+  renderView();
+  try {
+    if (!force) {
+      const raw = await store.get(SETKEY(id));
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (p && Array.isArray(p.c)) {
+          S.setCards = p.c.slice().sort(byCardNumber); S.setCardsBusy = false;
+          if (S.openSet === id) renderView();
+          return;
+        }
+      }
+    }
+    /* no orderBy — the API's sort makes its paging less stable, and we sort locally anyway */
+    const base = `${API}?q=set.id:${id}&select=id,name,number,rarity,images`;
+    const map = c => [c.id, c.name, c.number, c.rarity || "", (c.images && c.images.small) || ""];
+    const r = await fetchAllPages(base, map, (page1) => {
+      if (S.openSet === id) {
+        S.setCards = page1.sort(byCardNumber); S.setCardsBusy = false; renderView();
+      }
+    });
+    if (S.openSet !== id) return;
+    S.setCards = r.list.sort(byCardNumber);
+    S.setMissing = r.missing;
+    S.setCardsBusy = false;
+    renderView();
+    if (!r.missing) {
+      try {
+        await store.set(SETKEY(id), JSON.stringify({ t: Date.now(), c: r.list }));
+        let idx = [];
+        try { idx = JSON.parse((await store.get(SETINDEX)) || "[]"); } catch (e) {}
+        if (!idx.includes(id)) { idx.push(id); await store.set(SETINDEX, JSON.stringify(idx)); }
+      } catch (e) {}
+    }
+  } catch (err) {
+    if (S.openSet !== id) return;
+    S.setCardsErr = err.message; S.setCardsBusy = false;
+    renderView();
+  }
+}
+
+/* Card numbers are text in the API, so "10" sorts before "2" and secret rares scatter.
+   Plain numbers come first in true numeric order — which puts secret rares, numbered
+   above the set total, exactly where they belong — then lettered subsets like TG or GG. */
+function cardNumKey(n) {
+  const t = String(n == null ? "" : n).trim();
+  const m = /^([A-Za-z]*)(\d+)(.*)$/.exec(t);
+  if (!m) return [2, t.toUpperCase(), 0, ""];
+  return [m[1] ? 1 : 0, m[1].toUpperCase(), parseInt(m[2], 10), m[3].toUpperCase()];
+}
+function byCardNumber(a, b) {
+  const ka = cardNumKey(a[2]), kb = cardNumKey(b[2]);
+  for (let i = 0; i < 4; i++) if (ka[i] !== kb[i]) return ka[i] < kb[i] ? -1 : 1;
+  return 0;
+}
+const isChase = r => /secret|rainbow|hyper|illustration|ultra|special|gold|shiny|radiant|amazing/i.test(r || "");
+
+function dedupeById(list) {
+  const seen = Object.create(null), out = [];
+  for (const c of list || []) { if (c && !seen[c[0]]) { seen[c[0]] = 1; out.push(c); } }
+  return out;
+}
+
+/* which card ids are sitting in the binder right now */
+function ownedCardIds() {
+  const ids = {};
+  for (const k in S.cards) { const d = +k; if (S.status[d-1] & HAVE) ids[S.cards[d].id] = d; }
+  return ids;
+}
+
+const inflight = {};
+
+/* Starts (or joins) the fetch for a Pokémon without touching the UI, so a hover can
+   have the gallery ready before the click happens. */
+function warmGallery(dex, force) {
+  if (inflight[dex]) return inflight[dex];
+  const job = (async () => {
+    if (!force) {
+      const cached = await readGallery(dex);
+      if (cached && cached.list.length && Date.now() - cached.t < GALTTL) {
+        return { list: cached.list, partial: 0, t: cached.t };
+      }
+    }
+    const r = await fetchGallery(dex, (page1, total, more) => {
+      if (S.pick === dex && S.galBusy && !S.galQ) {   // show page one while the rest arrive
+        S.gal = page1; S.galBusy = false; S.galMore = more; S.galAge = Date.now();
+        renderModal();
+      }
+    });
+    if (!r.partial) writeGallery(dex, r.list);
+    return { ...r, t: Date.now() };
+  })();
+  inflight[dex] = job;
+  job.catch(() => {}).then(() => { delete inflight[dex]; });
+  return job;
+}
+
+function prefetchGallery(dex) {
+  if (inflight[dex] || S.galWarmed[dex]) return;
+  S.galWarmed[dex] = 1;
+  warmGallery(dex).catch(() => { delete S.galWarmed[dex]; });
+}
+
+async function openPicker(dex, force) {
+  S.pick = dex; S.gal = null; S.galErr = null; S.galQ = "";
+  S.galBusy = true; S.galPartial = 0; S.galAge = 0; S.galStale = false;
+  renderModal();
+
+  const cached = await readGallery(dex);
+  try {
+    const r = await warmGallery(dex, force);   // joins a hover-started fetch if one is running
+    if (S.pick !== dex) return;
+    S.gal = r.list; S.galPartial = r.partial || 0; S.galAge = r.t; S.galBusy = false; S.galMore = false;
+    renderModal();
+  } catch (err) {
+    if (S.pick !== dex) return;
+    if (cached && cached.list.length) {      // stale beats nothing when the API is down
+      S.gal = cached.list; S.galAge = cached.t; S.galStale = true; S.galBusy = false;
+    } else {
+      S.galErr = err.message; S.galBusy = false;
+    }
+    S.galMore = false;
+    renderModal();
+  }
+}
+
+async function clearGalleryCache() {
+  const drop = async k => {
+    try {
+      if (window.storage) await window.storage.delete(k);
+      else localStorage.removeItem(k);
+    } catch (e) {}
+  };
+  let n = 0;
+  let gal = [];
+  try { gal = JSON.parse((await store.get(GALINDEX)) || "[]"); } catch (e) {}
+  for (const d of gal) { await drop(GALKEY(d)); n++; }
+  try { await store.set(GALINDEX, "[]"); } catch (e) {}
+
+  let sets = [];
+  try { sets = JSON.parse((await store.get(SETINDEX)) || "[]"); } catch (e) {}
+  for (const id of sets) { await drop(SETKEY(id)); n++; }
+  try { await store.set(SETINDEX, "[]"); } catch (e) {}
+
+  await drop(SETSKEY);                 // the set list itself, so new releases show up
+  S.sets = null; S.setCards = null; S.galWarmed = {};
+  return n;
+}
+
+function chooseCard(dex, id) {
+  const c = (S.gal || []).find(x => x[0] === id);
+  if (!c) return;
+  const prev = S.cards[dex] || {};
+  S.cards[dex] = { id: c[0], n: c[1], num: c[2], r: c[3], set: c[4], date: c[5], img: c[6],
+                   cond: prev.cond || "", price: prev.price || "", acq: prev.acq || "", note: prev.note || "" };
+  if (!(S.status[dex-1] & HAVE)) applyOpt(dex, "own"); else queueSave();
+  S.pick = null; S.regallery = false;        // straight into the binder, no detour
+  renderModal(); refreshCard(dex); updateHeader(); updateBinderMeta();
+  const el = document.querySelector(`.pocket[data-d="${dex}"]`);
+  if (el) { el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1700); }
+}
+
+function clearCard(dex) {
+  delete S.cards[dex];
+  queueSave();
+  renderModal();
+  refreshCard(dex);          // pocket falls back to the sprite
+  updateHeader(); updateBinderMeta();
+}
+
+/* ---------------- state ---------------- */
+const S = {
+  status: [...SEED].map(Number),
+  log: [],
+  tab: "binder", page: 1,
+  gen: -1, type: -1, filter: "all", q: "", sel: -1,
+  pop: null, storageOk: true, confirmReset: false,
+  cards: JSON.parse(JSON.stringify(CARDSEED)),   // dex -> chosen printing + collector notes
+  artMode: true,        // show the real card in the pocket rather than the sprite
+  pick: null, regallery: false,   // dex whose picker is open
+  gal: null, galErr: null, galBusy: false, galQ: "", galSort: "old", galPartial: 0,
+  galAge: 0, galStale: false, clearedCache: 0, galMore: false, galWarmed: {},
+  sets: null, setsBusy: false, setsErr: null, setsQ: "",
+  setOwned: {},         // card id -> 1; deliberately kept out of the dex totals
+  setMissing: 0,
+  openSet: null, setCards: null, setCardsBusy: false, setCardsErr: null,
+};
+
+const store = {
+  async get(k) {
+    if (window.storage) { const r = await window.storage.get(k); return r && r.value; }
+    return localStorage.getItem(k);
+  },
+  async set(k, v) {
+    if (window.storage) return window.storage.set(k, v);
+    localStorage.setItem(k, v);
+  },
+};
+
+let saveTimer = null;
+function queueSave() {
+  flag("on", "saving");
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async () => {
+    try {
+      await store.set(KEY, S.status.join(""));
+      await store.set(LOGKEY, JSON.stringify(S.log));
+      await store.set(CARDKEY, JSON.stringify(S.cards));
+      await store.set(PREFKEY, JSON.stringify({ artMode: S.artMode }));
+      await store.set(SETOWNKEY, JSON.stringify(S.setOwned));
+      S.storageOk = true;
+      flag("on", "saved");
+      setTimeout(() => flag("", ""), 1600);
+    } catch (e) {
+      S.storageOk = false;
+      flag("err", "not saved");
+      renderFoot();
+    }
+  }, 500);
+}
+function flag(cls, text) {
+  const el = document.getElementById("save");
+  if (el) { el.className = "save " + cls; el.textContent = text; }
+}
+
+async function boot() {
+  try {
+    const v = await store.get(KEY);
+    if (typeof v === "string" && v.length === TOTAL) S.status = [...v].map(Number);
+  } catch (e) {}
+  try {
+    const l = await store.get(LOGKEY);
+    if (l) { const p = JSON.parse(l); if (Array.isArray(p)) S.log = p; }
+  } catch (e) {}
+  try {
+    const c = await store.get(CARDKEY);
+    if (c) { const p = JSON.parse(c); if (p && typeof p === "object") S.cards = p; }
+  } catch (e) {}
+  try {
+    const so = await store.get(SETOWNKEY);
+    if (so) { const p = JSON.parse(so); if (p && typeof p === "object") S.setOwned = p; }
+  } catch (e) {}
+  try {
+    const pf = await store.get(PREFKEY);
+    if (pf) { const p = JSON.parse(pf); if (p && typeof p.artMode === "boolean") S.artMode = p.artMode; }
+  } catch (e) {}
+  renderAll();
+  probeSprites();
+}
+
+/* ---------------- derived ---------------- */
+function derive() {
+  const st = S.status;
+  const owned = st.filter(v => v & HAVE).length;
+  const special = st.filter(v => v & SPECIAL).length;
+  const hunting = [];
+  for (let d = 1; d <= TOTAL; d++) if ((st[d-1] & HUNT) && !(st[d-1] & HAVE)) hunting.push(d);
+  const byGen = GENS.map(([n,a,b]) => {
+    let have = 0; for (let d = a; d <= b; d++) if (st[d-1] & HAVE) have++;
+    return { n, have, total: b - a + 1 };
+  });
+  const byType = TNAME.map((n,i) => ({ n, c: TCOL[i], have: 0, total: 0 }));
+  for (let d = 1; d <= TOTAL; d++)
+    for (const t of typesOf(d)) { byType[t].total++; if (st[d-1] & HAVE) byType[t].have++; }
+  const pages = [];
+  for (let p = 1; p <= PAGES; p++) {
+    let have = 0, total = 0;
+    for (let s = 0; s < PER; s++) {
+      const d = (p-1)*PER + s + 1; if (d > TOTAL) break;
+      total++; if (st[d-1] & HAVE) have++;
+    }
+    pages.push({ page: p, have, total });
+  }
+  let run = 0, best = 0, end = 0, grun = 0, gap = 0, gapEnd = 0;
+  for (let d = 1; d <= TOTAL; d++) {
+    if (st[d-1] & HAVE) { run++; if (run > best) { best = run; end = d; } grun = 0; }
+    else { run = 0; grun++; if (grun > gap) { gap = grun; gapEnd = d; } }
+  }
+
+  let dual = 0;
+  for (let d = 1; d <= TOTAL; d++) if ((st[d-1] & HAVE) && typesOf(d).length > 1) dual++;
+  const squad = (list) => ({ have: list.filter(d => st[d-1] & HAVE).length, total: list.length });
+  const legends = []; const mythics = [];
+  for (let d = 1; d <= TOTAL; d++) { if (isLegend(d)) legends.push(d); if (isMythic(d)) mythics.push(d); }
+  const squads = [
+    { n: "Starters", ...squad(STARTERS) },
+    { n: "Eeveelutions", ...squad(EEVEE) },
+    { n: "Legendaries", ...squad(legends) },
+    { n: "Mythicals", ...squad(mythics) },
+  ];
+
+  return { owned, special, hunting, byGen, byType, pages, best, end, gap, gapEnd, dual, squads };
+}
+
+function pageCount(p) {
+  let have = 0, total = 0;
+  for (let s = 0; s < PER; s++) {
+    const d = (p-1)*PER + s + 1; if (d > TOTAL) break;
+    total++; if (S.status[d-1] & HAVE) have++;
+  }
+  return { have, total };
+}
+
+function relTime(t) {
+  const s = (Date.now() - t) / 1000;
+  if (s < 90) return "just now";
+  if (s < 3600) return Math.round(s/60) + " min ago";
+  if (s < 86400) { const h = Math.round(s/3600); return h + (h === 1 ? " hour ago" : " hours ago"); }
+  const d = Math.round(s/86400);
+  if (d < 30) return d + (d === 1 ? " day ago" : " days ago");
+  return new Date(t).toLocaleDateString();
+}
+
+/* ---------------- html pieces ---------------- */
+const bigSprite = d => HOST
+  ? `<img class="art" data-sp="${d}" src="${HOST.b(d)}" alt="" decoding="async">`
+  : `<span class="art glyph">${pad(d)}</span>`;
+const smallSprite = d => HOST
+  ? `<img data-sp="${d}" src="${HOST.s(d)}" alt="" decoding="async">`
+  : `<span class="cno">${d}</span>`;
+
+function pocket(d) {
+  const v = S.status[d-1], t = typesOf(d);
+  const card = S.cards[d];
+  const art = S.artMode && card && card.img;
+  const cls = "pocket" + (v & HAVE ? " have" : "") + (v & SPECIAL ? " special" : "") + (art ? " hascard" : "");
+  /* The sprite layer always renders and stays in normal flow — it gives the pocket its
+     height, shows instantly while the scan downloads, and is what's left if the scan fails. */
+  return `<button class="${cls}" data-d="${d}" style="--glow:${TCOL[t[0]] || "#888"}"
+      aria-pressed="${!!(v & HAVE)}" aria-label="${esc(NAME[d-1])}, number ${d}${card ? ", " + esc(card.set) : ""}">
+    <span class="no">${pad(d)}</span>
+    ${bigSprite(d)}
+    <span class="nm">${esc(NAME[d-1])}</span>
+    <span class="tstripe">${t.map(i => `<i style="background:${TCOL[i]}"></i>`).join("")}</span>
+    ${art ? `<img class="cardart" data-card="${d}" src="${card.img}" alt="" decoding="async">
+             <span class="cardtag">${esc(card.set)}</span>` : ""}
+    ${card ? `<span class="pinfo" data-info="${d}" role="button" tabindex="0"
+                title="Card details" aria-label="Details for ${esc(card.n)}">i</span>` : ""}
+    ${(v & HUNT) && !(v & HAVE) ? '<span class="hunt" title="On the hunt"></span>' : ""}
+    ${v & SPECIAL ? '<span class="foil"></span>' : ""}
+    <span class="sheen"></span>
+  </button>`;
+}
+
+function cell(d) {
+  const v = S.status[d-1], t = typesOf(d);
+  const cls = "cell" + (v & HAVE ? " have" : "") + (v & SPECIAL ? " special" : "")
+    + ((v & HUNT) && !(v & HAVE) ? " wanted" : "");
+  return `<button class="${cls}" data-d="${d}" style="--tc:${TCOL[t[0]] || "#888"}"
+      title="#${pad(d)} ${esc(NAME[d-1])}" aria-pressed="${!!(v & HAVE)}"
+      aria-label="${esc(NAME[d-1])}, number ${d}">
+    <span class="cno">${d}</span>
+    ${HOST ? `<img data-sp="${d}" src="${HOST.s(d)}" alt="" decoding="async">` : ""}
+    <span class="lbl">${esc(NAME[d-1])}</span>
+  </button>`;
+}
+
+/* ---------------- search ---------------- */
+function suggest() {
+  const q = S.q.trim().toLowerCase();
+  if (!q) return [];
+  const pre = [], mid = [], num = [];
+  for (let d = 1; d <= TOTAL; d++) {
+    const n = NAME[d-1].toLowerCase();
+    if (n.startsWith(q)) pre.push(d);
+    else if (n.includes(q)) mid.push(d);
+    else if (String(d).startsWith(q) || pad(d).startsWith(q)) num.push(d);
+  }
+  return [...pre, ...mid, ...num].slice(0, 8);
+}
+
+function renderSug() {
+  const box = document.getElementById("sug");
+  if (!box) return;
+  if (!S.q.trim()) { box.innerHTML = ""; return; }
+  const list = suggest();
+  if (!list.length) { box.innerHTML = `<div class="sug"><div class="sugnone">No Pokémon by that name or number.</div></div>`; return; }
+  box.innerHTML = `<div class="sug" role="listbox">${list.map((d, i) => {
+    const v = S.status[d-1];
+    const pip = (v & SPECIAL) ? "pip special" : (v & HAVE) ? "pip have" : "pip";
+    return `<button class="sugrow${i === S.sel ? " on" : ""}" data-jump="${d}" role="option" aria-selected="${i === S.sel}">
+      ${HOST ? `<img data-sp="${d}" src="${HOST.s(d)}" alt="">` : ""}
+      <span class="sn">${esc(NAME[d-1])}</span>
+      <span class="sm">#${pad(d)} · page ${String(pageOf(d)).padStart(2,"0")}</span>
+      <span class="${pip}"></span>
+    </button>`;
+  }).join("")}</div>`;
+}
+
+function jumpTo(d) {
+  S.q = ""; S.sel = -1;
+  S.page = pageOf(d);
+  if (S.tab === "stats") S.tab = "binder";
+  closePop();
+  renderChrome(); renderView();
+  const el = document.querySelector(`[data-d="${d}"]`);
+  if (el) {
+    el.classList.add("flash");
+    el.scrollIntoView({ block: "center", behavior: "smooth" });
+    setTimeout(() => el.classList.remove("flash"), 1700);
+  }
+}
+
+/* ---------------- card menu ---------------- */
+function popHTML(d) {
+  const v = S.status[d-1], t = typesOf(d);
+  const opts = [
+    ["own", "Own", (v & HAVE) && !(v & SPECIAL)],
+    ["special", "Special", !!(v & SPECIAL)],
+    ["off", "Deselect", !(v & HAVE)],
+    ["hunt", (v & HUNT) ? "Stop hunting" : "Hunting", !!(v & HUNT)],
+  ];
+  const card = S.cards[d];
+  return `<div class="popcard" role="menu">
+    <div class="pophead"><em>#${pad(d)}</em>${esc(NAME[d-1])}
+      <span class="poptypes">${t.map(i => `<i style="background:${TCOL[i]}"></i>`).join("")}</span></div>
+    ${opts.map(([k, l, on]) => `<button class="popopt${on ? " on" : ""}" data-opt="${k}" role="menuitem">
+      <span class="dot"></span>${l}</button>`).join("")}
+    <div class="popsplit"></div>
+    <button class="popopt pick" data-act="pickcard" role="menuitem">
+      <span class="dot${card ? " on" : ""}"></span>${card ? esc(card.set) : "Choose the card…"}</button>
+    ${card ? `<button class="popopt drop" data-act="dropcard" role="menuitem">
+      <span class="dot"></span>Back to the sprite</button>` : ""}
+  </div>`;
+}
+
+function openPop(dex, anchor) {
+  const pop = document.getElementById("pop");
+  S.pop = dex;
+  pop.innerHTML = popHTML(dex);
+  pop.style.visibility = "hidden";
+  pop.classList.add("open");
+  const a = anchor.getBoundingClientRect();
+  const w = pop.offsetWidth, h = pop.offsetHeight, gap = 8, m = 10;
+  let left = a.left + a.width / 2 - w / 2;
+  let top = a.bottom + gap, origin = "top center";
+  if (top + h > innerHeight - m) { top = a.top - h - gap; origin = "bottom center"; }
+  if (top < m) { top = Math.min(Math.max(m, a.top), innerHeight - h - m); origin = "center"; }
+  pop.style.left = Math.max(m, Math.min(left, innerWidth - w - m)) + "px";
+  pop.style.top = top + "px";
+  pop.style.transformOrigin = origin;
+  pop.style.visibility = "";
+  pop.classList.remove("anim");
+  void pop.offsetWidth;
+  pop.classList.add("anim");
+  const f = pop.querySelector(".popopt");
+  if (f) f.focus({ preventScroll: true });
+}
+
+function closePop() {
+  const pop = document.getElementById("pop");
+  if (pop) { pop.className = ""; pop.innerHTML = ""; pop.removeAttribute("style"); }
+  S.pop = null;
+}
+
+function applyOpt(dex, opt) {
+  const i = dex - 1, before = S.status[i];
+  let v = before;
+  if (opt === "own") v = (v | HAVE) & ~SPECIAL;
+  else if (opt === "special") v = v | HAVE | SPECIAL;
+  else if (opt === "off") { v = v & ~(HAVE | SPECIAL); delete S.cards[dex]; }
+  else if (opt === "hunt") v = (v & HUNT) ? v & ~HUNT : v | HUNT;
+  S.status[i] = v;
+
+  const wasOwned = !!(before & HAVE), nowOwned = !!(v & HAVE);
+  if (!wasOwned && nowOwned) {
+    S.log = S.log.filter(e => e[0] !== dex);
+    S.log.push([dex, Date.now()]);
+    if (S.log.length > 60) S.log = S.log.slice(-60);
+  } else if (wasOwned && !nowOwned) {
+    S.log = S.log.filter(e => e[0] !== dex);
+  }
+  queueSave();
+}
+
+/* ---------------- card picker ---------------- */
+function galFiltered() {
+  const q = S.galQ.trim().toLowerCase();
+  let list = dedupeById(S.gal).filter(c =>
+    !q || c[1].toLowerCase().includes(q) || c[4].toLowerCase().includes(q) || c[3].toLowerCase().includes(q));
+  list = [...list].sort((a, b) => S.galSort === "old"
+    ? (a[5] || "").localeCompare(b[5] || "")
+    : (b[5] || "").localeCompare(a[5] || ""));
+  return list;
+}
+
+function detailHTML(dex, card) {
+  const f = (k, label, type, extra = "") =>
+    `<label class="fld"><span>${label}</span>
+      <input data-field="${k}" type="${type}" value="${esc(card[k] || "")}" ${extra}></label>`;
+  return `<div class="detail">
+    <div class="detail-art">
+      <img src="${card.img}" alt="${esc(card.n)}" onerror="this.style.display='none'">
+    </div>
+    <div class="detail-info">
+      <div class="dt-name">${esc(card.n)}</div>
+      <div class="dt-set">${esc(card.set)}${card.date ? " · " + card.date.slice(0,4) : ""}</div>
+      <dl class="dt-meta">
+        <div><dt>Number</dt><dd>${esc(card.num)}</dd></div>
+        <div><dt>Rarity</dt><dd>${esc(card.r) || "—"}</dd></div>
+        <div><dt>Card ID</dt><dd>${esc(card.id)}</dd></div>
+      </dl>
+      <div class="dt-fields">
+        <label class="fld"><span>Condition</span>
+          <select data-field="cond">${CONDS.map(c =>
+            `<option value="${esc(c)}"${(card.cond||"") === c ? " selected" : ""}>${c || "—"}</option>`).join("")}</select></label>
+        ${f("price", "Paid", "text", 'placeholder="$"')}
+        ${f("acq", "Acquired", "date")}
+      </div>
+      ${f("note", "Notes", "text", 'placeholder="Anything worth remembering"')}
+      <div class="dt-actions">
+        <button class="ghost" data-act="regallery">Choose a different printing</button>
+        <button class="ghost danger" data-act="clearcard">Remove card</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderModal() {
+  const host = document.getElementById("modal");
+  if (S.pick === null) { host.className = ""; host.innerHTML = ""; return; }
+  const dex = S.pick, card = S.cards[dex];
+  const showDetail = card && !S.regallery;   // reached from the info button, not from picking
+
+  let body;
+  if (showDetail) {
+    body = detailHTML(dex, card);
+  } else if (S.galBusy) {
+    body = `<div class="galnote"><span class="spin"></span>Looking up every English printing…</div>`;
+  } else if (S.galErr) {
+    body = `<div class="galnote bad">The card database didn't answer — <code>${esc(S.galErr)}</code>.
+      <button class="ghost" data-act="retrygal">Try again</button>
+      <p>This one is run by volunteers and goes down fairly often; it usually comes back within
+      a few minutes. Your binder and everything in it is untouched — only picking new artwork
+      is on hold, and anything you've already chosen still works offline.</p></div>`;
+  } else {
+    const list = galFiltered();
+    let era = "";
+    body = `<div class="galbar">
+        <input class="search" id="galq" value="${esc(S.galQ)}" placeholder="Filter by set or rarity" autocomplete="off">
+        <button class="chip" data-act="galsort">${S.galSort === "old" ? "Oldest first" : "Newest first"}</button>
+        <button class="chip" data-act="refreshgal" title="Check for cards from newer sets">Refresh</button>
+        <span class="galcount">${list.length} of ${(S.gal||[]).length}${S.galMore ? " · more loading" : ""}${S.galAge && !S.galMore ? " · " + relTime(S.galAge) : ""}</span>
+      </div>
+      ${S.galStale ? `<div class="galpartial">The database is down, so this is the list from
+        ${relTime(S.galAge)} — it may be missing cards from newer sets.
+        <button class="ghost" data-act="refreshgal">Try again</button></div>` : ""}
+      ${S.galPartial > 0 ? `<div class="galpartial">The database dropped out partway — showing the
+        ${(S.gal||[]).length} cards that arrived, with about ${S.galPartial} still missing.
+        <button class="ghost" data-act="retrygal">Load the rest</button></div>` : ""}
+      ${list.length === 0 ? `<div class="galnote">Nothing matches that filter.</div>` : `<div class="galgrid">${
+        list.map((c, i) => {
+          const y = (c[5] || "").slice(0,4);
+          const head = y !== era ? (era = y, `<div class="yr">${y || "undated"}</div>`) : "";
+          const on = card && card.id === c[0];
+          return head + `<button class="gcard${on ? " on" : ""}" data-pick="${esc(c[0])}">
+            <img src="${c[6]}" alt="" ${i < 60 ? "" : 'loading="lazy"'}>
+            <span class="gc-set">${esc(c[4])}</span>
+            <span class="gc-meta">${esc(c[2])}${c[3] ? " · " + esc(c[3]) : ""}</span>
+          </button>`;
+        }).join("")}</div>`}`;
+  }
+
+  host.className = "open";
+  host.innerHTML = `<div class="scrim" data-act="closemodal"></div>
+    <div class="sheetbox" role="dialog" aria-label="Choose a card for ${esc(NAME[dex-1])}">
+      <div class="mhead">
+        ${smallSprite(dex)}
+        <div class="mtitle"><b>${esc(NAME[dex-1])}</b><span>#${pad(dex)} · page ${pageOf(dex)} · slot ${((dex-1)%PER)+1}</span></div>
+        <button class="mclose" data-act="closemodal" aria-label="Close">×</button>
+      </div>
+      <div class="mbody">${body}</div>
+    </div>`;
+  const gq = document.getElementById("galq");
+  if (gq && S.galQ) { gq.focus(); gq.setSelectionRange(gq.value.length, gq.value.length); }
+}
+
+/* ---------------- surgical updates ---------------- */
+function refreshCard(d) {
+  document.querySelectorAll(`[data-d="${d}"]`).forEach(el => {
+    el.outerHTML = el.classList.contains("pocket") ? pocket(d) : cell(d);
+  });
+}
+
+function updateHeader() {
+  const owned = S.status.filter(v => v & HAVE).length;
+  const special = S.status.filter(v => v & SPECIAL).length;
+  let hunting = 0;
+  for (let d = 1; d <= TOTAL; d++) if ((S.status[d-1] & HUNT) && !(S.status[d-1] & HAVE)) hunting++;
+  const pct = Math.round(owned / TOTAL * 100);
+  const n = document.getElementById("cnt");
+  if (n) n.textContent = owned;
+  const b = document.getElementById("fill");
+  if (b) b.style.width = pct + "%";
+  const p = document.getElementById("pika");
+  if (p) p.style.left = Math.min(Math.max(pct, 2.5), 97.5) + "%";
+  const s = document.getElementById("csub");
+  if (s) s.textContent = `${pct}% complete · ${special} special · ${hunting} on the hunt`;
+}
+
+function updateBinderMeta() {
+  if (S.tab !== "binder") return;
+  const pgs = pagesOfView(viewOf(S.page));
+  let have = 0, total = 0;
+  for (const p of pgs) {
+    const c = pageCount(p);
+    have += c.have; total += c.total;
+    const bar = document.querySelector(`.sbar[data-page="${p}"]`);
+    if (bar) {
+      bar.style.setProperty("--fill", (c.have/c.total*100) + "%");
+      bar.classList.toggle("full", c.have === c.total);
+    }
+    const head = document.querySelector(`.sheet[data-p="${p}"] .side span`);
+    if (head) {
+      const st = (p-1)*PER + 1, en = Math.min(st + PER - 1, TOTAL);
+      head.textContent = `#${pad(st)} – #${pad(en)} · ${c.have}/${c.total}`;
+    }
+  }
+  const r = document.getElementById("prange");
+  if (r) {
+    const first = pgs[0], last = pgs[pgs.length-1];
+    r.textContent = `Binder ${binderOf(first).word} · #${pad((first-1)*PER + 1)} – #${pad(Math.min(last*PER, TOTAL))} · ${have}/${total} filled`;
+  }
+  const cov = document.querySelector("[data-cover]");
+  if (cov) {
+    const bd = BINDERS[+cov.dataset.cover - 1];
+    const c = binderCount(bd);
+    const bar = cov.querySelector(".cover-bar i");
+    if (bar) bar.style.width = (c.total ? c.have / c.total * 100 : 0) + "%";
+    const cnt = cov.querySelector(".cover-count");
+    if (cnt) cnt.innerHTML = `<b>${c.have}</b> of ${c.total} filled`;
+  }
+}
+
+/* ---------------- views ---------------- */
+function coverHTML(bd) {
+  const { have, total } = binderCount(bd);
+  const start = (bd.a - 1) * PER + 1, end = Math.min(bd.b * PER, TOTAL);
+  const pct = total ? Math.round(have / total * 100) : 0;
+  const id = "b" + bd.n;
+  return `<div class="cover" data-cover="${bd.n}" style="--accent:${bd.accent}">
+    <div class="cover-in">
+      <svg class="ball" viewBox="0 0 100 100" role="img" aria-label="${bd.kind}">
+        <defs>
+          <clipPath id="clip${id}"><circle cx="50" cy="50" r="46"/></clipPath>
+          <linearGradient id="sheen${id}" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#fff" stop-opacity=".28"/>
+            <stop offset=".5" stop-color="#fff" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <g clip-path="url(#clip${id})">
+          <rect x="0" y="0" width="100" height="50" fill="${bd.accent}"/>
+          <rect x="0" y="50" width="100" height="50" fill="#E8E2D4"/>
+          <rect x="0" y="43.5" width="100" height="13" fill="#12141F"/>
+        </g>
+        <circle cx="50" cy="50" r="46" fill="none" stroke="#12141F" stroke-width="3.5"/>
+        <circle cx="50" cy="50" r="14.5" fill="#12141F"/>
+        <circle cx="50" cy="50" r="9.5" fill="#E8E2D4"/>
+        <circle cx="50" cy="50" r="5" fill="none" stroke="#B9B1A0" stroke-width="1.3"/>
+        <circle cx="50" cy="50" r="46" fill="url(#sheen${id})"/>
+      </svg>
+      <div class="cover-kicker">${bd.kind}</div>
+      <div class="cover-title">Living Dex</div>
+      <div class="cover-binder">Binder ${bd.word}</div>
+      <div class="cover-rule"></div>
+      <div class="cover-range">#${pad(start)} — #${pad(end)}</div>
+      <div class="cover-bar"><i style="width:${pct}%"></i></div>
+      <div class="cover-count"><b>${have}</b> of ${total} filled</div>
+    </div>
+  </div>`;
+}
+
+function endHTML(bd) {
+  const { have, total } = binderCount(bd);
+  const done = have === total;
+  const next = BINDERS.find(b => b.a === bd.b + 1);
+  const owned = S.status.filter(v => v & HAVE).length;
+  return `<div class="cover endplate" style="--accent:${bd.accent}">
+    <div class="cover-in">
+      <svg class="ball faded" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="46" fill="none" stroke="${bd.accent}" stroke-width="2.5" opacity=".55"/>
+        <line x1="4" y1="50" x2="96" y2="50" stroke="${bd.accent}" stroke-width="2.5" opacity=".55"/>
+        <circle cx="50" cy="50" r="14.5" fill="#171B29" stroke="${bd.accent}" stroke-width="2.5" opacity=".9"/>
+        <circle cx="50" cy="50" r="6" fill="${bd.accent}" opacity=".5"/>
+      </svg>
+      <div class="cover-kicker">${done ? "Binder complete" : "End of the binder"}</div>
+      <div class="cover-title" style="font-size:clamp(19px,3.2vw,26px)">Binder ${bd.word}</div>
+      <div class="cover-rule"></div>
+      <div class="cover-count" style="margin-top:0"><b>${have}</b> of ${total} pockets filled</div>
+      ${next
+        ? `<button class="endlink" data-page="${next.a}">Binder ${next.word} starts here &rsaquo;</button>`
+        : `<div class="endnote">That's the whole National Dex — <b>${owned}</b> of ${TOTAL} caught.</div>`}
+    </div>
+  </div>`;
+}
+
+function sheetHTML(p) {
+  const start = (p-1)*PER + 1, end = Math.min(start + PER - 1, TOTAL);
+  const { have, total } = pageCount(p);
+  const slots = []; for (let d = start; d <= end; d++) slots.push(d);
+  return `<div class="sheet" data-p="${p}">
+    <div class="side"><b>Page ${String(p).padStart(2,"0")}</b>
+      <span>#${pad(start)} – #${pad(end)} · ${have}/${total}</span></div>
+    <div class="grid">${slots.map(pocket).join("")}</div>
+  </div>`;
+}
+
+function viewBinder() {
+  const D = derive();
+  const v = viewOf(S.page);
+  const V = VIEWS[v];
+  const pgs = V.pages, bd = V.bd;
+  const first = pgs[0], last = pgs[pgs.length-1];
+  const start = (first-1)*PER + 1, end = Math.min(last*PER, TOTAL);
+  let have = 0, total = 0;
+  for (const p of pgs) { const c = pageCount(p); have += c.have; total += c.total; }
+  const label = pgs.length > 1
+    ? `Pages ${String(first).padStart(2,"0")}–${String(last).padStart(2,"0")}`
+    : `Page ${String(first).padStart(2,"0")}`;
+
+  /* a binder's first page faces its cover; a trailing odd page has nothing facing it */
+  const sheets = V.cover
+    ? coverHTML(bd) + sheetHTML(first)
+    : pgs.map(sheetHTML).join("") + (pgs.length === 1 ? endHTML(bd) : "");
+
+  const atStart = v === 0, atEnd = v === LASTVIEW;
+  return `
+  <div class="pagenav">
+    <button class="arrow" data-act="prev" ${v===0?"disabled":""} aria-label="Previous page">&lsaquo;</button>
+    <div class="pagemeta">
+      <div class="pageno">${label}</div>
+      <div class="pagerange" id="prange">Binder ${bd.word} · #${pad(start)} – #${pad(end)} · ${have}/${total} filled</div>
+    </div>
+    <button class="arrow" data-act="next" ${v===LASTVIEW?"disabled":""} aria-label="Next page">&rsaquo;</button>
+  </div>
+  <div class="strip">${D.pages.map(p =>
+    `<button class="sbar${pgs.includes(p.page)?" on":""}${p.have===p.total?" full":""}${BINDERS.some(b=>b.n>1&&b.a===p.page)?" split":""}"
+       data-page="${p.page}" style="--fill:${(p.have/p.total*100)}%"
+       title="Binder ${binderOf(p.page).word} · page ${p.page} — ${p.have}/${p.total}" aria-label="Page ${p.page}"></button>`).join("")}</div>
+  <div class="spread">
+    <button class="flip left" data-act="prev" ${atStart ? "disabled" : ""} aria-label="Previous page">
+      <span>&lsaquo;</span></button>
+    <div class="sheets">${sheets}</div>
+    <button class="flip right" data-act="next" ${atEnd ? "disabled" : ""} aria-label="Next page">
+      <span>&rsaquo;</span></button>
+  </div>`;
+}
+
+function wallList() {
+  const q = S.q.trim().toLowerCase();
+  const out = [];
+  for (let d = 1; d <= TOTAL; d++) {
+    const v = S.status[d-1];
+    if (S.gen >= 0 && genOf(d) !== S.gen) continue;
+    if (S.type >= 0 && !typesOf(d).includes(S.type)) continue;
+    if (S.filter === "have" && !(v & HAVE)) continue;
+    if (S.filter === "missing" && (v & HAVE)) continue;
+    if (S.filter === "special" && !(v & SPECIAL)) continue;
+    if (S.filter === "hunt" && !(v & HUNT)) continue;
+    if (q && !NAME[d-1].toLowerCase().includes(q) && !String(d).includes(q)) continue;
+    out.push(d);
+  }
+  return out;
+}
+
+function viewDex() {
+  const fchips = [["all","Everything"],["have","In the binder"],["missing","Still missing"],["special","Special"],["hunt","Hunting"]];
+  const list = wallList();
+  return `
+  <div class="filters">
+    <div class="frow">${fchips.map(([k,l]) => `<button class="chip${S.filter===k?" on":""}" data-filter="${k}">${l}</button>`).join("")}</div>
+    <div class="frow">
+      <button class="chip${S.gen===-1?" on":""}" data-gen="-1">All gens</button>
+      ${GENS.map((g,i) => `<button class="chip${S.gen===i?" on":""}" data-gen="${i}">${g[0]}</button>`).join("")}
+    </div>
+    <div class="frow">
+      <button class="chip${S.type===-1?" on":""}" data-type="-1">All types</button>
+      ${TNAME.map((n,i) => `<button class="chip type${S.type===i?" on":""}" data-type="${i}" style="--tc:${TCOL[i]}">${n}</button>`).join("")}
+    </div>
+  </div>
+  <div class="wallcount">${list.length} shown<span id="diag"></span></div>
+  ${list.length === 0
+    ? `<div class="empty">Nothing matches those filters. Widen them to see the dex again.</div>`
+    : `<div class="wall" id="wall"></div><div class="sentinel" id="sentinel">loading more…</div>`}`;
+}
+
+/* wall paints in chunks so it never floods the browser with 1,025 image requests */
+let wall = { list: [], drawn: 0, io: null, timer: null };
+
+/* Rather than waiting for the scroll to reach the bottom, keep filling the grid in the
+   background during idle frames. Staggering the batches is what keeps the sprite hosts
+   happy; making them wait on the scroll position was never the point. */
+function scheduleFill() {
+  cancelFill();
+  if (wall.drawn >= wall.list.length) return;
+  const idle = window.requestIdleCallback || (cb => setTimeout(cb, 70));
+  wall.timer = idle(() => { wall.timer = null; drawChunk(); scheduleFill(); });
+}
+function cancelFill() {
+  if (wall.timer == null) return;
+  if (window.cancelIdleCallback) { try { cancelIdleCallback(wall.timer); } catch (e) {} }
+  clearTimeout(wall.timer);
+  wall.timer = null;
+}
+
+function paintWall() {
+  const host = document.getElementById("wall");
+  if (!host) return;
+  cancelFill();
+  wall.list = wallList();
+  wall.drawn = 0;
+  host.innerHTML = "";
+  drawChunk();
+  scheduleFill();
+  if (wall.io) wall.io.disconnect();
+  const sent = document.getElementById("sentinel");
+  if (!sent) return;
+  wall.io = new IntersectionObserver(es => {
+    if (es.some(e => e.isIntersecting)) { drawChunk(); scheduleFill(); }
+  }, { rootMargin: "1600px" });
+  wall.io.observe(sent);
+}
+function updateDiag() {
+  const el = document.getElementById("diag");
+  if (!el) return;
+  el.textContent = ` · ${wall.drawn} slots drawn` + (spriteFails ? ` · ${spriteFails} sprites unavailable` : "");
+}
+
+function drawChunk() {
+  const host = document.getElementById("wall");
+  const sent = document.getElementById("sentinel");
+  if (!host) return;
+  const end = Math.min(wall.drawn + CHUNK, wall.list.length);
+  if (end > wall.drawn) {
+    host.insertAdjacentHTML("beforeend", wall.list.slice(wall.drawn, end).map(cell).join(""));
+    wall.drawn = end;
+  }
+  updateDiag();
+  if (sent) {
+    const done = wall.drawn >= wall.list.length;
+    sent.style.display = done ? "none" : "";
+    if (done) { if (wall.io) wall.io.disconnect(); cancelFill(); }
+  }
+}
+
+/* These read the printings you've actually picked, so they describe identified
+   cards rather than the whole binder. */
+function cardStats() {
+  const list = [];
+  for (const k in S.cards) { const d = +k; if (S.status[d-1] & HAVE) list.push(S.cards[d]); }
+  const byYear = {}, bySet = {}, byRarity = {};
+  let oldest = null, newest = null;
+  for (const c of list) {
+    const y = (c.date || "").slice(0, 4);
+    if (y) {
+      byYear[y] = (byYear[y] || 0) + 1;
+      if (!oldest || c.date < oldest.date) oldest = c;
+      if (!newest || c.date > newest.date) newest = c;
+    }
+    if (c.set) bySet[c.set] = (bySet[c.set] || 0) + 1;
+    const r = c.r || "Unlisted";
+    byRarity[r] = (byRarity[r] || 0) + 1;
+  }
+  const rank = o => Object.entries(o).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  const chase = list.filter(c => /secret|rainbow|hyper|illustration|ultra|special|gold|shiny/i.test(c.r || "")).length;
+  const years = Object.keys(byYear).sort();
+  return { n: list.length, byYear, years, oldest, newest, chase,
+           sets: rank(bySet), rarities: rank(byRarity), topYear: rank(byYear)[0] || null };
+}
+
+const noCards = `<p class="lede" style="font-size:13.5px;color:var(--dim);margin:0">
+  Nothing to show yet. Pick the printing on any pocket and these fill in.</p>`;
+
+function viewSets() {
+  if (S.openSet) return viewSetDetail();
+  if (S.setsBusy && !S.sets) return `<div class="galnote"><span class="spin"></span>Loading the set list…</div>`;
+  if (S.setsErr && !S.sets) return `<div class="galnote bad">Couldn't load the set list — <code>${esc(S.setsErr)}</code>.
+    <button class="ghost" data-act="reloadsets">Try again</button>
+    <p>The card database is volunteer-run and drops out from time to time. Your binder is unaffected.</p></div>`;
+
+  const owned = ownedCardIds();
+  const perSet = {}, seen = {};
+  const bump = id => {
+    if (seen[id]) return; seen[id] = 1;
+    const setId = id.slice(0, id.lastIndexOf("-"));
+    perSet[setId] = (perSet[setId] || 0) + 1;
+  };
+  for (const id in owned) bump(id);
+  for (const id in S.setOwned) if (S.setOwned[id]) bump(id);
+
+  const q = S.setsQ.trim().toLowerCase();
+  const list = (S.sets || []).filter(x => !q || x[1].toLowerCase().includes(q) || (x[2] || "").toLowerCase().includes(q));
+  let era = "";
+  return `
+  <div class="filters">
+    <div class="frow">
+      <input class="search" id="setsq" value="${esc(S.setsQ)}" placeholder="Find a set" autocomplete="off">
+      <button class="chip" data-act="reloadsets">Refresh</button>
+      <span class="galcount" style="margin-left:auto">${list.length} sets</span>
+    </div>
+  </div>
+  <div class="setgrid">${list.map(x => {
+    const y = (x[3] || "").slice(0, 4);
+    const head = y !== era ? (era = y, `<div class="yr">${y || "undated"}</div>`) : "";
+    const mine = perSet[x[0]] || 0;
+    return head + `<button class="settile" data-set="${esc(x[0])}">
+      <span class="setlogo">${x[5] ? `<img src="${x[5]}" alt="" loading="lazy">` : `<em>${esc(x[1])}</em>`}</span>
+      <span class="setname">${esc(x[1])}</span>
+      <span class="setmeta">${x[4] ? x[4] + " cards" : ""}${x[3] ? " · " + x[3].replace(/\//g, ".") : ""}</span>
+      ${mine ? `<span class="setmine">${mine}${x[4] ? " / " + x[4] : ""} owned</span>` : ""}
+    </button>`;
+  }).join("")}</div>`;
+}
+
+function viewSetDetail() {
+  const set = (S.sets || []).find(x => x[0] === S.openSet);
+  const owned = ownedCardIds();
+  const cards = dedupeById(S.setCards);
+  const mine = cards.filter(c => owned[c[0]] || S.setOwned[c[0]]).length;
+  const chaseTotal = cards.filter(c => isChase(c[3])).length;
+  const chaseMine = cards.filter(c => isChase(c[3]) && (owned[c[0]] || S.setOwned[c[0]])).length;
+  return `
+  <div class="setback"><button class="ghost" data-act="closeset">&lsaquo; All sets</button>
+    <button class="ghost" data-act="reloadset" title="Refetch this set from the card database">Reload set</button></div>
+  <div class="sethead">
+    ${set && set[5] ? `<img class="sethero" src="${set[5]}" alt="">` : ""}
+    <div>
+      <h2 class="sethead-name">${esc(set ? set[1] : S.openSet)}</h2>
+      <div class="sethead-meta">${set ? esc(set[2]) : ""}${set && set[3] ? " · " + set[3].replace(/\//g, ".") : ""}
+        ${set && set[4] ? " · " + set[4] + " cards" : ""}</div>
+      ${cards.length ? `<div class="sethead-mine"><b>${mine}</b> of ${cards.length} owned${
+        chaseTotal ? ` · <b>${chaseMine}</b> of ${chaseTotal} chase` : ""}</div>
+        <div class="sethead-bar"><i style="width:${mine/cards.length*100}%"></i></div>
+        <div class="sethead-hint">Click any card to mark it. Set collecting only — this never
+          touches your Pokédex totals.</div>` : ""}
+    </div>
+  </div>
+  ${S.setCardsBusy && !cards.length ? `<div class="galnote"><span class="spin"></span>Loading cards…</div>` : ""}
+  ${!S.setCardsBusy && S.setMissing ? `<div class="galpartial">The database withheld ${S.setMissing}
+    ${S.setMissing === 1 ? "card" : "cards"} from this set.
+    <button class="ghost" data-act="reloadset">Try again</button></div>` : ""}
+  ${S.setCardsErr && !cards.length ? `<div class="galnote bad">Couldn't load this set — <code>${esc(S.setCardsErr)}</code>.
+      <button class="ghost" data-act="reloadset">Try again</button></div>` : ""}
+  ${cards.length ? `<div class="galgrid">${cards.map(c => {
+    const dex = owned[c[0]];
+    const mine = !!dex || !!S.setOwned[c[0]];
+    const chase = isChase(c[3]);
+    return `<button class="gcard setcard${mine ? " mine" : ""}${chase ? " chase" : ""}"
+        data-own="${esc(c[0])}" aria-pressed="${mine}"
+        title="${esc(c[1])} · ${esc(c[2])}${dex ? ` — in your binder as #${pad(dex)}` : ""}">
+      <img src="${c[4]}" alt="" loading="lazy">
+      <span class="gc-set">${esc(c[1])}</span>
+      <span class="gc-meta">${esc(c[2])}${c[3] ? " · " + esc(c[3]) : ""}</span>
+      ${mine ? `<span class="ownedtick">✓</span>` : ""}
+      ${dex ? `<span class="dexflag" title="Also in your Pokédex binder">#${pad(dex)}</span>` : ""}
+      ${chase ? `<span class="chaseflag">★</span>` : ""}
+    </button>`;
+  }).join("")}${S.setCardsBusy ? `<div class="yr">more loading…</div>` : ""}</div>` : ""}`;
+}
+
+function viewStats() {
+  const D = derive();
+  const C = cardStats();
+  const nearly = D.pages.filter(p => p.have < p.total).sort((a,b) => b.have/b.total - a.have/a.total).slice(0,6);
+  const done = D.pages.filter(p => p.have === p.total);
+  const types = [...D.byType].sort((a,b) => b.have/b.total - a.have/a.total);
+  const recent = S.log.filter(e => S.status[e[0]-1] & HAVE).slice(-5).reverse();
+
+  return `<div class="stats">
+    <div class="card">
+      <h2>Recent additions</h2>
+      ${recent.length === 0
+        ? `<p class="lede" style="margin:0;color:var(--dim);font-size:13.5px">Nothing logged yet. From now on, every card you mark as owned lands here with the time you added it.</p>`
+        : `<ul class="recent">${recent.map(([d, t]) => {
+            const sp = S.status[d-1] & SPECIAL;
+            return `<li><button data-jump="${d}">
+              <span class="rsprite">${smallSprite(d)}</span>
+              <span class="rname"><b>${esc(NAME[d-1])} ${sp ? '<span class="rstar">✦</span>' : ""}</b>
+                <span>#${pad(d)} · page ${String(pageOf(d)).padStart(2,"0")} · slot ${((d-1)%PER)+1}</span></span>
+              <span class="rwhen">${relTime(t)}</span>
+            </button></li>`;
+          }).join("")}</ul>`}
+    </div>
+    <div class="card">
+      <h2>Where the gaps are</h2>
+      <p class="lede">${done.length === 0
+        ? `No page is finished yet. Page ${nearly[0].page} is closest — ${nearly[0].total - nearly[0].have} cards short.`
+        : `${done.length} page${done.length>1?"s":""} finished. Page ${nearly[0] ? nearly[0].page : "—"} is next in line.`}</p>
+      <ul class="plain near">${nearly.map(p => `<li><button data-page="${p.page}">
+        <span class="near-p">Page ${String(p.page).padStart(2,"0")}</span>
+        <span class="minibar"><i style="width:${p.have/p.total*100}%"></i></span>
+        <span class="near-n">${p.total - p.have} to go</span></button></li>`).join("")}</ul>
+    </div>
+    <div class="card">
+      <h2>By generation</h2>
+      <ul class="plain">${D.byGen.map(g => `<li class="row">
+        <span class="rl">${g.n}</span>
+        <span class="minibar"><i style="width:${g.have/g.total*100}%"></i></span>
+        <span class="rv">${g.have}<em>/${g.total}</em></span></li>`).join("")}</ul>
+    </div>
+    <div class="card">
+      <h2>By type</h2>
+      <ul class="plain">${types.map(t => `<li class="row">
+        <span class="tn">${t.n}</span>
+        <span class="minibar"><i style="width:${t.have/t.total*100}%;background:${t.c}"></i></span>
+        <span class="tv">${Math.round(t.have/t.total*100)}%</span></li>`).join("")}</ul>
+    </div>
+    <div class="card">
+      <h2>Odds and ends</h2>
+      <div class="facts">
+        <div><b>${D.best}</b><span>longest unbroken run, ending at #${pad(D.end)}</span></div>
+        <div><b>${D.gap}</b><span>biggest hole in the dex, up to #${pad(D.gapEnd)}</span></div>
+        <div><b>${done.length}</b><span>pages finished · ${PAGES - done.length} still open</span></div>
+        <div><b>${Math.round(D.dual / Math.max(D.owned,1) * 100)}%</b><span>of your cards are dual-type</span></div>
+        <div><b>${C.n}</b><span>of ${D.owned} owned slots have their printing identified</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Squads</h2>
+      <ul class="plain">${D.squads.map(q => `<li class="row">
+        <span class="tn">${q.n}</span>
+        <span class="minibar"><i style="width:${q.have/q.total*100}%"></i></span>
+        <span class="rv">${q.have}<em>/${q.total}</em></span></li>`).join("")}</ul>
+    </div>
+
+    <div class="card">
+      <h2>Card ages</h2>
+      ${C.n === 0 ? noCards : `
+        <p class="lede" style="font-size:13.5px">Most of your identified cards are from
+          <b style="color:var(--gold);font-weight:500">${C.topYear[0]}</b> — ${C.topYear[1]} of ${C.n}.</p>
+        <ul class="plain">${C.years.map(y => `<li class="row">
+          <span class="rl">${y}</span>
+          <span class="minibar"><i style="width:${C.byYear[y]/C.topYear[1]*100}%"></i></span>
+          <span class="rv">${C.byYear[y]}</span></li>`).join("")}</ul>
+        <div class="facts" style="margin-top:15px">
+          <div><b>${(C.oldest.date||"").slice(0,4)}</b><span>oldest — ${esc(C.oldest.n)}, ${esc(C.oldest.set)}</span></div>
+          <div><b>${(C.newest.date||"").slice(0,4)}</b><span>newest — ${esc(C.newest.n)}, ${esc(C.newest.set)}</span></div>
+        </div>`}
+    </div>
+
+    <div class="card">
+      <h2>Rarity</h2>
+      ${C.n === 0 ? noCards : `
+        <p class="lede" style="font-size:13.5px">${C.chase === 0
+          ? "No secret, ultra or illustration rares identified yet."
+          : `<b style="color:var(--gold);font-weight:500">${C.chase}</b> chase ${C.chase === 1 ? "card" : "cards"} —
+             secret, ultra, illustration and the like.`}</p>
+        <ul class="plain">${C.rarities.map(([r, n]) => `<li class="row">
+          <span class="tn" style="min-width:104px">${esc(r)}</span>
+          <span class="minibar"><i style="width:${n/C.rarities[0][1]*100}%"></i></span>
+          <span class="tv">${n}</span></li>`).join("")}</ul>`}
+    </div>
+
+    <div class="card">
+      <h2>Sets in the binder</h2>
+      ${C.n === 0 ? noCards : `
+        <p class="lede" style="font-size:13.5px"><b style="color:var(--gold);font-weight:500">${C.sets.length}</b>
+          different ${C.sets.length === 1 ? "set" : "sets"} represented across ${C.n} identified
+          ${C.n === 1 ? "card" : "cards"}.</p>
+        <ul class="plain">${C.sets.slice(0, 10).map(([name, n]) => `<li class="row">
+          <span class="tn" style="min-width:118px">${esc(name)}</span>
+          <span class="minibar"><i style="width:${n/C.sets[0][1]*100}%"></i></span>
+          <span class="tv">${n}</span></li>`).join("")}</ul>
+        ${C.sets.length > 10 ? `<p class="lede" style="font-size:11.5px;color:var(--dim);margin:12px 0 0">
+          plus ${C.sets.length - 10} more with fewer cards</p>` : ""}`}
+    </div>
+    <div class="card wide">
+      <h2>The hunt list</h2>
+      ${D.hunting.length === 0
+        ? `<p class="lede">Nothing flagged. Open any card and choose “Hunting” to build this list.</p>`
+        : `<p class="lede">${D.hunting.length} cards flagged and still missing — the list for your next shop run.</p>
+           <div class="huntlist">${D.hunting.map(d => `<span class="hitem">${smallSprite(d)}<em>#${pad(d)}</em>${esc(NAME[d-1])}</span>`).join("")}</div>`}
+    </div>
+  </div>`;
+}
+
+/* ---------------- render ---------------- */
+function stepView(dir) {
+  const v = Math.max(0, Math.min(LASTVIEW, viewOf(S.page) + dir));
+  S.page = pagesOfView(v)[0];
+  renderView();
+}
+
+function renderChrome() {
+  const owned = S.status.filter(v => v & HAVE).length;
+  const special = S.status.filter(v => v & SPECIAL).length;
+  let hunting = 0;
+  for (let d = 1; d <= TOTAL; d++) if ((S.status[d-1] & HUNT) && !(S.status[d-1] & HAVE)) hunting++;
+  const pct = Math.round(owned / TOTAL * 100);
+  document.getElementById("hdr").innerHTML = `
+  <header class="head">
+    <div>
+      <div class="eyebrow">One card per Pokémon · Gen I–IX</div>
+      <h1 class="title">Living Dex</h1>
+    </div>
+    <div class="count">
+      <div class="count-n"><b id="cnt">${owned}</b><span>/${TOTAL}</span></div>
+      <div class="track">
+        ${HOST ? `<img class="pika" id="pika" src="${HOST.pika}" alt="" style="left:${Math.min(Math.max(pct,2.5),97.5)}%">` : ""}
+        <div class="bar"><i id="fill" style="width:${pct}%"></i></div>
+      </div>
+      <div class="count-sub"><span id="csub">${pct}% complete · ${special} special · ${hunting} on the hunt</span><span class="save" id="save"></span></div>
+    </div>
+  </header>
+  <nav class="tabs">
+    ${[["binder","Binder"],["dex","Dex wall"],["sets","Sets"],["stats","Progress"]].map(([k,l]) =>
+      `<button class="tab${S.tab===k?" on":""}" data-tab="${k}">${l}</button>`).join("")}
+    <span class="spacer"></span>
+    <div class="searchwrap">
+      <input class="search" id="q" value="${esc(S.q)}" placeholder="Jump to a Pokémon…"
+        autocomplete="off" spellcheck="false" aria-label="Jump to a Pokémon" role="combobox" aria-expanded="${!!S.q.trim()}">
+      <div id="sug"></div>
+    </div>
+  </nav>`;
+  renderSug();
+}
+
+function renderView() {
+  document.getElementById("view").innerHTML =
+    (resolved && !HOST ? `<div class="banner">Artwork can't load in this window, so cards show their dex number and type colours instead. Save this file to your computer and open it in a browser to get the full art.</div>` : "")
+    + (S.tab === "binder" ? viewBinder() : S.tab === "dex" ? viewDex()
+       : S.tab === "sets" ? viewSets() : viewStats());
+  if (S.tab === "dex") paintWall();
+  if (S.tab === "sets" && !S.sets && !S.setsBusy && !S.setsErr) loadSets();
+}
+
+function renderFoot() {
+  document.getElementById("foot").innerHTML = `
+  <footer class="foot">
+    <button class="ghost" data-act="artmode">${S.artMode ? "Showing card art" : "Showing sprites"}</button>
+    <button class="ghost" data-act="clearcache" title="Forces every gallery to reload from the card database">
+      ${S.clearedCache ? `Cleared ${S.clearedCache} — reopen any card` : "Check for new sets"}</button>
+    <button class="ghost" data-act="export">Download spreadsheet</button>
+    <button class="ghost" data-act="reset" style="${S.confirmReset?"color:var(--gold);border-color:var(--gold)":""}">
+      ${S.confirmReset ? "Tap again to wipe your changes" : "Reset to original"}</button>
+    <span class="foot-note">${S.storageOk ? "Changes save automatically in this browser." : "Can't save here — download the spreadsheet to keep your changes."}</span>
+  </footer>`;
+}
+
+function renderAll() { renderChrome(); renderView(); renderFoot(); }
+
+/* ---------------- events ---------------- */
+document.addEventListener("click", e => {
+  // modal first — it sits above everything
+  const mact = e.target.closest("#modal [data-act]");
+  if (mact) {
+    const a = mact.dataset.act;
+    if (a === "closemodal") { S.pick = null; S.regallery = false; renderModal(); }
+    else if (a === "galsort") { S.galSort = S.galSort === "old" ? "new" : "old"; renderModal(); }
+    else if (a === "regallery") { S.regallery = true; renderModal(); if (!S.gal) openPicker(S.pick); }
+    else if (a === "clearcard") { const d = S.pick; S.pick = null; S.regallery = false; clearCard(d); }
+    else if (a === "retrygal" || a === "refreshgal") { openPicker(S.pick, true); }
+    return;
+  }
+  const info = e.target.closest("[data-info]");
+  if (info) {
+    e.preventDefault(); e.stopPropagation();
+    closePop();
+    S.pick = +info.dataset.info; S.regallery = false;
+    renderModal();
+    return;
+  }
+  const pickBtn = e.target.closest("[data-pick]");
+  if (pickBtn) { S.regallery = false; chooseCard(S.pick, pickBtn.dataset.pick); return; }
+  if (e.target.closest("#modal")) return;
+
+  const opt = e.target.closest("[data-opt]");
+  if (opt) {
+    const d = S.pop;
+    applyOpt(d, opt.dataset.opt);
+    closePop();
+    refreshCard(d); updateHeader(); updateBinderMeta();
+    if (S.tab === "stats") renderView();
+    return;
+  }
+  const pickAct = e.target.closest('#pop [data-act="pickcard"]');
+  if (pickAct) { const d = S.pop; closePop(); S.regallery = true; openPicker(d); return; }
+  const dropAct = e.target.closest('#pop [data-act="dropcard"]');
+  if (dropAct) { const d = S.pop; closePop(); clearCard(d); return; }
+  if (e.target.closest("#pop")) return;
+
+  const el = e.target.closest("[data-d],[data-tab],[data-page],[data-gen],[data-type],[data-filter],[data-act],[data-jump],[data-set],[data-own]");
+  const wasOpen = S.pop;
+  if (wasOpen !== null) closePop();
+  if (!el) return;
+  const ds = el.dataset;
+
+  if (ds.jump) { jumpTo(+ds.jump); return; }
+  if (ds.d) { if (wasOpen !== +ds.d) openPop(+ds.d, el); return; }
+  if (ds.tab) { S.tab = ds.tab; if (ds.tab !== "sets") S.openSet = null;
+                renderChrome(); renderView(); return; }
+  if (ds.page) { S.page = +ds.page; S.tab = "binder"; renderChrome(); renderView(); return; }
+  if (ds.gen !== undefined) { S.gen = S.gen === +ds.gen ? -1 : +ds.gen; renderView(); return; }
+  if (ds.type !== undefined) { S.type = S.type === +ds.type ? -1 : +ds.type; renderView(); return; }
+  if (ds.filter) { S.filter = ds.filter; renderView(); return; }
+  if (ds.own) {
+    /* set collecting only — deliberately does not touch S.status or any dex total */
+    if (S.setOwned[ds.own]) delete S.setOwned[ds.own]; else S.setOwned[ds.own] = 1;
+    queueSave();
+    renderView();
+    return;
+  }
+  if (ds.set) { loadSetCards(ds.set); return; }
+  if (ds.act === "closeset") { S.openSet = null; S.setCards = null; renderView(); return; }
+  if (ds.act === "reloadsets") { S.sets = null; loadSets(true); return; }
+  if (ds.act === "reloadset") { loadSetCards(S.openSet, true); return; }
+  if (ds.act === "prev") { stepView(-1); return; }
+  if (ds.act === "next") { stepView(1); return; }
+  if (ds.act === "export") { exportSheet(); return; }
+  if (ds.act === "artmode") { S.artMode = !S.artMode; queueSave(); renderView(); renderFoot(); return; }
+  if (ds.act === "clearcache") {
+    clearGalleryCache().then(n => {
+      S.clearedCache = n || -1;
+      renderFoot();
+      setTimeout(() => { S.clearedCache = 0; renderFoot(); }, 5000);
+    });
+    return;
+  }
+  if (ds.act === "reset") {
+    if (S.confirmReset) {
+      S.status = [...SEED].map(Number); S.log = []; S.confirmReset = false; queueSave(); renderAll();
+    } else {
+      S.confirmReset = true; renderFoot();
+      setTimeout(() => { if (S.confirmReset) { S.confirmReset = false; renderFoot(); } }, 4000);
+    }
+    return;
+  }
+});
+
+document.addEventListener("input", e => {
+  if (e.target.id === "galq") { S.galQ = e.target.value; renderModal(); return; }
+  if (e.target.id === "setsq") {
+    S.setsQ = e.target.value; renderView();
+    const el = document.getElementById("setsq");
+    if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); }
+    return;
+  }
+  const fld = e.target.closest("[data-field]");
+  if (fld && S.pick !== null && S.cards[S.pick]) {
+    S.cards[S.pick][fld.dataset.field] = e.target.value;
+    queueSave();
+    return;
+  }
+  if (e.target.id !== "q") return;
+  S.q = e.target.value; S.sel = -1;
+  closePop();
+  renderSug();
+  if (S.tab === "dex") renderView();
+});
+
+document.addEventListener("keydown", e => {
+  if (e.target.id === "q") {
+    const list = suggest();
+    if (e.key === "ArrowDown") { e.preventDefault(); S.sel = Math.min(S.sel + 1, list.length - 1); renderSug(); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); S.sel = Math.max(S.sel - 1, -1); renderSug(); }
+    else if (e.key === "Enter") { const d = list[S.sel < 0 ? 0 : S.sel]; if (d) jumpTo(d); }
+    else if (e.key === "Escape") { S.q = ""; S.sel = -1; renderSug(); if (S.tab === "dex") renderView(); }
+    return;
+  }
+  if (e.key === "Escape" && S.pick !== null) { S.pick = null; S.regallery = false; renderModal(); return; }
+  if (e.key === "Escape" && S.pop !== null) { closePop(); return; }
+  if (S.tab !== "binder" || e.target.tagName === "INPUT") return;
+  if (e.key === "ArrowLeft") stepView(-1);
+  if (e.key === "ArrowRight") stepView(1);
+});
+
+/* Hovering a pocket for a moment starts its lookup, so by the time the menu is open
+   the gallery is usually already in hand. Only fires once per Pokémon per session. */
+let hoverTimer = null;
+document.addEventListener("mouseover", e => {
+  const pk = e.target.closest && e.target.closest(".pocket[data-d]");
+  clearTimeout(hoverTimer);
+  if (!pk) return;
+  const d = +pk.dataset.d;
+  hoverTimer = setTimeout(() => prefetchGallery(d), 280);
+}, { passive: true });
+
+addEventListener("scroll", () => { if (S.pop !== null && S.pick === null) closePop(); }, { passive: true });
+addEventListener("resize", () => { if (S.pop !== null) closePop(); });
+
+function exportSheet() {
+  const rows = [["PokeDex #","Name","Page #","Slot #","Card Type","Special","Priority",
+                 "Card ID","Card Name","Set","Set Year","Card Number","Rarity",
+                 "Condition","Paid","Acquired","Notes"]];
+  for (let d = 1; d <= TOTAL; d++) {
+    const v = S.status[d-1], c = S.cards[d] || {};
+    rows.push(["#" + pad(d), NAME[d-1], pageOf(d), ((d-1)%PER)+1,
+      v & HAVE ? 1 : 0, v & SPECIAL ? "special" : "", v & HUNT ? "x" : "",
+      c.id || "", c.n || "", c.set || "", (c.date || "").slice(0,4), c.num || "", c.r || "",
+      c.cond || "", c.price || "", c.acq || "", c.note || ""]);
+  }
+  const csv = rows.map(r => r.map(c => {
+    const s = String(c);
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s;
+  }).join(",")).join("\r\n");
+  const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "Pokemon_Collection.csv";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+boot();
+</script>
+</body>
+</html>
