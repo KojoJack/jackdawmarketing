@@ -12,28 +12,38 @@
 
   gtag('config', 'G-7NPP9DSENG');
 </script>
-<title>JackDaw Marketing: Web Design & Marketing, Newmarket & GTA</title>
+<title>Jackdaw Marketing: Web Design & Marketing, Newmarket & GTA</title>
 <meta name="description" content="JackDaw Marketing designs, builds and optimizes fast, modern websites that help local businesses in Newmarket, Aurora, Bradford and the GTA get found and turn visitors into customers.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 16'%3E%3Crect width='20' height='16' fill='%23221024'/%3E%3Cg fill='%23FCF3E3'%3E%3Crect x='13' y='0' width='4' height='1'/%3E%3Crect x='12' y='1' width='6' height='1'/%3E%3Crect x='12' y='2' width='2' height='1'/%3E%3Crect x='15' y='2' width='3' height='1'/%3E%3Crect x='12' y='3' width='6' height='1'/%3E%3Crect x='11' y='4' width='7' height='1'/%3E%3Crect x='10' y='5' width='8' height='1'/%3E%3Crect x='9' y='6' width='9' height='1'/%3E%3Crect x='8' y='7' width='4' height='1'/%3E%3Crect x='13' y='7' width='5' height='1'/%3E%3Crect x='7' y='8' width='4' height='1'/%3E%3Crect x='13' y='8' width='5' height='1'/%3E%3Crect x='5' y='9' width='5' height='1'/%3E%3Crect x='12' y='9' width='6' height='1'/%3E%3Crect x='3' y='10' width='7' height='1'/%3E%3Crect x='12' y='10' width='7' height='1'/%3E%3Crect x='0' y='11' width='9' height='1'/%3E%3Crect x='11' y='11' width='8' height='1'/%3E%3Crect x='1' y='12' width='17' height='1'/%3E%3Crect x='4' y='13' width='4' height='1'/%3E%3Crect x='13' y='13' width='4' height='1'/%3E%3Crect x='4' y='14' width='1' height='1'/%3E%3Crect x='16' y='14' width='1' height='1'/%3E%3Crect x='3' y='15' width='3' height='1'/%3E%3Crect x='15' y='15' width='3' height='1'/%3E%3C/g%3E%3Cg fill='%23FF5535'%3E%3Crect x='18' y='3' width='2' height='1'/%3E%3Crect x='18' y='4' width='2' height='1'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="canonical" href="https://jackdawmarketing.ca/">
 <meta name="theme-color" content="#221024">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://jackdawmarketing.ca/">
 <meta property="og:site_name" content="JackDaw Marketing">
-<meta property="og:title" content="JackDaw Marketing: Web Design & Marketing, Newmarket & GTA">
+<meta property="og:title" content="Jackdaw Marketing: Web Design & Marketing, Newmarket & GTA">
 <meta property="og:description" content="Fast, modern websites that help local businesses in Newmarket, Aurora, Bradford and the GTA get found and turn visitors into customers.">
 <meta property="og:image" content="https://jackdawmarketing.ca/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Jackdaw Marketing">
+<meta property="og:locale" content="en_CA">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Jackdaw Marketing: Web Design & Marketing, Newmarket & GTA">
+<meta name="twitter:description" content="Fast, modern websites that help local businesses in Newmarket, Aurora, Bradford and the GTA get found and turn visitors into customers.">
+<meta name="twitter:image" content="https://jackdawmarketing.ca/og.png">
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
   "@type":"ProfessionalService",
+  "@id":"https://jackdawmarketing.ca/#organization",
   "name":"JackDaw Marketing",
   "url":"https://jackdawmarketing.ca/",
   "email":"jack@jackdawmarketing.ca",
+  "image":"https://jackdawmarketing.ca/og.png",
+  "priceRange":"$$",
   "description":"Websites designed, built and optimized to help local businesses get found and turn visitors into customers.",
   "founder":{"@type":"Person","name":"Jack"},
-  "address":{"@type":"PostalAddress","addressRegion":"ON","addressCountry":"CA"},
+  "address":{"@type":"PostalAddress","addressLocality":"Newmarket","addressRegion":"ON","addressCountry":"CA"},
   "areaServed":[
     {"@type":"City","name":"Newmarket"},
     {"@type":"City","name":"Aurora"},
@@ -252,42 +262,20 @@
   }
   .card:hover .go{text-decoration:underline;text-underline-offset:4px}
 
-  /* ---------- about ---------- */
-  .about{display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(28px,5vw,70px);margin-top:36px}
-  @media(max-width:860px){ .about{grid-template-columns:1fr} }
-  .about p.big{
-    font-size:clamp(19px,2.3vw,26px);line-height:1.42;margin:0 0 22px;letter-spacing:-.01em;
+  /* ---------- why ---------- */
+  .why{display:flex;flex-direction:column;gap:clamp(38px,6vw,64px);margin-top:36px;max-width:840px}
+  .why-item h3{
+    font-family:var(--display);text-transform:uppercase;letter-spacing:-.01em;
+    font-size:clamp(20px,2.6vw,27px);line-height:1.05;color:var(--marigold);margin:0 0 16px;
   }
-  .about p{max-width:46ch}
-  .photo-wrap{position:relative;margin:6px 0 34px}
-  @media(min-width:861px){
-    .photo-wrap{position:sticky;top:110px;align-self:start}
+  .why-item p{margin:0 0 14px;max-width:62ch;opacity:.85}
+  .why-item p:last-child{margin-bottom:0}
+  .why-tag{
+    font-family:var(--display);text-transform:uppercase;letter-spacing:-.02em;
+    font-size:clamp(16px,2.4vw,28px);line-height:1.05;margin:10px 0 0;white-space:nowrap;
+    padding-top:clamp(30px,5vw,50px);border-top:2px solid var(--plum-3);
   }
-  .photo-wrap .mascot{
-    position:absolute;top:-20px;right:-16px;z-index:2;
-    width:clamp(56px,7vw,80px);height:auto;
-    filter:drop-shadow(3px 4px 0 var(--plum));
-  }
-  .photo-grid{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-    gap:28px;
-  }
-  .photo-grid .photo{
-    position:relative;display:block;aspect-ratio:4/3;overflow:hidden;
-    border:2px solid var(--cream);box-shadow:9px 9px 0 var(--jade);background:var(--plum);
-    transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease;
-  }
-  .photo-grid .photo:hover{transform:translate(-4px,-4px);box-shadow:13px 13px 0 var(--marigold)}
-  .photo-grid img{
-    width:100%;height:100%;object-fit:cover;display:block;
-    transition:transform .4s cubic-bezier(.2,.8,.2,1);
-  }
-  .photo-grid .photo:hover img{transform:scale(1.06)}
-  .photo-grid .tag{
-    position:absolute;left:0;bottom:0;background:var(--marigold);color:var(--plum);
-    font-style:normal;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
-    text-transform:uppercase;padding:6px 11px;
-  }
+  @media(max-width:480px){ .why-tag{white-space:normal;font-size:clamp(18px,5.6vw,24px)} }
   /* ---------- contact ---------- */
   .contact{background:var(--marigold);color:var(--plum);margin-top:clamp(50px,8vw,110px);padding:clamp(40px,7vw,90px) 0}
   .contact .label{opacity:.62}
@@ -361,7 +349,7 @@
   <nav id="nav">
     <a href="#work">Work</a>
     <a href="/pricing/">Pricing</a>
-    <a href="#about">About</a>
+    <a href="#why">Why JackDaw</a>
     <a href="/the-vault/">The Vault</a>
     <a href="#contact" class="hire">Start a project</a>
   </nav>
@@ -399,22 +387,42 @@
     <div class="grid" id="grid"></div>
   </section>
 
-  <section id="about" class="wrap" style="margin-top:clamp(50px,8vw,110px)">
-    <div class="head rev"><h2>Who's building</h2><span class="label">JackDaw Marketing</span></div>
-    <div class="about rev">
-      <div>
-        <p class="big">I'm Jack, the person behind JackDaw Marketing.</p>
-        <p>I studied Marketing Management at the University of Guelph, specializing in digital marketing, web design and SEO, and also studied at MCI (Management Center Innsbruck) in Austria.</p>
-        <p>I've always been interested in what makes businesses grow: how they present themselves, how customers find them, and what makes someone choose one business over another. That interest eventually turned into building websites and digital strategies for local businesses.</p>
-        <p>I've also had the chance to appear on Dragons' Den, which gave me an even greater appreciation for entrepreneurship, strong branding and the work that goes into building a successful business.</p>
-        <p>Today, I'm based in York Region and focused on helping local businesses build a stronger presence online, whether that means a better website, stronger local visibility, clearer messaging or an overall digital presence that better reflects the quality of the business behind it.</p>
-        <p>I genuinely enjoy working with local business owners and helping good businesses reach more of the people looking for what they do.</p>
-        <p>And most days, I'm not completely working alone. My dog Hunter serves as JackDaw's unofficial assistant, which mostly involves sitting beside my desk and supervising the entire operation.</p>
+  <section id="why" class="wrap" style="margin-top:clamp(50px,8vw,110px)">
+    <div class="head rev"><h2>Why JackDaw</h2><span class="label">Not a template</span></div>
+    <div class="why">
+      <div class="why-item rev">
+        <h3>Fully custom. Built from the ground up.</h3>
+        <p>Every JackDaw website is designed and developed specifically for the business it represents.</p>
+        <p>The structure, content, navigation and technical foundation are built around your services, your customers and the way people search for businesses like yours.</p>
+        <p>This creates a faster, cleaner and more flexible website that can grow alongside your business.</p>
       </div>
-      <div class="photo-wrap">
-        <img class="mascot" src="Images/bird-marigold.png" alt="" loading="lazy" style="--rot:-9deg">
-        <div class="photo-grid rev" id="photoGrid"></div>
+      <div class="why-item rev">
+        <h3>Built to be discovered.</h3>
+        <p>A modern website needs to be understood by more than just Google.</p>
+        <p>Jackdaw sites are structured to make your business clear to major search engines like Google and Bing, while also creating strong foundations for the AI platforms people increasingly use to discover businesses, services and information.</p>
+        <p>Clear page structure, structured data, service information, location signals, metadata, internal linking and technically accessible content all help search and AI systems better understand who you are, what you offer and where you operate.</p>
       </div>
+      <div class="why-item rev">
+        <h3>SEO built into the foundation.</h3>
+        <p>Search visibility starts during the build.</p>
+        <p>Every site is developed with technical SEO, mobile performance, page speed, search-friendly content and logical site architecture in mind.</p>
+        <p>From there, SEO becomes an ongoing process. Search performance can be monitored, new opportunities identified, service and location pages expanded, content improved and your presence strengthened across the searches that matter to your business.</p>
+        <p>The goal is to steadily increase your reach and put your business in front of more people who are actively looking for what you offer.</p>
+      </div>
+      <div class="why-item rev">
+        <h3>Built for modern technology.</h3>
+        <p>The way people use the internet is changing quickly.</p>
+        <p>Search engines are evolving, AI-powered discovery is growing, mobile expectations continue to rise and websites are increasingly connected to analytics, advertising platforms, booking systems, customer tools and other technology.</p>
+        <p>Jackdaw sites are built with that future in mind.</p>
+        <p>A clean, code-based foundation makes it easier to improve performance, add new functionality, connect new tools and adapt as technology changes.</p>
+      </div>
+      <div class="why-item rev">
+        <h3>Fast, measurable and always improving.</h3>
+        <p>Your website should be more than something people visit. It should be part of how your business grows.</p>
+        <p>JackDaw can monitor how people find the site, what pages they visit, where leads come from and how the website performs across search.</p>
+        <p>That information gives us something valuable to build on. We can improve the site over time, expand your reach and make smarter decisions based on how real customers are actually interacting with your business online.</p>
+      </div>
+      <p class="why-tag rev">JackDaw. Truly built for the modern world.</p>
     </div>
   </section>
 
@@ -480,10 +488,6 @@ const CONFIG = {
   line1: "JACKDAW",   // set line2 to "" for a single-line wordmark
   line2: "MARKETING",
   ticker: ["Web design","Front-end development","SEO","Brand identity","Landing pages","Web apps","Analytics","Available for work"],
-  // photos shown in the About section; add more entries to grow the grid
-  photos: [
-    { src:"Images/jack-1.jpg", alt:"Pixel art illustration of Jack sitting on a stone lookout above a mountain range", tag:"Jack · York Region, ON" }
-  ],
   // stat + statLabel are optional; leave them out and the swatch stays plain
   projects: [
     { title:"Contractor Website", blurb:"A portfolio build for a local contracting business: a clean site that shows the work clearly and makes it easy to request a quote.", tags:["Portfolio","Web Design","Local SEO"], url:"#", accent:"marigold" },
@@ -502,11 +506,6 @@ document.getElementById("year").textContent = "© " + new Date().getFullYear();
 const track = document.getElementById("track");
 const strip = CONFIG.ticker.map(t => `<span>${t}</span><span>&#9632;</span>`).join("");
 track.innerHTML = strip + strip;
-
-/* ---------- photo grid ---------- */
-document.getElementById("photoGrid").innerHTML = CONFIG.photos.map(p =>
-  `<span class="photo"><img src="${p.src}" alt="${p.alt}" loading="lazy">${p.tag ? `<i class="tag">${p.tag}</i>` : ""}</span>`
-).join("");
 
 /* ---------- project cards ---------- */
 const words = ["Zero","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten"];
