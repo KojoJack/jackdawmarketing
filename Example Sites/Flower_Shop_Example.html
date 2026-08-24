@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bramble &amp; Bloom | Locally Grown, Loosely Arranged</title>
+<meta name="description" content="Bramble & Bloom is a working flower shop on Mill Street. Seasonal bouquets, weddings, and a standing flower order for people who forget to buy themselves flowers.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..600&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2314201A'/%3E%3Cpath d='M50 78 C 46 60, 44 45, 52 24' stroke='%23F3EAD9' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3Cpath d='M50 55 C 40 52, 34 44, 34 36' stroke='%23F3EAD9' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3Cpath d='M52 45 C 62 42, 68 34, 68 26' stroke='%23F3EAD9' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='52' cy='22' r='7' fill='%23C99A45'/%3E%3C/svg%3E">
+
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    --ink:#14201A;
+    --ink-soft:#243627;
+    --ink-line: rgba(243,234,217,0.16);
+    --paper:#F3EAD9;
+    --paper-dim:#E9DEC7;
+    --rose:#C97B84;
+    --ochre:#C99A45;
+    --moss:#A8C066;
+    --text-on-ink: #EFE7D8;
+    --text-on-ink-dim: #B9C2B4;
+    --text-on-paper: #1E2A20;
+    --text-on-paper-dim: #5B6459;
+    --radius-blob: 220px 24px 220px 24px / 24px 220px 24px 220px;
+    --shadow-card: 0 18px 40px -18px rgba(20,32,26,0.45);
+    --maxw: 1180px;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; }
+  }
+
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--text-on-ink);
+    font-family:'Work Sans', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  img{ max-width:100%; display:block; }
+  a{ color:inherit; }
+
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    line-height:1.05;
+    margin:0;
+  }
+
+  .eyebrow{
+    font-family:'Space Mono', monospace;
+    font-weight:700;
+    font-size:0.72rem;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--ochre);
+    display:inline-flex;
+    align-items:center;
+    gap:0.5em;
+  }
+  .eyebrow::before{ content:"✤"; font-size:0.9em; }
+
+  .mono{ font-family:'Space Mono', monospace; }
+
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 28px; }
+
+  section{ position:relative; }
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible{
+    outline:3px solid var(--ochre);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  /* ============ BUTTONS ============ */
+  .btn{
+    font-family:'Work Sans', sans-serif;
+    font-weight:600;
+    font-size:0.95rem;
+    display:inline-flex;
+    align-items:center;
+    gap:0.5em;
+    padding:0.85em 1.6em;
+    border-radius:100px;
+    text-decoration:none;
+    border:1.5px solid transparent;
+    cursor:pointer;
+    transition:transform 0.25s ease, box-shadow 0.25s ease, background 0.2s ease;
+  }
+  .btn:hover{ transform:translateY(-2px) rotate(-0.6deg); }
+  .btn--solid{
+    background:var(--ochre);
+    color:var(--ink);
+  }
+  .btn--solid:hover{ box-shadow:0 12px 24px -8px rgba(201,154,69,0.55); }
+  .btn--outline-light{
+    border-color:rgba(239,231,216,0.5);
+    color:var(--text-on-ink);
+  }
+  .btn--outline-light:hover{ border-color:var(--text-on-ink); background:rgba(239,231,216,0.06); }
+  .btn--outline-dark{
+    border-color:rgba(30,42,32,0.4);
+    color:var(--text-on-paper);
+  }
+  .btn--outline-dark:hover{ background:rgba(30,42,32,0.06); }
+
+  /* ============ NAV ============ */
+  .site-nav{
+    position:sticky; top:0; z-index:60;
+    background:rgba(20,32,26,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--ink-line);
+  }
+  .site-nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:14px; padding-bottom:14px;
+  }
+  .brand{ display:flex; align-items:center; gap:12px; text-decoration:none; }
+  .brand svg{ width:38px; height:38px; flex:none; }
+  .brand-word{
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.15rem; color:var(--text-on-ink);
+    letter-spacing:0.01em;
+  }
+  .brand-word em{ font-style:italic; color:var(--rose); }
+
+  .nav-links{
+    display:flex; align-items:center; gap:30px;
+    list-style:none; margin:0; padding:0;
+  }
+  .nav-links a{
+    text-decoration:none; font-size:0.94rem; font-weight:500; color:var(--text-on-ink-dim);
+    transition:color 0.2s ease;
+  }
+  .nav-links a:hover{ color:var(--text-on-ink); }
+
+  .nav-right{ display:flex; align-items:center; gap:22px; }
+
+  .nav-toggle{
+    display:none; background:none; border:none; color:var(--text-on-ink);
+    width:40px; height:40px; align-items:center; justify-content:center; cursor:pointer;
+  }
+  .nav-toggle span, .nav-toggle span::before, .nav-toggle span::after{
+    content:""; display:block; width:22px; height:2px; background:currentColor; position:relative;
+    transition:transform 0.25s ease, opacity 0.25s ease;
+  }
+  .nav-toggle span::before{ position:absolute; top:-7px; }
+  .nav-toggle span::after{ position:absolute; top:7px; }
+
+  .mobile-panel{
+    display:none;
+    position:fixed; inset:0; z-index:70;
+    background:var(--ink);
+    padding:100px 32px 40px;
+  }
+  .mobile-panel.is-open{ display:block; }
+  .mobile-panel ul{ list-style:none; padding:0; margin:0 0 32px; display:flex; flex-direction:column; gap:26px; }
+  .mobile-panel a{ font-family:'Fraunces', serif; font-size:1.8rem; text-decoration:none; color:var(--text-on-ink); }
+  .mobile-close{
+    position:absolute; top:26px; right:26px; background:none; border:none; color:var(--text-on-ink);
+    font-size:2rem; line-height:1; cursor:pointer;
+  }
+
+  @media (max-width:860px){
+    .nav-links{ display:none; }
+    .nav-toggle{ display:flex; }
+  }
+
+  /* twine divider */
+  .twine{
+    height:0; border-top:2px dashed rgba(201,154,69,0.55);
+  }
+
+  /* ============ HERO ============ */
+  .hero{
+    padding:76px 0 0;
+    overflow:hidden;
+  }
+  .hero .wrap{
+    display:grid; grid-template-columns:1.05fr 0.95fr; gap:56px; align-items:center;
+    padding-bottom:70px;
+  }
+  .hero-copy .eyebrow{ margin-bottom:22px; }
+  .hero-title{
+    font-size:clamp(2.5rem, 5.2vw, 4.4rem);
+    letter-spacing:-0.01em;
+  }
+  .hero-title em{
+    font-style:italic; font-weight:500; color:var(--rose);
+  }
+  .hero-sub{
+    margin-top:24px; max-width:46ch;
+    color:var(--text-on-ink-dim);
+    font-size:1.08rem;
+  }
+  .hero-actions{
+    margin-top:34px; display:flex; flex-wrap:wrap; gap:16px; align-items:center;
+  }
+  .hero-media{ position:relative; }
+  .hero-media img{
+    width:100%; aspect-ratio:4/5; object-fit:cover;
+    border-radius:var(--radius-blob);
+    box-shadow:var(--shadow-card);
+    transform:rotate(1.4deg);
+  }
+  .hero-tag{
+    position:absolute; left:-18px; bottom:36px;
+    background:var(--paper); color:var(--text-on-paper);
+    padding:14px 18px; border-radius:14px;
+    box-shadow:var(--shadow-card);
+    transform:rotate(-4deg);
+    max-width:220px;
+  }
+  .hero-tag .mono{ font-size:0.72rem; letter-spacing:0.06em; color:var(--text-on-paper-dim); }
+  .hero-tag strong{ display:block; font-family:'Fraunces',serif; font-size:1.05rem; margin-top:2px; }
+
+  @media (max-width:900px){
+    .hero .wrap{ grid-template-columns:1fr; padding-bottom:48px; }
+    .hero-media{ order:-1; }
+    .hero-media img{ aspect-ratio:5/4; transform:rotate(0.6deg); }
+    .hero-tag{ left:16px; bottom:-22px; }
+  }
+
+  /* ============ TICKER (signature element) ============ */
+  .cuts{
+    background:var(--paper); color:var(--text-on-paper);
+    padding:26px 0 22px;
+  }
+  .cuts-label{
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    margin-bottom:14px;
+  }
+  .cuts-label .eyebrow{ color:#8A5E28; }
+  .cuts-label .note{ font-family:'Space Mono',monospace; font-size:0.72rem; color:var(--text-on-paper-dim); }
+  .ticker{
+    overflow:hidden;
+    border-top:1px solid rgba(30,42,32,0.18);
+    border-bottom:1px solid rgba(30,42,32,0.18);
+    padding:14px 0;
+  }
+  .ticker-track{
+    display:flex; width:max-content;
+    animation:scrollTicker 34s linear infinite;
+  }
+  .ticker-set{ display:flex; align-items:center; white-space:nowrap; }
+  .ticker-set span{
+    font-family:'Space Mono', monospace; font-size:0.95rem; font-weight:700;
+    padding:0 22px; letter-spacing:0.02em;
+  }
+  .ticker-set span.price{ color:#8A5E28; font-weight:400; }
+  .ticker-set span.sep{ color:var(--rose); padding:0 6px; }
+  @keyframes scrollTicker{
+    from{ transform:translateX(0); }
+    to{ transform:translateX(-50%); }
+  }
+
+  /* ============ SECTION HEADS ============ */
+  .section-head{ max-width:640px; margin-bottom:48px; }
+  .section-head .eyebrow{ margin-bottom:16px; }
+  .section-head h2{ font-size:clamp(1.9rem, 3.4vw, 2.75rem); }
+  .section-head p{ margin-top:16px; font-size:1.05rem; }
+
+  /* ============ SHOP ============ */
+  .shop{ background:var(--ink); padding:96px 0; }
+  .shop .section-head p{ color:var(--text-on-ink-dim); }
+  .product-grid{
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:28px;
+  }
+  .product-card{
+    background:var(--paper); border-radius:20px; overflow:hidden;
+    box-shadow:var(--shadow-card);
+    transition:transform 0.35s ease;
+  }
+  .product-card:nth-child(odd){ transform:rotate(-1.1deg); }
+  .product-card:nth-child(even){ transform:rotate(1.1deg); }
+  .product-card:hover{ transform:rotate(0deg) translateY(-6px); }
+  .product-photo{ position:relative; aspect-ratio:1/1; overflow:hidden; }
+  .product-photo img{ width:100%; height:100%; object-fit:cover; }
+  .product-price{
+    position:absolute; top:12px; right:12px;
+    background:var(--ochre); color:var(--ink);
+    font-family:'Space Mono', monospace; font-weight:700; font-size:0.82rem;
+    padding:6px 10px; border-radius:8px 8px 8px 2px;
+    box-shadow:0 6px 14px -6px rgba(0,0,0,0.4);
+  }
+  .product-body{ padding:20px 20px 24px; color:var(--text-on-paper); }
+  .product-body h3{ font-size:1.2rem; margin-bottom:8px; }
+  .product-body p{ margin:0; font-size:0.92rem; color:var(--text-on-paper-dim); }
+
+  @media (max-width:980px){ .product-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:560px){ .product-grid{ grid-template-columns:1fr; } .product-card:nth-child(odd),.product-card:nth-child(even){ transform:none; } }
+
+  /* ============ STORY ============ */
+  .story{ background:var(--paper); color:var(--text-on-paper); padding:100px 0; }
+  .story .wrap{ display:grid; grid-template-columns:0.9fr 1.1fr; gap:64px; align-items:center; }
+  .story-media img{
+    width:100%; aspect-ratio:4/5; object-fit:cover;
+    border-radius:var(--radius-blob);
+    transform:rotate(-1.6deg);
+    box-shadow:0 24px 50px -22px rgba(30,42,32,0.35);
+  }
+  .story-copy p{ margin-top:20px; font-size:1.05rem; color:#3C463C; max-width:52ch; }
+  .story-quote{
+    margin:30px 0 0; padding-left:22px; border-left:3px solid var(--rose);
+    font-family:'Fraunces', serif; font-style:italic; font-size:1.3rem; line-height:1.4;
+    color:var(--text-on-paper);
+  }
+  .story-quote footer{ margin-top:12px; font-family:'Space Mono',monospace; font-style:normal; font-size:0.78rem; color:var(--text-on-paper-dim); }
+
+  @media (max-width:900px){ .story .wrap{ grid-template-columns:1fr; } .story-media{ order:-1; } .story-media img{ aspect-ratio:5/4; } }
+
+  /* ============ WEDDINGS ============ */
+  .weddings{ background:var(--ink-soft); padding:100px 0; }
+  .weddings .wrap{
+    display:grid; grid-template-columns:1fr 1fr; gap:0; align-items:stretch;
+    background:var(--paper); border-radius:28px; overflow:hidden; box-shadow:var(--shadow-card);
+  }
+  .weddings-media{ position:relative; min-height:340px; }
+  .weddings-media img{ width:100%; height:100%; object-fit:cover; position:absolute; inset:0; }
+  .weddings-copy{ padding:56px; color:var(--text-on-paper); display:flex; flex-direction:column; justify-content:center; }
+  .weddings-copy h2{ font-size:clamp(1.8rem,3vw,2.4rem); margin-top:14px; }
+  .weddings-copy p{ margin-top:18px; color:#3C463C; max-width:44ch; }
+  .weddings-copy .btn{ margin-top:26px; align-self:flex-start; }
+
+  @media (max-width:860px){
+    .weddings .wrap{ grid-template-columns:1fr; border-radius:22px; }
+    .weddings-media{ min-height:260px; }
+    .weddings-copy{ padding:38px 30px; }
+  }
+
+  /* ============ SUBSCRIPTIONS ============ */
+  .subs{ background:var(--paper); color:var(--text-on-paper); padding:100px 0; }
+  .subs .section-head p{ color:#3C463C; }
+  .tier-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:26px; }
+  .tier{
+    border:1.5px solid rgba(30,42,32,0.18);
+    border-radius:20px; padding:32px 28px;
+    background:#FBF6EC;
+    display:flex; flex-direction:column;
+  }
+  .tier.is-featured{
+    background:var(--ink); color:var(--text-on-ink);
+    border-color:var(--ink);
+    transform:translateY(-10px);
+    box-shadow:var(--shadow-card);
+  }
+  .tier.is-featured .tier-price{ color:var(--ochre); }
+  .tier.is-featured .tier-desc{ color:var(--text-on-ink-dim); }
+  .tier-name{ font-family:'Fraunces',serif; font-size:1.3rem; }
+  .tier-price{ font-family:'Space Mono',monospace; font-weight:700; font-size:1.6rem; margin-top:10px; color:#8A5E28; }
+  .tier-price span{ font-size:0.85rem; font-weight:400; opacity:0.7; }
+  .tier-desc{ margin-top:14px; font-size:0.95rem; color:#3C463C; flex:1; }
+  .tier .btn{ margin-top:24px; }
+
+  @media (max-width:920px){ .tier-grid{ grid-template-columns:1fr; } .tier.is-featured{ transform:none; } }
+
+  /* ============ VISIT ============ */
+  .visit{ background:var(--ink); padding:100px 0 60px; }
+  .visit .wrap{ display:grid; grid-template-columns:1fr 0.85fr; gap:56px; align-items:center; }
+  .visit-media{ position:relative; }
+  .visit-media img{
+    width:100%; aspect-ratio:5/4; object-fit:cover; border-radius:24px;
+    box-shadow:var(--shadow-card);
+  }
+  .visit-card{
+    background:var(--paper); color:var(--text-on-paper);
+    border-radius:20px; padding:34px 32px;
+    box-shadow:var(--shadow-card);
+  }
+  .visit-card h2{ font-size:1.9rem; margin-top:12px; }
+  .visit-line{ display:flex; gap:14px; margin-top:20px; font-size:0.98rem; align-items:flex-start; }
+  .visit-line .k{ font-family:'Space Mono',monospace; font-size:0.72rem; letter-spacing:0.08em; color:#8A5E28; text-transform:uppercase; min-width:70px; padding-top:3px; }
+  .visit-note{ margin-top:22px; padding-top:20px; border-top:1px dashed rgba(30,42,32,0.25); font-size:0.92rem; color:#3C463C; }
+
+  @media (max-width:900px){ .visit .wrap{ grid-template-columns:1fr; } .visit-card{ order:-1; } }
+
+  /* ============ FOOTER ============ */
+  .site-footer{ background:var(--ink); border-top:1px solid var(--ink-line); padding:60px 0 32px; }
+  .footer-top{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:40px; padding-bottom:40px; border-bottom:1px solid var(--ink-line); }
+  .footer-brand p{ margin-top:14px; max-width:34ch; color:var(--text-on-ink-dim); font-size:0.92rem; }
+  .footer-cols{ display:flex; gap:64px; flex-wrap:wrap; }
+  .footer-col h4{ font-family:'Space Mono',monospace; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ochre); margin:0 0 16px; }
+  .footer-col ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; }
+  .footer-col a{ text-decoration:none; color:var(--text-on-ink-dim); font-size:0.92rem; }
+  .footer-col a:hover{ color:var(--text-on-ink); }
+  .footer-bottom{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; padding-top:24px; font-size:0.82rem; color:var(--text-on-ink-dim); }
+  .footer-bottom a{ text-decoration:underline; }
+
+  @media (max-width:700px){ .footer-top{ flex-direction:column; } }
+
+  @media (max-width:480px){
+    :root{ --radius-blob: 90px 18px 90px 18px / 18px 90px 18px 90px; }
+    .hero{ padding-top:56px; }
+    .weddings-copy{ padding:32px 22px; }
+    .visit-card{ padding:28px 22px; }
+  }
+
+  /* ============ REVEAL ANIMATION ============ */
+  .reveal{ opacity:0; transform:translateY(22px); transition:opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.is-visible{ opacity:1; transform:translateY(0); }
+
+</style>
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="wrap">
+    <a href="#top" class="brand">
+      <svg viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="48" fill="none" style="stroke:var(--paper)" stroke-width="1.5" opacity="0.5"/>
+        <path d="M50 78 C 46 60, 44 45, 52 24" style="stroke:var(--paper)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <path d="M50 55 C 40 52, 34 44, 34 36" style="stroke:var(--paper)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <path d="M52 45 C 62 42, 68 34, 68 26" style="stroke:var(--paper)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <path d="M45 66 C 38 65, 33 68, 30 74" style="stroke:var(--paper)" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <circle cx="52" cy="22" r="6.5" style="fill:var(--ochre)"/>
+        <circle cx="34" cy="34" r="3.5" style="fill:var(--rose)"/>
+        <circle cx="68" cy="24" r="3.5" style="fill:var(--rose)"/>
+      </svg>
+      <span class="brand-word">Bramble <em>&amp;</em> Bloom</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#shop">Shop</a></li>
+      <li><a href="#weddings">Weddings</a></li>
+      <li><a href="#subs">Subscriptions</a></li>
+      <li><a href="#story">Our Story</a></li>
+      <li><a href="#visit">Visit</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="#shop" class="btn btn--solid">Order flowers</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+        <span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-panel" id="mobilePanel">
+  <button class="mobile-close" id="mobileClose" aria-label="Close menu">&times;</button>
+  <ul>
+    <li><a href="#shop">Shop</a></li>
+    <li><a href="#weddings">Weddings</a></li>
+    <li><a href="#subs">Subscriptions</a></li>
+    <li><a href="#story">Our Story</a></li>
+    <li><a href="#visit">Visit</a></li>
+  </ul>
+  <a href="#shop" class="btn btn--solid">Order flowers</a>
+</div>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy reveal">
+        <span class="eyebrow">A working flower shop &middot; Mill Street</span>
+        <h1 class="hero-title">Flowers that look like they <em>grew</em> here.</h1>
+        <p class="hero-sub">We cut from the garden out back most mornings, so what you get still has a bit of dirt-logic to it: bent stems, odd colour pairings, the occasional bee. No cellophane. No filler roses. Just what's good this week, tied with twine.</p>
+        <div class="hero-actions">
+          <a href="#shop" class="btn btn--solid">Order for pickup or delivery</a>
+          <a href="#cuts" class="btn btn--outline-light">See today's cuts ↓</a>
+        </div>
+      </div>
+      <div class="hero-media reveal">
+        <img src="https://images.unsplash.com/photo-1639696194673-67b86204b885?q=80&w=1200&auto=format&fit=crop" alt="Inside Bramble & Bloom, buckets of fresh-cut seasonal flowers lined up along a wooden counter.">
+        <div class="hero-tag">
+          <span class="mono">OPEN TODAY</span>
+          <strong>9am &ndash; 6pm</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TODAY'S CUTS TICKER -->
+  <section class="cuts" id="cuts">
+    <div class="wrap">
+      <div class="cuts-label">
+        <span class="eyebrow">What's good this week</span>
+        <span class="note">cut Tuesday &amp; Friday mornings &middot; sells out by Saturday</span>
+      </div>
+    </div>
+    <div class="ticker">
+      <div class="ticker-track">
+        <div class="ticker-set">
+          <span>RANUNCULUS <span class="price">$6/stem</span></span><span class="sep">&#10047;</span>
+          <span>GARDEN ROSE <span class="price">$8/stem</span></span><span class="sep">&#10047;</span>
+          <span>SWEET PEA <span class="price">$4/stem</span></span><span class="sep">&#10047;</span>
+          <span>DAHLIA <span class="price">$7/stem</span></span><span class="sep">&#10047;</span>
+          <span>ANEMONE <span class="price">$5/stem</span></span><span class="sep">&#10047;</span>
+          <span>FOXGLOVE <span class="price">$6/stem</span></span><span class="sep">&#10047;</span>
+          <span>COSMOS <span class="price">$3/stem</span></span><span class="sep">&#10047;</span>
+          <span>DUSTY MILLER <span class="price">$3/stem</span></span><span class="sep">&#10047;</span>
+        </div>
+        <div class="ticker-set" aria-hidden="true">
+          <span>RANUNCULUS <span class="price">$6/stem</span></span><span class="sep">&#10047;</span>
+          <span>GARDEN ROSE <span class="price">$8/stem</span></span><span class="sep">&#10047;</span>
+          <span>SWEET PEA <span class="price">$4/stem</span></span><span class="sep">&#10047;</span>
+          <span>DAHLIA <span class="price">$7/stem</span></span><span class="sep">&#10047;</span>
+          <span>ANEMONE <span class="price">$5/stem</span></span><span class="sep">&#10047;</span>
+          <span>FOXGLOVE <span class="price">$6/stem</span></span><span class="sep">&#10047;</span>
+          <span>COSMOS <span class="price">$3/stem</span></span><span class="sep">&#10047;</span>
+          <span>DUSTY MILLER <span class="price">$3/stem</span></span><span class="sep">&#10047;</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOP -->
+  <section class="shop" id="shop">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">The stand</span>
+        <h2>Grab-and-go, minus the grocery-store sadness.</h2>
+        <p>Pre-built bouquets, ready most days by 10am. Or tell us a budget and a vibe and we'll just go for it.</p>
+      </div>
+      <div class="product-grid">
+        <article class="product-card reveal">
+          <div class="product-photo">
+            <img src="https://images.unsplash.com/photo-1531120364508-a6b656c3e78d?q=80&w=800&auto=format&fit=crop" alt="A loose, oversized bouquet of mixed warm-toned flowers on a wood table.">
+            <span class="product-price">$58</span>
+          </div>
+          <div class="product-body">
+            <h3>The Overgrown</h3>
+            <p>Whatever's tallest, brightest, and about to bolt. Big, a little unruly. Exactly the point.</p>
+          </div>
+        </article>
+        <article class="product-card reveal">
+          <div class="product-photo">
+            <img src="https://images.unsplash.com/photo-1621581314652-06a9fe9d4db6?q=80&w=800&auto=format&fit=crop" alt="A soft white, pink, and yellow bouquet with trailing greenery.">
+            <span class="product-price">$42</span>
+          </div>
+          <div class="product-body">
+            <h3>The Quiet One</h3>
+            <p>Mostly white and green. For apologies, new babies, or when you don't want to explain yourself.</p>
+          </div>
+        </article>
+        <article class="product-card reveal">
+          <div class="product-photo">
+            <img src="https://images.unsplash.com/photo-1596238276574-b3e8d40fbafb?q=80&w=800&auto=format&fit=crop" alt="A sturdy, low, compact arrangement of garden flowers in a jar.">
+            <span class="product-price">$36</span>
+          </div>
+          <div class="product-body">
+            <h3>Porch Sitter</h3>
+            <p>Sturdy, low, built to survive a car ride and a windowsill with bad light.</p>
+          </div>
+        </article>
+        <article class="product-card reveal">
+          <div class="product-photo">
+            <img src="https://images.unsplash.com/photo-1667489024245-7beb09ac43c5?q=80&w=800&auto=format&fit=crop" alt="A large, full bouquet of two dozen mixed stems.">
+            <span class="product-price">$75</span>
+          </div>
+          <div class="product-body">
+            <h3>The Whole Bunch</h3>
+            <p>Two dozen stems, your choice of loud or soft. The one people ask about.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORY -->
+  <section class="story" id="story">
+    <div class="wrap">
+      <div class="story-media reveal">
+        <img src="https://images.unsplash.com/photo-1782061932586-c8a425a67e3f?q=80&w=1000&auto=format&fit=crop" alt="A florist's hands arranging fresh pastel flowers into a woven basket with scissors and ribbon nearby.">
+      </div>
+      <div class="story-copy reveal">
+        <span class="eyebrow">How we work</span>
+        <h2>Run by one person who really likes dirt.</h2>
+        <p>Bramble &amp; Bloom started as a cutting garden in a backyard that got a little out of hand. Now it's a shop, but the habits didn't change. We still grow a third of what we sell, source the rest from growers within a couple hours' drive, and skip the imported roses that spend three weeks in a box before they reach anybody's hands.</p>
+        <p>If a stem looks a little bent, that's not a mistake. That's just what a flower looks like before someone irons it flat.</p>
+        <blockquote class="story-quote">
+          &ldquo;We're not trying to make your flowers look expensive. We're trying to make them look like they're still alive.&rdquo;
+          <footer>Wren, who started this whole thing</footer>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- WEDDINGS -->
+  <section class="weddings" id="weddings">
+    <div class="wrap reveal">
+      <div class="weddings-media">
+        <img src="https://images.unsplash.com/photo-1596701822070-846fea979c1b?q=80&w=1000&auto=format&fit=crop" alt="A bridal-style bouquet of white and purple flowers held against soft light.">
+      </div>
+      <div class="weddings-copy">
+        <span class="eyebrow">For the big stuff</span>
+        <h2>Weddings, without the beige.</h2>
+        <p>We do weddings the same way we do everything else: seasonal, textured, not afraid of colour. Book a consult and we'll walk your venue, talk budget honestly, and build something that doesn't look like every other wedding on the same florist's Instagram grid.</p>
+        <a href="#visit" class="btn btn--outline-dark">Book a consult</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUBSCRIPTIONS -->
+  <section class="subs" id="subs">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">On repeat</span>
+        <h2>A standing order, for people who forget to buy themselves flowers.</h2>
+        <p>Pick a rhythm. We'll handle the rest: pause, swap, or cancel anytime, no hard feelings.</p>
+      </div>
+      <div class="tier-grid">
+        <div class="tier reveal">
+          <span class="tier-name">Weekly</span>
+          <span class="tier-price">$32 <span>/ week</span></span>
+          <p class="tier-desc">One good bunch, every week, whatever's freshest. Our most-forgotten-then-loved option.</p>
+          <a href="#visit" class="btn btn--outline-dark">Start weekly</a>
+        </div>
+        <div class="tier is-featured reveal">
+          <span class="tier-name">Biweekly</span>
+          <span class="tier-price">$34 <span>/ visit</span></span>
+          <p class="tier-desc">For the person who wants flowers around but not a whole thing about it. Our most popular.</p>
+          <a href="#visit" class="btn btn--solid">Start biweekly</a>
+        </div>
+        <div class="tier reveal">
+          <span class="tier-name">Monthly Big One</span>
+          <span class="tier-price">$95 <span>/ month</span></span>
+          <p class="tier-desc">One large, seasonal, slightly excessive arrangement. For offices, entryways, and main-character energy.</p>
+          <a href="#visit" class="btn btn--outline-dark">Start monthly</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISIT -->
+  <section class="visit" id="visit">
+    <div class="wrap">
+      <div class="visit-media reveal">
+        <img src="https://images.unsplash.com/photo-1762424362012-11e948c5d91d?q=80&w=1100&auto=format&fit=crop" alt="The charming storefront of Bramble & Bloom, with potted plants and wreaths on display outside.">
+      </div>
+      <div class="visit-card reveal">
+        <span class="eyebrow">Come say hi</span>
+        <h2>Find us on Mill Street.</h2>
+        <div class="visit-line"><span class="k mono">Address</span><span>214 Mill Street</span></div>
+        <div class="visit-line"><span class="k mono">Phone</span><span>(905) 555-0148</span></div>
+        <div class="visit-line"><span class="k mono">Hours</span><span>Tue&ndash;Fri 9&ndash;6 &middot; Sat 9&ndash;4 &middot; Sun 10&ndash;2<br>Closed Monday (garden day)</span></div>
+        <p class="visit-note">Parking's easier than it looks. There's a lot behind the bakery. Come by for loose stems, ribbon, or just to warm up near the cooler doors.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#top" class="brand">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M50 78 C 46 60, 44 45, 52 24" style="stroke:var(--paper)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <path d="M50 55 C 40 52, 34 44, 34 36" style="stroke:var(--paper)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <path d="M52 45 C 62 42, 68 34, 68 26" style="stroke:var(--paper)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <circle cx="52" cy="22" r="6.5" style="fill:var(--ochre)"/>
+            <circle cx="34" cy="34" r="3.5" style="fill:var(--rose)"/>
+            <circle cx="68" cy="24" r="3.5" style="fill:var(--rose)"/>
+          </svg>
+          <span class="brand-word">Bramble <em>&amp;</em> Bloom</span>
+        </a>
+        <p>A working flower shop on Mill Street. Locally grown, loosely arranged, cut twice a week.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="#shop">Featured bouquets</a></li>
+            <li><a href="#subs">Subscriptions</a></li>
+            <li><a href="#weddings">Weddings &amp; events</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Shop info</h4>
+          <ul>
+            <li><a href="#visit">Hours &amp; location</a></li>
+            <li><a href="#story">Our story</a></li>
+            <li><a href="tel:9055550148">(905) 555-0148</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Follow along</h4>
+          <ul>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">Newsletter</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Bramble &amp; Bloom Flower Co.</span>
+      <span>Sample site built by <a href="#">JackDaw Marketing</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // mobile nav
+  const navToggle = document.getElementById('navToggle');
+  const mobilePanel = document.getElementById('mobilePanel');
+  const mobileClose = document.getElementById('mobileClose');
+  function openPanel(){ mobilePanel.classList.add('is-open'); navToggle.setAttribute('aria-expanded','true'); }
+  function closePanel(){ mobilePanel.classList.remove('is-open'); navToggle.setAttribute('aria-expanded','false'); }
+  navToggle.addEventListener('click', openPanel);
+  mobileClose.addEventListener('click', closePanel);
+  mobilePanel.querySelectorAll('a').forEach(a => a.addEventListener('click', closePanel));
+
+  // scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add('is-visible'));
+  }
+</script>
+
+</body>
+</html>

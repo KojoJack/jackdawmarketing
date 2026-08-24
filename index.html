@@ -239,6 +239,7 @@
     transition:transform .3s cubic-bezier(.2,.8,.2,1);
   }
   .card:hover .swatch{transform:translateY(-4px)}
+  .swatch img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;display:block}
   .card h3{
     font-family:var(--display);font-size:clamp(21px,2.4vw,29px);line-height:1.05;
     margin:0 0 8px;text-transform:uppercase;letter-spacing:-.01em;
@@ -250,7 +251,7 @@
     text-transform:uppercase;border:1px solid var(--plum-3);padding:4px 9px;opacity:.85;
   }
   .swatch{display:flex;align-items:flex-end;padding:12px 14px}
-  .stat{color:var(--plum);line-height:1}
+  .stat{position:relative;color:var(--plum);line-height:1}
   .stat b{display:block;font-family:var(--display);font-size:clamp(24px,3.2vw,34px);letter-spacing:-.02em}
   .stat i{
     font-style:normal;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
@@ -521,8 +522,8 @@ const CONFIG = {
   ticker: ["Web design","Front-end development","SEO","Brand identity","Landing pages","Web apps","Analytics","Available for work"],
   // stat + statLabel are optional; leave them out and the swatch stays plain
   projects: [
-    { title:"Contractor Website", blurb:"A portfolio build for a local contracting business: a clean site that shows the work clearly and makes it easy to request a quote.", tags:["Portfolio","Web Design","Local SEO"], url:"#", accent:"marigold" },
-    { title:"Artist E-Commerce Website", blurb:"A portfolio build for an independent artist: an online shop to sell prints and originals directly, without a marketplace cut.", tags:["Portfolio","E-Commerce","Branding"], url:"#", accent:"jade" }
+    { title:"True North Build Co.", blurb:"A portfolio build for a general contractor: bold, built to turn browsing homeowners into estimate requests.", tags:["Portfolio","Web Design","Local SEO"], url:"/work/contractor/", image:"Images/work-contractor.jpg", accent:"marigold" },
+    { title:"Bramble & Bloom", blurb:"A portfolio build for a flower shop: a working online stand with fresh cuts, subscriptions, and wedding bookings built in.", tags:["Portfolio","E-Commerce","Branding"], url:"/work/flower-shop/", image:"Images/work-flower-shop.jpg", accent:"jade" }
   ]
 };
 /* ========================================================== */
@@ -543,10 +544,11 @@ const words = ["Zero","One","Two","Three","Four","Five","Six","Seven","Eight","N
 const grid = document.getElementById("grid");
 grid.innerHTML = CONFIG.projects.map(p => {
   const a = C[p.accent] || C.marigold;
-  const swatch = `background:${a};background-image:repeating-linear-gradient(135deg,rgba(34,16,36,.22) 0 10px,transparent 10px 20px)`;
+  const swatch = p.image ? "" : `background:${a};background-image:repeating-linear-gradient(135deg,rgba(34,16,36,.22) 0 10px,transparent 10px 20px)`;
+  const preview = p.image ? `<img src="${p.image}" alt="${p.title} homepage preview" loading="lazy">` : "";
   const stat = p.stat ? `<span class="stat"><b>${p.stat}</b><i>${p.statLabel || ""}</i></span>` : "";
   return `<a class="card rev" href="${p.url}">
-    <div class="swatch" style="${swatch}">${stat}</div>
+    <div class="swatch" style="${swatch}">${preview}${stat}</div>
     <div>
       <h3>${p.title}</h3>
       <p>${p.blurb}</p>

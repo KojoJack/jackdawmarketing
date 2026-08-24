@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>True North Build Co. | General Contracting, Ridgeline County</title>
+<meta name="description" content="Custom builds, additions, and renovations. Plumb. Level. True.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2312203A'/%3E%3Cpath d='M32 10 L40 32 L32 30 L24 32 Z' fill='%23E8B84B'/%3E%3Cpath d='M32 54 L24 32 L32 34 L40 32 Z' fill='%23F3F1EA'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    --ink:#12203A;
+    --ink-2:#1B2E4D;
+    --ink-3:#24395C;
+    --paper:#F3F1EA;
+    --paper-line:#DBD6C8;
+    --brass:#E8B84B;
+    --rust:#C1552C;
+    --rust-dark:#A2431F;
+    --slate:#5B6B7F;
+    --white:#FFFFFF;
+    --max:1240px;
+    --ease:cubic-bezier(.22,.8,.32,1);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;}
+  }
+  body{
+    font-family:'IBM Plex Sans',sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  ul{list-style:none}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:-.01em}
+  :focus-visible{outline:2.5px solid var(--brass);outline-offset:3px}
+
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 32px}
+  @media (max-width:640px){.wrap{padding:0 20px}}
+
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    font-weight:500;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:22px;height:1px;background:currentColor;opacity:.55;
+  }
+
+  /* ============ LOGO MARK (signature motif) ============ */
+  .mark{--sz:34px;width:var(--sz);height:var(--sz);flex-shrink:0}
+  .mark svg{width:100%;height:100%;display:block}
+
+  .wordmark{display:flex;align-items:center;gap:12px}
+  .wordmark .name{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:19px;
+    letter-spacing:.01em;
+    line-height:1;
+  }
+  .wordmark .sub{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:.18em;
+    opacity:.65;
+    margin-top:3px;
+  }
+
+  /* ============ NAV ============ */
+  header.nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    padding:18px 0;
+    transition:background .35s var(--ease),padding .35s var(--ease),box-shadow .35s var(--ease);
+    color:var(--white);
+  }
+  header.nav.solid{
+    background:rgba(18,32,58,.94);
+    backdrop-filter:blur(8px);
+    padding:12px 0;
+    box-shadow:0 1px 0 rgba(255,255,255,.07);
+  }
+  header.nav .inner{display:flex;align-items:center;justify-content:space-between;gap:24px}
+  header.nav nav{display:flex;align-items:center;gap:34px}
+  header.nav nav a{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    opacity:.8;
+    transition:opacity .2s;
+    position:relative;
+  }
+  header.nav nav a:hover{opacity:1}
+  .btn{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    padding:12px 22px;
+    border-radius:2px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:transform .2s var(--ease),background .2s,box-shadow .2s;
+    white-space:nowrap;
+  }
+  .btn-rust{background:var(--rust);color:var(--white)}
+  .btn-rust:hover{background:var(--rust-dark);transform:translateY(-2px)}
+  .btn-outline{border:1px solid rgba(255,255,255,.4);color:var(--white)}
+  .btn-outline:hover{border-color:var(--white);background:rgba(255,255,255,.08)}
+  .btn-outline-ink{border:1px solid var(--ink);color:var(--ink)}
+  .btn-outline-ink:hover{background:var(--ink);color:var(--white)}
+
+  .nav-toggle{display:none}
+
+  /* ============ HERO ============ */
+  .hero{
+    position:relative;
+    min-height:100svh;
+    display:flex;
+    align-items:flex-end;
+    color:var(--white);
+    overflow:hidden;
+  }
+  .hero-bg{
+    position:absolute;inset:0;z-index:0;
+  }
+  .hero-bg img{width:100%;height:100%;object-fit:cover}
+  .hero-bg::after{
+    content:'';
+    position:absolute;inset:0;
+    background:
+      linear-gradient(180deg, rgba(18,32,58,.35) 0%, rgba(18,32,58,.55) 55%, rgba(18,32,58,.96) 100%),
+      linear-gradient(90deg, rgba(18,32,58,.75) 0%, rgba(18,32,58,.15) 45%);
+  }
+  .hero-grid{
+    position:absolute;inset:0;z-index:1;
+    opacity:.14;
+    background-image:
+      linear-gradient(rgba(127,179,213,.9) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(127,179,213,.9) 1px, transparent 1px);
+    background-size:44px 44px;
+    mix-blend-mode:screen;
+    pointer-events:none;
+  }
+  .hero-inner{position:relative;z-index:2;width:100%;padding-bottom:64px}
+  .hero .eyebrow{color:var(--brass);margin-bottom:22px}
+  .hero h1{
+    font-size:clamp(44px,8vw,92px);
+    line-height:.98;
+    text-transform:uppercase;
+    max-width:14ch;
+  }
+  .hero h1 .line{display:block;overflow:hidden}
+  .hero h1 .line span{display:block;transform:translateY(115%);transition:transform .9s var(--ease)}
+  .hero.loaded h1 .line:nth-child(1) span{transition-delay:.15s}
+  .hero.loaded h1 .line:nth-child(2) span{transition-delay:.3s}
+  .hero.loaded h1 .line span{transform:translateY(0)}
+  .hero p.sub{
+    font-size:18px;
+    max-width:46ch;
+    margin:26px 0 36px;
+    color:rgba(255,255,255,.86);
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity .8s var(--ease) .55s, transform .8s var(--ease) .55s;
+  }
+  .hero.loaded p.sub{opacity:1;transform:translateY(0)}
+  .hero-ctas{display:flex;gap:16px;flex-wrap:wrap;opacity:0;transform:translateY(14px);transition:opacity .8s var(--ease) .7s, transform .8s var(--ease) .7s}
+  .hero.loaded .hero-ctas{opacity:1;transform:translateY(0)}
+
+  .spec-strip{
+    border-top:1px solid rgba(255,255,255,.16);
+    margin-top:52px;
+    padding-top:22px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 40px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:rgba(255,255,255,.72);
+  }
+  .spec-strip b{color:var(--white);font-weight:600}
+
+  /* ============ LEVEL SIGNATURE ============ */
+  .level-section{
+    background:var(--ink);
+    color:var(--white);
+    padding:70px 0 84px;
+    text-align:center;
+    position:relative;
+  }
+  .level-caption{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--brass);
+    margin-bottom:26px;
+  }
+  .vial{
+    --w:min(560px, 84vw);
+    width:var(--w);
+    height:52px;
+    margin:0 auto;
+    position:relative;
+    border:1.5px solid rgba(255,255,255,.35);
+    border-radius:999px;
+    background:linear-gradient(180deg, rgba(255,255,255,.05), transparent);
+  }
+  .vial .ticks{position:absolute;inset:0;display:flex;justify-content:space-between;align-items:center;padding:0 10px}
+  .vial .ticks i{width:1px;height:12px;background:rgba(255,255,255,.28)}
+  .vial .ticks i:nth-child(6){height:18px;background:rgba(255,255,255,.55)}
+  .bubble{
+    position:absolute;
+    top:50%;left:22%;
+    width:38px;height:38px;
+    background:radial-gradient(circle at 35% 30%, #FBE7B6, var(--brass) 70%);
+    border-radius:50%;
+    transform:translate(-50%,-50%);
+    box-shadow:0 0 0 5px rgba(232,184,74,.14), 0 4px 18px rgba(0,0,0,.35);
+    transition:left 1.4s var(--ease);
+  }
+  .level-section.is-level .bubble{left:50%}
+  .level-readout{
+    margin-top:22px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    color:rgba(255,255,255,.5);
+    letter-spacing:.06em;
+  }
+  .level-readout b{color:var(--white);font-weight:600}
+
+  /* ============ SECTION HEADS ============ */
+  .section{padding:120px 0}
+  @media (max-width:768px){.section{padding:84px 0}}
+  .section-head{max-width:680px;margin-bottom:64px}
+  .section-head .eyebrow{color:var(--rust);margin-bottom:18px}
+  .section-head h2{font-size:clamp(30px,4.2vw,46px);line-height:1.08}
+  .on-dark .section-head .eyebrow{color:var(--brass)}
+
+  /* ============ SERVICES ============ */
+  .services{background:var(--paper)}
+  .svc-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:var(--paper-line);
+    border:1px solid var(--paper-line);
+  }
+  @media (max-width:900px){.svc-grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.svc-grid{grid-template-columns:1fr}}
+  .svc-card{
+    background:var(--paper);
+    padding:38px 32px;
+    transition:background .25s;
+  }
+  .svc-card:hover{background:#EBE7DA}
+  .svc-card .ico{width:38px;height:38px;color:var(--rust);margin-bottom:22px}
+  .svc-card .ico svg{width:100%;height:100%}
+  .svc-card h3{font-size:19px;margin-bottom:10px}
+  .svc-card p{color:var(--slate);font-size:15px;line-height:1.6}
+
+  /* ============ WORK / GALLERY ============ */
+  .work{background:var(--paper)}
+  .bento{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    grid-template-rows:280px 280px;
+    gap:18px;
+  }
+  .bento .item:nth-child(1){grid-column:1 / 3;grid-row:1 / 3}
+  .bento .item:nth-child(2){grid-column:3 / 5;grid-row:1 / 2}
+  .bento .item:nth-child(3){grid-column:3 / 4;grid-row:2 / 3}
+  .bento .item:nth-child(4){grid-column:4 / 5;grid-row:2 / 3}
+  .bento .item:nth-child(5){grid-column:1 / 5;grid-row:3 / 4;height:220px}
+  @media (max-width:900px){
+    .bento{grid-template-columns:1fr 1fr;grid-template-rows:none}
+    .bento .item{height:240px !important}
+    .bento .item:nth-child(1){grid-column:1/3;grid-row:auto;height:320px !important}
+    .bento .item:nth-child(2),.bento .item:nth-child(3),.bento .item:nth-child(4){grid-column:span 1;grid-row:auto}
+    .bento .item:nth-child(5){grid-column:1/3;grid-row:auto}
+  }
+  @media (max-width:560px){
+    .bento{grid-template-columns:1fr}
+    .bento .item,.bento .item:nth-child(1){grid-column:1;height:280px !important}
+  }
+  .item{
+    position:relative;
+    overflow:hidden;
+    border-radius:2px;
+  }
+  .item img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
+  .item:hover img{transform:scale(1.06)}
+  .item::before,.item::after,
+  .item .crop-tl,.item .crop-br{position:absolute;width:20px;height:20px;pointer-events:none;z-index:2;opacity:0;transition:opacity .3s}
+  .item .crop-tl{top:12px;left:12px;border-top:2px solid var(--brass);border-left:2px solid var(--brass)}
+  .item .crop-br{bottom:12px;right:12px;border-bottom:2px solid var(--brass);border-right:2px solid var(--brass)}
+  .item:hover .crop-tl,.item:hover .crop-br{opacity:1}
+  .item .cap{
+    position:absolute;left:0;right:0;bottom:0;
+    padding:18px 20px;
+    background:linear-gradient(0deg, rgba(18,32,58,.92), transparent);
+    color:var(--white);
+    transform:translateY(6px);
+    opacity:0;
+    transition:opacity .3s, transform .3s;
+  }
+  .item:hover .cap{opacity:1;transform:translateY(0)}
+  .item .cap .tag{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;color:var(--brass);text-transform:uppercase;margin-bottom:4px}
+  .item .cap .name{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:16px}
+
+  /* ============ PROCESS ============ */
+  .process{background:var(--ink);color:var(--white)}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+  .steps::before{
+    content:'';position:absolute;top:23px;left:0;right:0;height:1px;
+    background:repeating-linear-gradient(90deg, rgba(255,255,255,.28) 0 8px, transparent 8px 16px);
+  }
+  @media (max-width:800px){
+    .steps{grid-template-columns:1fr;gap:44px}
+    .steps::before{display:none}
+  }
+  .step{position:relative;padding-right:28px}
+  .step .num{
+    width:46px;height:46px;border-radius:50%;
+    background:var(--ink);
+    border:1.5px solid var(--brass);
+    color:var(--brass);
+    font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;z-index:1;
+    margin-bottom:24px;
+  }
+  .step h3{font-size:18px;margin-bottom:10px}
+  .step p{color:rgba(255,255,255,.62);font-size:14.5px;line-height:1.65}
+
+  /* ============ TESTIMONIALS ============ */
+  .testimonials{background:var(--paper)}
+  .tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  @media (max-width:860px){.tgrid{grid-template-columns:1fr}}
+  .tcard{
+    background:var(--white);
+    border:1px solid var(--paper-line);
+    border-left:3px solid var(--rust);
+    padding:32px 28px;
+  }
+  .stars{font-family:'IBM Plex Mono',monospace;color:var(--brass);letter-spacing:2px;margin-bottom:18px;font-size:14px}
+  .tcard p.quote{font-size:15.5px;line-height:1.7;margin-bottom:22px;color:var(--ink)}
+  .tcard .who{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--slate);letter-spacing:.03em}
+  .tcard .who b{color:var(--ink);font-weight:600}
+
+  /* ============ CTA BANNER ============ */
+  .cta-banner{
+    background:var(--rust);
+    color:var(--white);
+    padding:100px 0;
+    position:relative;
+    overflow:hidden;
+  }
+  .cta-banner::before{
+    content:'';position:absolute;inset:0;
+    background-image:linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);
+    background-size:38px 38px;
+  }
+  .cta-inner{position:relative;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap}
+  .cta-banner h2{font-size:clamp(30px,4.5vw,50px);line-height:1.05;max-width:16ch}
+  .cta-actions{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+  .cta-phone{font-family:'IBM Plex Mono',monospace;font-size:15px;letter-spacing:.03em}
+
+  /* ============ FOOTER ============ */
+  footer{background:var(--ink-2);color:rgba(255,255,255,.75);padding:76px 0 28px}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:40px;padding-bottom:56px}
+  @media (max-width:800px){.foot-grid{grid-template-columns:1fr 1fr;row-gap:44px}}
+  @media (max-width:480px){.foot-grid{grid-template-columns:1fr}}
+  footer .wordmark .name,footer .wordmark .sub{color:var(--white)}
+  footer .blurb{font-size:14px;line-height:1.7;margin-top:18px;max-width:32ch;color:rgba(255,255,255,.55)}
+  footer h4{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--brass);margin-bottom:18px}
+  footer ul li{margin-bottom:11px;font-size:14.5px}
+  footer ul li a{opacity:.8;transition:opacity .2s}
+  footer ul li a:hover{opacity:1}
+  .social-row{display:flex;gap:12px;margin-top:20px}
+  .social-row a{
+    width:34px;height:34px;border:1px solid rgba(255,255,255,.25);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;transition:border-color .2s,background .2s;
+  }
+  .social-row a:hover{border-color:var(--brass);background:rgba(232,184,74,.1)}
+  .social-row svg{width:15px;height:15px}
+  .foot-bottom{
+    border-top:1px solid rgba(255,255,255,.12);
+    padding-top:24px;
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.04em;color:rgba(255,255,255,.45);
+  }
+
+  /* ============ MOBILE CALL BAR ============ */
+  .mobile-bar{
+    display:none;
+    position:fixed;bottom:0;left:0;right:0;z-index:200;
+    background:var(--ink);
+    border-top:1px solid rgba(255,255,255,.12);
+    padding:12px 16px;
+    padding-bottom:calc(12px + env(safe-area-inset-bottom));
+    gap:10px;
+  }
+  @media (max-width:768px){.mobile-bar{display:flex}}
+  .mobile-bar a{
+    flex:1;text-align:center;padding:13px 10px;border-radius:2px;
+    font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.04em;text-transform:uppercase;
+  }
+
+  /* reveal-on-scroll */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease), transform .7s var(--ease)}
+  .reveal.in{opacity:1;transform:translateY(0)}
+
+  /* mobile nav */
+  @media (max-width:860px){
+    header.nav nav{
+      position:fixed;inset:0 0 0 auto;width:78%;max-width:320px;
+      background:var(--ink);
+      flex-direction:column;align-items:flex-start;
+      padding:100px 32px 32px;
+      gap:26px;
+      transform:translateX(100%);
+      transition:transform .4s var(--ease);
+    }
+    header.nav nav.open{transform:translateX(0)}
+    header.nav nav a{font-size:15px}
+    header.nav .desk-cta{display:none}
+    .nav-toggle{
+      display:flex;flex-direction:column;gap:5px;width:26px;z-index:110;
+    }
+    .nav-toggle span{height:2px;background:var(--white);width:100%;transition:transform .3s,opacity .3s}
+    .nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .nav-toggle.open span:nth-child(2){opacity:0}
+    .nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .nav-scrim{
+      position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99;
+      opacity:0;pointer-events:none;transition:opacity .3s;
+    }
+    .nav-scrim.open{opacity:1;pointer-events:auto}
+  }
+  @media (max-width:768px){ body{padding-bottom:64px} }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="siteNav">
+  <div class="wrap inner">
+    <a href="#top" class="wordmark" aria-label="True North Build Co. home">
+      <span class="mark">
+        <svg viewBox="0 0 64 64" fill="none">
+          <circle cx="32" cy="32" r="29" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
+          <path d="M32 12 L39 32 L32 29 L25 32 Z" fill="#E8B84B"/>
+          <path d="M32 52 L25 32 L32 35 L39 32 Z" fill="currentColor" opacity=".9"/>
+          <line x1="16" y1="32" x2="22" y2="32" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
+          <line x1="42" y1="32" x2="48" y2="32" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
+        </svg>
+      </span>
+      <span>
+        <span class="name">TRUE NORTH</span><br>
+        <span class="sub">BUILD&nbsp;CO.</span>
+      </span>
+    </a>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav id="navLinks">
+      <a href="#work">Work</a>
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#contact">Contact</a>
+      <a href="#contact" class="btn btn-rust" style="margin-top:8px">Get an Estimate</a>
+    </nav>
+  </div>
+</header>
+<div class="nav-scrim" id="navScrim"></div>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="hero-bg">
+    <img src="https://images.pexels.com/photos/8830265/pexels-photo-8830265.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1200&fit=crop" alt="Carpenter framing a house under construction in warm afternoon light">
+  </div>
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="wrap hero-inner">
+    <p class="eyebrow">General Contracting &amp; Design-Build, Ridgeline County</p>
+    <h1>
+      <span class="line"><span>Measured right.</span></span>
+      <span class="line"><span>Built true.</span></span>
+    </h1>
+    <p class="sub">Custom builds, additions, and renovations from a crew that checks the level twice and cuts once. We don't hand off your project to a stranger. The person who quotes it is the person who shows up.</p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn btn-rust">Get a Free Estimate</a>
+      <a href="#work" class="btn btn-outline">See Our Work ↓</a>
+    </div>
+    <div class="spec-strip">
+      <span><b>Licensed &amp; Insured</b></span>
+      <span><b>18 yrs</b> Building</span>
+      <span><b>400+</b> Projects Completed</span>
+      <span><b>4.9★</b> Average Rating</span>
+    </div>
+  </div>
+</header>
+
+<!-- ============ LEVEL SIGNATURE ============ -->
+<section class="level-section" id="levelSection">
+  <div class="wrap">
+    <p class="level-caption">Site Reading</p>
+    <div class="vial">
+      <div class="ticks" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+      <div class="bubble"></div>
+    </div>
+    <p class="level-readout"><b>Plumb.</b> &nbsp;<b>Level.</b> &nbsp;<b>True.</b> That's the whole standard.</p>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section class="section services" id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">What We Build</p>
+      <h2>Six ways we get called back to a job site.</h2>
+    </div>
+
+    <div class="svc-grid">
+      <div class="svc-card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><line x1="12" y1="4" x2="12" y2="1"/><line x1="10.3" y1="1.8" x2="13.7" y2="1.8"/><line x1="9.5" y1="19.5" x2="9.5" y2="13.5" /><line x1="14.5" y1="19.5" x2="14.5" y2="13.5"/></svg></div>
+        <h3>Custom Home Builds</h3>
+        <p>Ground-up construction, from site prep and foundation to final trim. Built to spec, not to shortcuts.</p>
+      </div>
+      <div class="svc-card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 11.5 10 5.5l4 3.2"/><path d="M4.5 10.3V19h9v-4.3"/><path d="M13.5 19h7V12l-3.5-2.8L13.5 12" stroke-dasharray="2.5 2.5"/></svg></div>
+        <h3>Home Additions</h3>
+        <p>Second storeys, in-law suites, bump-outs: extra square footage that ties into the existing structure like it was always there.</p>
+      </div>
+      <div class="svc-card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v6a3 3 0 0 0 6 0V3"/><line x1="9" y1="9" x2="9" y2="21"/><path d="M16 3c0 3-2 3-2 6s2 3 2 12"/></svg></div>
+        <h3>Kitchen &amp; Bath Renovation</h3>
+        <p>Full gut renovations or targeted updates. Cabinetry, tile, plumbing, and finishes, all handled under one crew.</p>
+      </div>
+      <div class="svc-card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18.5" cy="5.5" r="2.2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="2" y1="14" x2="22" y2="14"/><line x1="2" y1="18" x2="22" y2="18"/></svg></div>
+        <h3>Decks &amp; Outdoor Living</h3>
+        <p>Decks, pergolas, and three-season rooms built to handle real winters and get used every summer.</p>
+      </div>
+      <div class="svc-card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v6H4z"/><path d="M6.5 10 4 14h5l-2.5 6 9-9h-5l2.5-5z" fill="currentColor" stroke="none" opacity=".85"/></svg></div>
+        <h3>Basement Finishing</h3>
+        <p>Turn unused square footage into a rec room, gym, or rental suite: framed, wired, and permitted correctly.</p>
+      </div>
+      <div class="svc-card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="13" height="13" rx="1"/><path d="M8 8h4v4H8z"/><path d="M16 8h5M16 12h5M16 16h5M3 20h5M9 20h5"/></svg></div>
+        <h3>Design-Build Management</h3>
+        <p>One point of contact from permit drawings to punch list. We run the schedule so you don't have to.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WORK / GALLERY ============ -->
+<section class="section work" id="work">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Field Notes</p>
+      <h2>Recent builds from the crew.</h2>
+    </div>
+
+    <div class="bento reveal">
+      <div class="item">
+        <img src="https://images.pexels.com/photos/8134821/pexels-photo-8134821.jpeg?auto=compress&cs=tinysrgb&w=1000&h=1200&fit=crop" alt="Modern two-storey custom home exterior with clean lines and large windows" loading="lazy">
+        <span class="crop-tl"></span><span class="crop-br"></span>
+        <div class="cap"><p class="tag">Custom Build &middot; Ridgeline Heights</p><p class="name">The Ridgeline House</p></div>
+      </div>
+      <div class="item">
+        <img src="https://images.pexels.com/photos/8821560/pexels-photo-8821560.jpeg?auto=compress&cs=tinysrgb&w=1000&h=800&fit=crop" alt="Carpenter standing on the wooden frame of a house addition" loading="lazy">
+        <span class="crop-tl"></span><span class="crop-br"></span>
+        <div class="cap"><p class="tag">Addition &middot; Foxglove Lane</p><p class="name">Second-Storey Framing</p></div>
+      </div>
+      <div class="item">
+        <img src="https://images.pexels.com/photos/15062155/pexels-photo-15062155.jpeg?auto=compress&cs=tinysrgb&w=800&h=800&fit=crop" alt="Modern white kitchen renovation with stainless steel appliances" loading="lazy">
+        <span class="crop-tl"></span><span class="crop-br"></span>
+        <div class="cap"><p class="tag">Kitchen &middot; Northgate</p><p class="name">Full Gut Renovation</p></div>
+      </div>
+      <div class="item">
+        <img src="https://images.pexels.com/photos/6207947/pexels-photo-6207947.jpeg?auto=compress&cs=tinysrgb&w=800&h=800&fit=crop" alt="Modern bathroom renovation with freestanding tub and tile" loading="lazy">
+        <span class="crop-tl"></span><span class="crop-br"></span>
+        <div class="cap"><p class="tag">Bath &middot; Fairview Ridge</p><p class="name">Primary Ensuite</p></div>
+      </div>
+      <div class="item">
+        <img src="https://images.pexels.com/photos/10847167/pexels-photo-10847167.jpeg?auto=compress&cs=tinysrgb&w=1600&h=700&fit=crop" alt="Large wooden backyard deck build overlooking the yard" loading="lazy">
+        <span class="crop-tl"></span><span class="crop-br"></span>
+        <div class="cap"><p class="tag">Outdoor Living &middot; Elm Crossing</p><p class="name">Cedar Deck &amp; Pergola</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section class="section process on-dark" id="process">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">How We Work</p>
+      <h2>From first walkthrough to final walk-through.</h2>
+    </div>
+
+    <div class="steps reveal">
+      <div class="step">
+        <div class="num">01</div>
+        <h3>Site Walkthrough &amp; Estimate</h3>
+        <p>We come to you, take real measurements, and give you a written estimate, not a ballpark guess.</p>
+      </div>
+      <div class="step">
+        <div class="num">02</div>
+        <h3>Design &amp; Permitting</h3>
+        <p>Drawings, material selections, and permit filing handled before a single tool touches the site.</p>
+      </div>
+      <div class="step">
+        <div class="num">03</div>
+        <h3>Build</h3>
+        <p>A dedicated crew and a set schedule, with weekly check-ins so you always know where things stand.</p>
+      </div>
+      <div class="step">
+        <div class="num">04</div>
+        <h3>Final Walkthrough &amp; Warranty</h3>
+        <p>We walk the finished job with you line by line, then back it with a written workmanship warranty.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section class="section testimonials">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">From the Punch List</p>
+      <h2>What it's like working with us.</h2>
+    </div>
+
+    <div class="tgrid reveal">
+      <div class="tcard">
+        <p class="stars">★★★★★</p>
+        <p class="quote">They quoted the addition in one visit and never once changed the number on us. Showed up when they said they would, every time.</p>
+        <p class="who"><b>Karen M.</b>, Ridgeline Heights</p>
+      </div>
+      <div class="tcard">
+        <p class="stars">★★★★★</p>
+        <p class="quote">Our kitchen gut reno took nine weeks, start to finish, exactly as scheduled. The crew left the site clean every single day.</p>
+        <p class="who"><b>Doug R.</b>, Fairview Ridge</p>
+      </div>
+      <div class="tcard">
+        <p class="stars">★★★★★</p>
+        <p class="quote">Finished basement, permitted and inspected without a hitch. They caught a framing issue from the original build and just fixed it.</p>
+        <p class="who"><b>Priya S.</b>, Northgate</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA BANNER ============ -->
+<section class="cta-banner" id="contact">
+  <div class="wrap cta-inner">
+    <h2>Ready to build something true?</h2>
+    <div class="cta-actions">
+      <a href="tel:+15553149200" class="btn btn-outline" style="border-color:rgba(255,255,255,.6)">Call (555) 314-9200</a>
+      <a href="mailto:hello@truenorthbuild.co" class="cta-phone">hello@truenorthbuild.co</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a href="#top" class="wordmark">
+          <span class="mark">
+            <svg viewBox="0 0 64 64" fill="none">
+              <circle cx="32" cy="32" r="29" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
+              <path d="M32 12 L39 32 L32 29 L25 32 Z" fill="#E8B84B"/>
+              <path d="M32 52 L25 32 L32 35 L39 32 Z" fill="currentColor" opacity=".9"/>
+              <line x1="16" y1="32" x2="22" y2="32" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
+              <line x1="42" y1="32" x2="48" y2="32" stroke="currentColor" stroke-width="1.5" opacity=".5"/>
+            </svg>
+          </span>
+          <span><span class="name">TRUE NORTH</span><br><span class="sub">BUILD&nbsp;CO.</span></span>
+        </a>
+        <p class="blurb">General contracting and design-build services, proudly serving homeowners across Ridgeline County and the surrounding valley.</p>
+        <div class="social-row">
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+          <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 8h-2a2 2 0 0 0-2 2v10M9 13h6"/><path d="M15 3H6a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h9a3 3 0 0 0 3-3V8z"/></svg></a>
+          <a href="#" aria-label="Houzz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 3v18l6-3V9l6 3v9l2-1V8L5 3z"/></svg></a>
+        </div>
+      </div>
+
+      <div>
+        <h4>Sitemap</h4>
+        <ul>
+          <li><a href="#work">Our Work</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#process">Our Process</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">Custom Builds</a></li>
+          <li><a href="#services">Additions</a></li>
+          <li><a href="#services">Kitchen &amp; Bath</a></li>
+          <li><a href="#services">Decks &amp; Outdoor</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Get In Touch</h4>
+        <ul>
+          <li><a href="tel:+15553149200">(555) 314-9200</a></li>
+          <li><a href="mailto:hello@truenorthbuild.co">hello@truenorthbuild.co</a></li>
+          <li>Ridgeline County &amp; Valley</li>
+          <li>Mon–Fri, 7am–5pm</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> True North Build Co. Licensed &amp; Insured General Contractor.</span>
+      <span>Site by JackDaw Marketing</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ MOBILE STICKY CALL BAR ============ -->
+<div class="mobile-bar">
+  <a href="tel:+15553149200" class="btn-outline" style="border:1px solid rgba(255,255,255,.35);color:#fff">Call Now</a>
+  <a href="#contact" class="btn-rust" style="background:var(--rust);color:#fff">Get Estimate</a>
+</div>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // nav solid on scroll
+  const navEl = document.getElementById('siteNav');
+  const onScroll = () => { navEl.classList.toggle('solid', window.scrollY > 40); };
+  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+
+  // mobile nav toggle
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  const scrim = document.getElementById('navScrim');
+  function closeNav(){
+    toggle.classList.remove('open'); links.classList.remove('open'); scrim.classList.remove('open');
+    toggle.setAttribute('aria-expanded','false');
+  }
+  toggle.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    scrim.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open);
+  });
+  scrim.addEventListener('click', closeNav);
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+
+  // hero load-in
+  requestAnimationFrame(() => document.querySelector('.hero').classList.add('loaded'));
+
+  // scroll reveals
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, {threshold:.15});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // level bubble signature
+  const levelSection = document.getElementById('levelSection');
+  const io2 = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting){ levelSection.classList.add('is-level'); io2.disconnect(); } });
+  }, {threshold:.5});
+  io2.observe(levelSection);
+</script>
+</body>
+</html>
