@@ -18,7 +18,7 @@ The entire site lives in `index.html` and is split into three logical parts:
 
 1. **`<head>`** — Inline `<style>` block with all CSS. Uses CSS custom properties defined on `:root` for the color palette (`--plum`, `--cream`, `--marigold`, `--jade`, `--tomato`) and typography (`--display`, `--body`, `--mono`).
 
-2. **`<body>`** — Semantic HTML sections: `header.bar` (sticky nav), `section.hero` (canvas wordmark + pitch), ticker strip, `#work` (project grid), `#why` (why JackDaw), `#contact`, `footer`.
+2. **`<body>`** — Semantic HTML sections: `header.bar` (sticky nav), `section.hero` (canvas wordmark + pitch), ticker strip, `#work` (project grid), `#why` (condensed Why JackDaw teaser boxes + pricing teaser, both linking out), `#contact`, `footer`. The full Why JackDaw writeup lives on its own page at `/why/index.html` (same self-contained-file pattern as `/pricing/index.html`), not inline on the homepage.
 
 3. **`<script>`** — Vanilla JS with two distinct zones:
    - **`CONFIG` object** (marked `EDIT ME`) — the only part that needs updating for content changes: `line1`/`line2` (wordmark text), `email`, `links`, `ticker` items, and `projects` array.

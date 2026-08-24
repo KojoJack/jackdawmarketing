@@ -174,9 +174,9 @@
     margin:0;max-width:34ch;
   }
   em.tomato,em.marigold,em.jade{font-style:normal}
-  em.tomato{color:var(--tomato)}
-  em.marigold{color:var(--marigold)}
-  em.jade{color:var(--jade)}
+  .tomato{color:var(--tomato)}
+  .marigold{color:var(--marigold)}
+  .jade{color:var(--jade)}
   .pitch .sub{
     font-size:clamp(15px,1.6vw,18px);line-height:1.55;opacity:.78;
     margin:0;max-width:52ch;
@@ -263,19 +263,43 @@
   .card:hover .go{text-decoration:underline;text-underline-offset:4px}
 
   /* ---------- why ---------- */
-  .why{display:flex;flex-direction:column;gap:clamp(38px,6vw,64px);margin-top:36px;max-width:840px}
-  .why-item h3{
+  .why-grid{display:flex;flex-wrap:wrap;gap:2px;margin-top:2px;background:var(--plum-3)}
+  .why-box{
+    position:relative;display:flex;flex-direction:column;gap:10px;background:var(--plum);
+    flex:1 1 220px;padding:clamp(20px,2.6vw,28px);text-decoration:none;color:inherit;min-height:170px;
+    transition:background .25s ease,transform .3s cubic-bezier(.2,.8,.2,1);
+  }
+  .why-box:hover{background:var(--plum-2);transform:translateY(-5px)}
+  .why-box .dot{width:10px;height:10px;border-radius:50%}
+  .why-box h3{font-family:var(--display);text-transform:uppercase;font-size:clamp(16px,1.8vw,19px);letter-spacing:-.01em;line-height:1.1;margin:0}
+  .why-box p{margin:0;font-size:14.5px;opacity:.78;max-width:32ch}
+  .why-box .go{
+    font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--marigold);margin-top:auto;padding-top:6px;
+  }
+  .why-box:hover .go{text-decoration:underline;text-underline-offset:4px}
+
+  /* ---------- pricing teaser ---------- */
+  .pricing-teaser{
+    flex:1 1 100%;
+    display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:22px;
+    margin-top:2px;padding:clamp(24px,3.4vw,36px) clamp(22px,3vw,30px);
+    background:var(--plum-2);text-decoration:none;color:inherit;
+    transition:background .25s ease,transform .3s cubic-bezier(.2,.8,.2,1);
+  }
+  .pricing-teaser:hover{background:var(--plum-3);transform:translateY(-5px)}
+  .pricing-teaser h3{
     font-family:var(--display);text-transform:uppercase;letter-spacing:-.01em;
-    font-size:clamp(20px,2.6vw,27px);line-height:1.05;color:var(--marigold);margin:0 0 16px;
+    font-size:clamp(19px,2.4vw,26px);margin:0 0 10px;
   }
-  .why-item p{margin:0 0 14px;max-width:62ch;opacity:.85}
-  .why-item p:last-child{margin-bottom:0}
-  .why-tag{
-    font-family:var(--display);text-transform:uppercase;letter-spacing:-.02em;
-    font-size:clamp(16px,2.4vw,28px);line-height:1.05;margin:10px 0 0;white-space:nowrap;
-    padding-top:clamp(30px,5vw,50px);border-top:2px solid var(--plum-3);
+  .pricing-teaser ul{list-style:none;display:flex;flex-wrap:wrap;gap:9px 24px;margin:0;padding:0;font-size:14.5px;opacity:.85}
+  .pricing-teaser li{display:flex;align-items:center;gap:8px}
+  .pricing-teaser li::before{content:"";width:6px;height:6px;flex:0 0 6px;background:var(--jade);border-radius:50%}
+  .pricing-teaser .go{
+    font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;
+    border:2px solid var(--cream);padding:12px 18px;transition:background .16s,color .16s,border-color .16s,transform .16s;
   }
-  @media(max-width:480px){ .why-tag{white-space:normal;font-size:clamp(18px,5.6vw,24px)} }
+  .pricing-teaser:hover .go{background:var(--marigold);border-color:var(--marigold);color:var(--plum)}
   /* ---------- contact ---------- */
   .contact{background:var(--marigold);color:var(--plum);margin-top:clamp(50px,8vw,110px);padding:clamp(40px,7vw,90px) 0}
   .contact .label{opacity:.62}
@@ -349,7 +373,7 @@
   <nav id="nav">
     <a href="#work">Work</a>
     <a href="/pricing/">Pricing</a>
-    <a href="#why">Why JackDaw</a>
+    <a href="/why/">Why JackDaw</a>
     <a href="/the-vault/">The Vault</a>
     <a href="#contact" class="hire">Start a project</a>
   </nav>
@@ -388,41 +412,48 @@
   </section>
 
   <section id="why" class="wrap" style="margin-top:clamp(50px,8vw,110px)">
-    <div class="head rev"><h2>Why JackDaw</h2><span class="label">Not a template</span></div>
-    <div class="why">
-      <div class="why-item rev">
-        <h3>Fully custom. Built from the ground up.</h3>
-        <p>Every JackDaw website is designed and developed specifically for the business it represents.</p>
-        <p>The structure, content, navigation and technical foundation are built around your services, your customers and the way people search for businesses like yours.</p>
-        <p>This creates a faster, cleaner and more flexible website that can grow alongside your business.</p>
-      </div>
-      <div class="why-item rev">
-        <h3>Built to be discovered.</h3>
-        <p>A modern website needs to be understood by more than just Google.</p>
-        <p>Jackdaw sites are structured to make your business clear to major search engines like Google and Bing, while also creating strong foundations for the AI platforms people increasingly use to discover businesses, services and information.</p>
-        <p>Clear page structure, structured data, service information, location signals, metadata, internal linking and technically accessible content all help search and AI systems better understand who you are, what you offer and where you operate.</p>
-      </div>
-      <div class="why-item rev">
-        <h3>SEO built into the foundation.</h3>
-        <p>Search visibility starts during the build.</p>
-        <p>Every site is developed with technical SEO, mobile performance, page speed, search-friendly content and logical site architecture in mind.</p>
-        <p>From there, SEO becomes an ongoing process. Search performance can be monitored, new opportunities identified, service and location pages expanded, content improved and your presence strengthened across the searches that matter to your business.</p>
-        <p>The goal is to steadily increase your reach and put your business in front of more people who are actively looking for what you offer.</p>
-      </div>
-      <div class="why-item rev">
-        <h3>Built for modern technology.</h3>
-        <p>The way people use the internet is changing quickly.</p>
-        <p>Search engines are evolving, AI-powered discovery is growing, mobile expectations continue to rise and websites are increasingly connected to analytics, advertising platforms, booking systems, customer tools and other technology.</p>
-        <p>Jackdaw sites are built with that future in mind.</p>
-        <p>A clean, code-based foundation makes it easier to improve performance, add new functionality, connect new tools and adapt as technology changes.</p>
-      </div>
-      <div class="why-item rev">
-        <h3>Fast, measurable and always improving.</h3>
-        <p>Your website should be more than something people visit. It should be part of how your business grows.</p>
-        <p>JackDaw can monitor how people find the site, what pages they visit, where leads come from and how the website performs across search.</p>
-        <p>That information gives us something valuable to build on. We can improve the site over time, expand your reach and make smarter decisions based on how real customers are actually interacting with your business online.</p>
-      </div>
-      <p class="why-tag rev">JackDaw. Truly built for the modern world.</p>
+    <div class="head rev"><h2>Why JackDaw</h2></div>
+    <div class="why-grid">
+      <a class="why-box rev" href="/why/#custom">
+        <span class="dot" style="background:var(--tomato)"></span>
+        <h3>Fully custom</h3>
+        <p>Designed and built from scratch around your business, not a template.</p>
+        <span class="go">Read more &rarr;</span>
+      </a>
+      <a class="why-box rev" href="/why/#discovered">
+        <span class="dot" style="background:var(--marigold)"></span>
+        <h3>Built to be found</h3>
+        <p>Structured for Google, Bing, and the AI platforms people now search with.</p>
+        <span class="go">Read more &rarr;</span>
+      </a>
+      <a class="why-box rev" href="/why/#seo">
+        <span class="dot" style="background:var(--jade)"></span>
+        <h3>SEO from day one</h3>
+        <p>Technical SEO, speed and structure built in, not bolted on after launch.</p>
+        <span class="go">Read more &rarr;</span>
+      </a>
+      <a class="why-box rev" href="/why/#technology">
+        <span class="dot" style="background:var(--tomato)"></span>
+        <h3>Modern technology</h3>
+        <p>A clean, code-based foundation that's easy to extend as tech evolves.</p>
+        <span class="go">Read more &rarr;</span>
+      </a>
+      <a class="why-box rev" href="/why/#measurable">
+        <span class="dot" style="background:var(--marigold)"></span>
+        <h3>Always improving</h3>
+        <p>I track performance and keep refining the site as real customers use it.</p>
+        <span class="go">Read more &rarr;</span>
+      </a>
+      <a class="pricing-teaser rev" href="/pricing/">
+        <div>
+          <h3>Simple pricing</h3>
+          <ul>
+            <li>No start-up fees</li>
+            <li>Month-to-month billing</li>
+          </ul>
+        </div>
+        <span class="go">View pricing &rarr;</span>
+      </a>
     </div>
   </section>
 
