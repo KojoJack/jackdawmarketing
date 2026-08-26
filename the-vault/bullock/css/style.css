@@ -139,6 +139,16 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .btn-block{ width: 100%; }
 .btn-lg{ min-height: 62px; padding: 16px 36px; font-size: 1.15rem; }
 
+/* Long nowrap button labels (e.g. "Book a Free Hearing Assessment") have a
+   fixed min-content width that CSS Grid/Flexbox won't shrink below by
+   default, which silently overflows past narrower phone viewports and gets
+   clipped by .hero's overflow:hidden. Letting labels wrap below 480px, and
+   letting grid/flex containers shrink past their content's natural width,
+   closes that off for every button on the site. */
+@media (max-width: 480px){
+  .btn{ white-space: normal; text-align: center; }
+}
+
 /* ==========================================================================
    Header
    ========================================================================== */
@@ -220,8 +230,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
    ========================================================================== */
 .hero{ padding: 64px 0 96px; position: relative; overflow: hidden; }
 .hero .wrap{ display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 56px; align-items: center; }
+.hero .wrap > *{ min-width: 0; }
 .hero-copy p.lede{ margin-bottom: 34px; }
-.hero-actions{ display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 26px; }
+.hero-actions{ display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 26px; min-width: 0; }
 .hero-trust{ display: flex; flex-wrap: wrap; gap: 10px 26px; margin-top: 8px; }
 .hero-trust li{ display: flex; align-items: center; gap: 9px; font-weight: 700; color: var(--navy); font-size: 0.98rem; }
 .hero-trust svg{ width: 20px; height: 20px; color: var(--teal); flex-shrink: 0; }
@@ -253,7 +264,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 @media (max-width: 980px){
   .hero .wrap{ grid-template-columns: 1fr; }
   .hero-media{ order: -1; }
-  .hero-badge{ position: static; margin-top: -40px; margin-left: 20px; width: fit-content; }
+  .hero-badge{ position: static; margin-top: 18px; width: fit-content; }
 }
 
 /* ==========================================================================
@@ -336,7 +347,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 .cta-banner h2{ color: var(--white); margin-bottom: 8px; }
 .cta-banner p{ color: #D8E2E8; max-width: 46ch; }
-.cta-actions{ display: flex; gap: 16px; flex-wrap: wrap; }
+.cta-actions{ display: flex; gap: 16px; flex-wrap: wrap; min-width: 0; }
 .cta-banner .btn-secondary{ border-color: var(--white); color: var(--white); }
 .cta-banner .btn-secondary:hover{ background: var(--white); color: var(--navy-deep); }
 
@@ -344,6 +355,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
    Two column split (about teaser, image + copy blocks)
    ========================================================================== */
 .split{ display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.split > *{ min-width: 0; }
 .split.reverse .split-media{ order: 2; }
 .split-media img{ border-radius: var(--radius-lg); box-shadow: var(--shadow-md); width: 100%; height: 100%; object-fit: cover; aspect-ratio: 4/3.4; }
 .split-list{ margin-top: 20px; display: flex; flex-direction: column; gap: 14px; }
