@@ -151,8 +151,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   display: flex; align-items: center; justify-content: space-between; gap: 18px;
   padding: 12px 28px;
 }
-.brand{ display: flex; align-items: center; text-decoration: none; flex-shrink: 0; }
-.brand img{ height: 52px; width: auto; }
+.brand{ display: flex; align-items: center; text-decoration: none; flex-shrink: 0; transition: transform .2s ease; }
+.brand:hover{ transform: scale(1.02); }
+.brand img{ height: 76px; width: auto; }
 
 .site-nav{ display: flex; align-items: center; }
 .site-nav ul{ display: flex; gap: 30px; }
@@ -195,7 +196,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 @media (max-width: 620px){
   .textsize-toggle{ display: none; }
-  .brand img{ height: 42px; }
+  .brand img{ height: 58px; }
 }
 
 /* ==========================================================================
@@ -224,6 +225,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .hero-trust{ display: flex; flex-wrap: wrap; gap: 10px 26px; margin-top: 8px; }
 .hero-trust li{ display: flex; align-items: center; gap: 9px; font-weight: 700; color: var(--navy); font-size: 0.98rem; }
 .hero-trust svg{ width: 20px; height: 20px; color: var(--teal); flex-shrink: 0; }
+
+@keyframes hero-in{ from{ opacity: 0; transform: translateY(20px); } to{ opacity: 1; transform: translateY(0); } }
+.hero-copy > *{ opacity: 0; animation: hero-in .7s cubic-bezier(.16,.8,.3,1) forwards; }
+.hero-copy > *:nth-child(1){ animation-delay: .05s; }
+.hero-copy > *:nth-child(2){ animation-delay: .14s; }
+.hero-copy > *:nth-child(3){ animation-delay: .23s; }
+.hero-copy > *:nth-child(4){ animation-delay: .32s; }
+.hero-copy > *:nth-child(5){ animation-delay: .4s; }
+.hero-media{ opacity: 0; animation: hero-in .8s cubic-bezier(.16,.8,.3,1) .2s forwards; }
 
 .hero-media{ position: relative; }
 .hero-media .frame{
@@ -327,6 +337,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .cta-banner h2{ color: var(--white); margin-bottom: 8px; }
 .cta-banner p{ color: #D8E2E8; max-width: 46ch; }
 .cta-actions{ display: flex; gap: 16px; flex-wrap: wrap; }
+.cta-banner .btn-secondary{ border-color: var(--white); color: var(--white); }
+.cta-banner .btn-secondary:hover{ background: var(--white); color: var(--navy-deep); }
 
 /* ==========================================================================
    Two column split (about teaser, image + copy blocks)
@@ -364,8 +376,19 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .tech-table tbody tr:nth-child(even){ background: var(--sand); }
 .tech-table tbody td:first-child{ font-weight: 700; color: var(--navy); }
 .tech-table .yes{ color: var(--teal-deep); font-weight: 700; }
-.table-scroll{ overflow-x: auto; -webkit-overflow-scrolling: touch; }
-@media (max-width: 760px){ .tech-table{ min-width: 640px; } }
+.table-scroll{ position: relative; overflow-x: auto; -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity; border-radius: var(--radius-lg); }
+.table-scroll-hint{ display: none; align-items: center; gap: 8px; justify-content: center; font-weight: 700; color: var(--teal-deep); font-size: 0.95rem; margin-bottom: 14px; }
+.table-scroll-hint svg{ width: 18px; height: 18px; animation: swipe-hint 1.6s ease-in-out infinite; }
+@keyframes swipe-hint{ 0%,100%{ transform: translateX(0); } 50%{ transform: translateX(6px); } }
+@media (max-width: 760px){
+  .tech-table{ min-width: 640px; }
+  .tech-table thead th, .tech-table tbody td{ scroll-snap-align: start; }
+  .table-scroll-hint{ display: flex; }
+  .table-scroll::after{
+    content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 36px; pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(20,48,76,0.14));
+  }
+}
 
 /* ==========================================================================
    FAQ (accordion, native <details>)
@@ -425,7 +448,7 @@ fieldset legend{ font-weight: 700; color: var(--navy-deep); margin-bottom: 10px;
    ========================================================================== */
 .site-footer{ background: var(--navy-deep); color: #C9D3DB; padding: 70px 0 26px; }
 .footer-grid{ display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.1fr; gap: 40px; margin-bottom: 50px; }
-.footer-brand img{ height: 46px; margin-bottom: 16px; }
+.footer-brand img{ height: 58px; margin-bottom: 16px; }
 .footer-brand p{ color: #A9B7C1; max-width: 34ch; }
 .footer-col h4{ color: var(--white); font-family: var(--font-body); font-size: 1rem; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 18px; }
 .footer-col ul{ display: flex; flex-direction: column; gap: 12px; }
@@ -441,6 +464,35 @@ fieldset legend{ font-weight: 700; color: var(--navy-deep); margin-bottom: 10px;
    ========================================================================== */
 .page-hero{ padding: 56px 0 60px; }
 .page-hero .section-head{ max-width: 780px; }
+
+/* ==========================================================================
+   Scroll reveal
+   ========================================================================== */
+.reveal{ opacity: 0; transform: translateY(28px); transition: opacity .7s cubic-bezier(.16,.8,.3,1), transform .7s cubic-bezier(.16,.8,.3,1); }
+.reveal.is-visible{ opacity: 1; transform: translateY(0); }
+.reveal-group .reveal:nth-child(2){ transition-delay: .08s; }
+.reveal-group .reveal:nth-child(3){ transition-delay: .16s; }
+.reveal-group .reveal:nth-child(4){ transition-delay: .24s; }
+.reveal-group .reveal:nth-child(5){ transition-delay: .32s; }
+.reveal-group .reveal:nth-child(6){ transition-delay: .4s; }
+
+/* ==========================================================================
+   Hover polish: photography & cards
+   ========================================================================== */
+.hero-media .frame{ transition: box-shadow .3s ease; }
+.hero-media .frame img{ transition: transform .6s cubic-bezier(.16,.8,.3,1); }
+.hero-media .frame:hover img{ transform: scale(1.04); }
+.split-media{ border-radius: var(--radius-lg); overflow: hidden; }
+.split-media img{ transition: transform .6s cubic-bezier(.16,.8,.3,1); }
+.split-media:hover img{ transform: scale(1.05); }
+.card{ transition: transform .3s ease, box-shadow .3s ease; }
+.card:hover{ transform: translateY(-6px); box-shadow: var(--shadow-md); }
+.sign-card{ transition: transform .3s ease, box-shadow .3s ease; }
+.sign-card:hover{ transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.testi-card{ transition: transform .3s ease, box-shadow .3s ease; }
+.testi-card:hover{ transform: translateY(-4px); box-shadow: var(--shadow-md); border-style: solid; }
+.funding-card{ transition: transform .3s ease, box-shadow .3s ease; }
+.funding-card:hover{ transform: translateY(-4px); box-shadow: var(--shadow-md); }
 
 /* Utility */
 .text-center{ text-align: center; }
