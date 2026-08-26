@@ -461,7 +461,7 @@ fieldset legend{ font-weight: 700; color: var(--navy-deep); margin-bottom: 10px;
    ========================================================================== */
 .site-footer{ background: var(--navy-deep); color: #C9D3DB; padding: 70px 0 26px; }
 .footer-grid{ display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.1fr; gap: 40px; margin-bottom: 50px; }
-.footer-brand img{ height: 58px; margin-bottom: 16px; }
+.footer-brand img{ height: 58px; margin-bottom: 16px; background: var(--white); padding: 10px 16px; border-radius: var(--radius-sm); }
 .footer-brand p{ color: #A9B7C1; max-width: 34ch; }
 .footer-col h4{ color: var(--white); font-family: var(--font-body); font-size: 1rem; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 18px; }
 .footer-col ul{ display: flex; flex-direction: column; gap: 12px; }
