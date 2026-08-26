@@ -257,7 +257,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   background: var(--white); border-radius: var(--radius-md); box-shadow: var(--shadow-md);
   padding: 16px 24px; display: flex; align-items: center; gap: 14px;
 }
-.hero-badge .waveform{ width: 46px; height: 30px; flex-shrink: 0; background-size: contain; }
+.hero-badge-mark{ width: 44px; height: 44px; flex-shrink: 0; border-radius: 10px; object-fit: contain; }
 .hero-badge strong{ display: block; font-family: var(--font-display); font-size: 1.05rem; }
 .hero-badge span{ font-size: 0.92rem; color: var(--ink-soft); }
 
