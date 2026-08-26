@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>
+  /* Only reachable through /the-vault/: this flag is set right before
+     the preview loads and cleared on exit, so a direct link to this
+     page without going through the password gate bounces back there. */
+  if (sessionStorage.getItem("jackdaw-vault-unlocked") !== "bullock") {
+    location.replace("/the-vault/");
+  }
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Services | Bullock Hearing Centre, Taber AB</title>
+<meta name="description" content="Hearing assessments, hearing aid fittings, tinnitus support, ear wax management and custom hearing protection at Bullock Hearing Centre in Taber, Alberta.">
+<link rel="canonical" href="https://www.bullockhearing.ca/services.html">
+<meta name="theme-color" content="#14304C">
+<link rel="icon" href="images/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="header-bar">
+    <a href="index.html" class="brand" aria-label="Bullock Hearing Centre home">
+      <img src="images/logo-horizontal.png" alt="Bullock Hearing Centre">
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="hearing-aids.html">Hearing Aids</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <div class="textsize-toggle" role="group" aria-label="Adjust text size">
+        <button type="button" data-size="base" aria-pressed="true" aria-label="Default text size">A</button>
+        <button type="button" data-size="lg" aria-pressed="false" aria-label="Large text size">A</button>
+        <button type="button" data-size="xl" aria-pressed="false" aria-label="Extra large text size">A</button>
+      </div>
+      <a href="tel:+15551234567" class="header-phone" aria-label="Call Bullock Hearing Centre">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+        [Phone Number]
+      </a>
+      <a href="contact.html#book" class="btn btn-primary">Book Appointment</a>
+    </div>
+    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="primary-nav">Menu</button>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Our Services</p>
+        <h1>Hearing care for every step of your journey</h1>
+        <p class="lede">From your first assessment to years of follow-up visits, here is exactly what we offer and what to expect.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="assessments">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Assessments</p>
+        <h2>Comprehensive Hearing Assessments</h2>
+        <p class="lede">A hearing assessment is the starting point for everything we do. It is painless, takes about an hour, and gives us, and you, a clear picture of what is happening with your hearing before we talk about any solutions.</p>
+      </div>
+      <div class="card-grid card-grid--2">
+        <div class="card">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <h3>Case History Review</h3>
+          <p>We start by talking through your hearing concerns, lifestyle and any relevant health history.</p>
+        </div>
+        <div class="card">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/></svg></div>
+          <h3>Full Audiometric Testing</h3>
+          <p>Pure-tone and speech testing measure exactly what you can and cannot hear, across a full range of pitches.</p>
+        </div>
+        <div class="card">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></div>
+          <h3>Speech-in-Noise Testing</h3>
+          <p>We test how well you follow conversation in real-world background noise, not just a quiet booth.</p>
+        </div>
+        <div class="card">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <h3>Plain-Language Results</h3>
+          <p>Your results are explained clearly, with a copy for your records and no rushed decisions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sand" id="fittings">
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <p class="eyebrow">Fittings</p>
+          <h2>Hearing Aid Fittings &amp; Programming</h2>
+          <p>If a hearing aid is the right next step, we fit and program the device specifically to your hearing loss, ear shape and daily routine, then verify the fit with real-ear measurement to confirm it is working the way it should.</p>
+          <ul class="split-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Real-ear verification for an accurate, measured fit</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>A trial period so you can test devices in real life</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Programming adjusted to how you actually listen</li>
+          </ul>
+        </div>
+        <div class="split-media">
+          <img src="images/consult-room.jpg" alt="Hearing aid fitting room with devices displayed at Bullock Hearing Centre" width="1200" height="1020">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="tinnitus">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Tinnitus</p>
+        <h2>Tinnitus Support</h2>
+        <p class="lede">Ringing, buzzing or hissing in the ears is common, and while there is not always a single cure, there is almost always a way to make it less disruptive day to day.</p>
+      </div>
+      <div class="card-grid">
+        <div class="card">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <h3>Tinnitus Assessment</h3>
+          <p>We evaluate the pattern and impact of your tinnitus as part of a full hearing exam.</p>
+        </div>
+        <div class="card">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></div>
+          <h3>Sound Therapy Options</h3>
+          <p>Gentle background sound can make tinnitus less noticeable, especially at night.</p>
+        </div>
+        <div class="card">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/></svg></div>
+          <h3>Hearing Aids with Masking</h3>
+          <p>Many modern hearing aids include features designed specifically to ease tinnitus.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sand" id="earwax">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Ear Wax</p>
+        <h2>Ear Wax Management</h2>
+        <p class="lede">Excess ear wax is one of the most common, and most fixable, causes of muffled hearing. Our team safely removes built-up wax using methods suited to your ears.</p>
+      </div>
+      <div class="card-grid card-grid--2">
+        <div class="card">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.69s-6 6.34-6 10.5a6 6 0 0 0 12 0c0-4.16-6-10.5-6-10.5Z"/></svg></div>
+          <h3>Safe In-Clinic Removal</h3>
+          <p>Wax is removed using gentle, clinically appropriate methods, never cotton swabs.</p>
+        </div>
+        <div class="card">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <h3>Same-Day Relief</h3>
+          <p>Many patients notice clearer hearing immediately after their appointment.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="protection">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Protection</p>
+        <h2>Custom Hearing Protection</h2>
+        <p class="lede">Prevention matters as much as treatment. We create custom-molded hearing protection from an impression of your own ears, for comfort and noise reduction that off-the-shelf earplugs cannot match.</p>
+      </div>
+      <div class="card-grid">
+        <div class="card">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg></div>
+          <h3>Work &amp; Industrial</h3>
+          <p>Custom hearing protection for job sites, farm equipment and other high-noise workplaces.</p>
+        </div>
+        <div class="card">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg></div>
+          <h3>Hunting &amp; Shooting</h3>
+          <p>Protection built to guard against sudden, high-decibel sound without cutting you off from your surroundings.</p>
+        </div>
+        <div class="card">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg></div>
+          <h3>Musicians &amp; Concerts</h3>
+          <p>Even-attenuation earplugs that reduce volume while keeping sound quality intact.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sand" id="ongoing-care">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Ongoing Care</p>
+        <h2>Ongoing Care &amp; Adjustments</h2>
+        <p class="lede">Getting a hearing aid is the beginning of your care, not the end of it. Cleanings, reprogramming and check-ins are included as part of your journey with us.</p>
+      </div>
+      <div class="card-grid">
+        <div class="card">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></svg></div>
+          <h3>Routine Cleanings</h3>
+          <p>Regular cleaning and maintenance keeps your devices working at their best.</p>
+        </div>
+        <div class="card">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/></svg></div>
+          <h3>Reprogramming &amp; Adjustments</h3>
+          <p>As your hearing or lifestyle changes, your devices can be reprogrammed to match.</p>
+        </div>
+        <div class="card">
+          <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <h3>Annual Hearing Re-checks</h3>
+          <p>Yearly re-assessments help us catch changes early and keep your care plan current.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="wrap">
+      <div class="section-head center">
+        <p class="eyebrow" style="justify-content:center">Common Questions</p>
+        <h2>Frequently asked questions</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>Do I need a referral to book a hearing test? <span class="plus" aria-hidden="true">+</span></summary>
+          <div class="faq-body"><p>No referral is needed. You can book a hearing assessment directly with our clinic.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>How long does a hearing assessment take? <span class="plus" aria-hidden="true">+</span></summary>
+          <div class="faq-body"><p>Most assessments take about an hour, including time to review your results together and answer any questions.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Will my hearing aids be covered by insurance or AADL? <span class="plus" aria-hidden="true">+</span></summary>
+          <div class="faq-body"><p>Coverage depends on your specific plan and eligibility. We can help you understand what Alberta Aids to Daily Living and your private insurance may cover before you commit to anything.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>What if I am not ready to buy hearing aids yet? <span class="plus" aria-hidden="true">+</span></summary>
+          <div class="faq-body"><p>That is completely fine. A hearing assessment does not obligate you to purchase anything. It simply gives you clear information to decide from.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>Do you see patients from outside Taber? <span class="plus" aria-hidden="true">+</span></summary>
+          <div class="faq-body"><p>Yes, we welcome patients from Taber and the surrounding communities of southern Alberta.</p></div>
+        </details>
+        <details class="faq-item">
+          <summary>What should I bring to my first appointment? <span class="plus" aria-hidden="true">+</span></summary>
+          <div class="faq-body"><p>Just yourself, and a list of any medications or health conditions worth mentioning. If you currently wear hearing aids, please bring those along too.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sand">
+    <div class="wrap">
+      <div class="cta-banner">
+        <div>
+          <h2>Not sure where to start?</h2>
+          <p>A hearing assessment is the simplest way to find out. It is free, painless and comes with no obligation.</p>
+        </div>
+        <div class="cta-actions">
+          <a href="contact.html#book" class="btn btn-primary btn-lg">Book a Free Assessment</a>
+          <a href="tel:+15551234567" class="btn btn-secondary btn-lg">Call [Phone Number]</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="images/logo-horizontal.png" alt="Bullock Hearing Centre">
+        <p>Comprehensive hearing care for Taber and southern Alberta, from your first assessment to lifelong support.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="hearing-aids.html">Hearing Aids</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="services.html#assessments">Hearing Assessments</a></li>
+          <li><a href="services.html#fittings">Hearing Aid Fittings</a></li>
+          <li><a href="services.html#tinnitus">Tinnitus Support</a></li>
+          <li><a href="services.html#earwax">Ear Wax Management</a></li>
+          <li><a href="services.html#protection">Hearing Protection</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Visit Us</h4>
+        <ul>
+          <li>[Street Address], Taber, AB</li>
+          <li><a href="tel:+15551234567">[Phone Number]</a></li>
+          <li><a href="mailto:info@bullockhearing.ca">[Email Address]</a></li>
+          <li>Mon &ndash; Fri, by appointment</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span data-year>2026</span> Bullock Hearing Centre. All rights reserved.</span>
+      <span>Site by JackDaw Marketing</span>
+    </div>
+  </div>
+</footer>
+
+<div class="mobile-callbar">
+  <a href="tel:+15551234567" class="btn btn-primary">Call Now</a>
+  <a href="contact.html#book" class="btn btn-secondary">Book Online</a>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

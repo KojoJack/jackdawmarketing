@@ -3,6 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  (function(){
+    try{
+      var stored = localStorage.getItem("jackdaw-theme");
+      var theme = stored || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+      document.documentElement.setAttribute("data-theme", theme);
+    }catch(e){}
+  })();
+</script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-7NPP9DSENG"></script>
 <script>
@@ -31,6 +40,13 @@
     --body:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
     --mono:'Space Mono',ui-monospace,'SF Mono',Menlo,monospace;
   }
+  :root[data-theme="light"]{
+    --plum:#FCF3E3;
+    --plum-3:#E6CE9C;
+    --cream:#221024;
+    --marigold:#946000;
+    --tomato:#BC3616;
+  }
   *{box-sizing:border-box;margin:0;padding:0}
   html{height:100%}
   body{
@@ -48,6 +64,7 @@
   .bird{
     display:block;width:150px;height:auto;margin:0 auto 36px;
     transition:transform .35s cubic-bezier(.2,.8,.2,1);
+    filter:drop-shadow(2px 0 0 var(--cream)) drop-shadow(-2px 0 0 var(--cream)) drop-shadow(0 2px 0 var(--cream)) drop-shadow(0 -2px 0 var(--cream));
   }
   .bird:hover{transform:rotate(6deg) scale(1.1)}
   @media(prefers-reduced-motion:reduce){ .bird{transition:none} }
