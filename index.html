@@ -714,6 +714,21 @@ menuBtn.addEventListener("click", () => {
 nav.addEventListener("click", (e) => { if (e.target.closest("a")) closeMenu(); });
 addEventListener("resize", () => { if (innerWidth > 700) closeMenu(); });
 
+/* ---------- analytics: key event tracking (phone, email, contact form) ---------- */
+function trackEvent(name, params) {
+  if (typeof gtag === "function") gtag("event", name, { transport_type: "beacon", ...params });
+}
+document.querySelectorAll('a[href^="tel:"]').forEach((link) => {
+  link.addEventListener("click", () => trackEvent("phone_click", { link_url: link.getAttribute("href") }));
+});
+document.querySelectorAll('a[href^="mailto:"]').forEach((link) => {
+  link.addEventListener("click", () => trackEvent("email_click", { link_url: link.getAttribute("href") }));
+});
+const contactForm = document.querySelector(".contact-form");
+if (contactForm) {
+  contactForm.addEventListener("submit", () => trackEvent("send_message", { form_name: "contact" }));
+}
+
 if (!reduced && "IntersectionObserver" in window) {
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e, i) => {
