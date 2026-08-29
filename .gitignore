@@ -1,1 +1,4 @@
 .DS_Store
+
+# Local-only working files — never deployed
+_local/

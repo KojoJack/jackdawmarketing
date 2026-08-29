@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This is a single-file static marketing website for JackDaw Marketing (`index.html`). There is no build step, no dependencies, and no package manager — everything is self-contained in one HTML file. **Do not add React, Tailwind, npm, or a bundler.** Keep it plain HTML, CSS, and vanilla JS.
+This is a single-file static marketing website for Jackdaw Marketing (`index.html`). There is no build step, no dependencies, and no package manager — everything is self-contained in one HTML file. **Do not add React, Tailwind, npm, or a bundler.** Keep it plain HTML, CSS, and vanilla JS.
 
 To preview: open `index.html` in a browser, or run any static file server (e.g. `python3 -m http.server`).
 
@@ -18,7 +18,7 @@ The entire site lives in `index.html` and is split into three logical parts:
 
 1. **`<head>`** — Inline `<style>` block with all CSS. Uses CSS custom properties defined on `:root` for the color palette (`--plum`, `--cream`, `--marigold`, `--jade`, `--tomato`) and typography (`--display`, `--body`, `--mono`).
 
-2. **`<body>`** — Semantic HTML sections: `header.bar` (sticky nav), `section.hero` (canvas wordmark + pitch), ticker strip, `#work` (project grid), `#why` (condensed Why JackDaw teaser boxes + pricing teaser, both linking out), `#contact`, `footer`. The full Why JackDaw writeup lives on its own page at `/why/index.html` (same self-contained-file pattern as `/pricing/index.html`), not inline on the homepage.
+2. **`<body>`** — Semantic HTML sections: `header.bar` (sticky nav), `section.hero` (canvas wordmark + pitch), ticker strip, `#work` (project grid), `#why` (condensed Why Jackdaw teaser boxes + pricing teaser, both linking out), `#contact`, `footer`. The full Why Jackdaw writeup lives on its own page at `/why/index.html` (same self-contained-file pattern as `/pricing/index.html`), not inline on the homepage.
 
 3. **`<script>`** — Vanilla JS with two distinct zones:
    - **`CONFIG` object** (marked `EDIT ME`) — the only part that needs updating for content changes: `line1`/`line2` (wordmark text), `email`, `links`, `ticker` items, and `projects` array.
