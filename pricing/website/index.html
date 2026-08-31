@@ -406,11 +406,11 @@
   .report-shot{
     display:block;width:100%;max-width:560px;margin:12px 0 20px;
     border:2px solid var(--plum-3);background:var(--brand-paper);
-    transition:transform .18s ease,box-shadow .18s ease;
+    transition:transform .3s cubic-bezier(.2,.8,.2,1),border-color .25s ease;
   }
   .report-shot img{display:block;width:100%;height:auto}
-  .report-shot:hover{transform:translateY(-3px);box-shadow:7px 7px 0 var(--brand-marigold)}
-  @media(prefers-reduced-motion:reduce){ .report-shot:hover{transform:none} }
+  .report-shot:hover{transform:translateY(-5px);border-color:var(--marigold)}
+  @media(prefers-reduced-motion:reduce){ .report-shot{transition:none} .report-shot:hover{transform:none} }
 
   /* ---------- footer ---------- */
   footer{padding:26px 0 34px;font-family:var(--mono);font-size:12px;letter-spacing:.08em}
