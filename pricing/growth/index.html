@@ -403,13 +403,14 @@
   .feat-list{margin:6px 0 0;padding:0 0 0 20px;columns:2;column-gap:34px;font-size:14.5px;opacity:.85}
   .feat-list li{margin:0 0 7px;break-inside:avoid}
   @media(max-width:620px){ .feat-list{columns:1} }
-  .report-embed{
-    width:100%;max-width:640px;height:clamp(440px,72vh,680px);
-    border:2px solid var(--plum-3);background:var(--plum-2);margin:10px 0 18px;
+  .report-shot{
+    display:block;width:100%;max-width:560px;margin:12px 0 20px;
+    border:2px solid var(--plum-3);background:var(--brand-paper);
+    transition:transform .18s ease,box-shadow .18s ease;
   }
-  .report-embed object,.report-embed iframe{width:100%;height:100%;border:0;display:block}
-  .embed-fallback{padding:22px;font-size:14.5px;margin:0}
-  @media(max-width:640px){ .report-embed{display:none} }
+  .report-shot img{display:block;width:100%;height:auto}
+  .report-shot:hover{transform:translateY(-3px);box-shadow:7px 7px 0 var(--brand-marigold)}
+  @media(prefers-reduced-motion:reduce){ .report-shot:hover{transform:none} }
 
   /* ---------- footer ---------- */
   footer{padding:26px 0 34px;font-family:var(--mono);font-size:12px;letter-spacing:.08em}
@@ -549,12 +550,9 @@
     <div class="detail-block">
       <h4>Sample monthly report</h4>
       <p><strong>See exactly what a Jackdaw Growth client receives each month.</strong></p>
-      <div class="report-embed">
-        <object data="/pricing/sample-monthly-report.pdf" type="application/pdf" aria-label="Sample Jackdaw monthly report (PDF)">
-          <iframe src="/pricing/sample-monthly-report.pdf" title="Sample Jackdaw monthly report (PDF)" loading="lazy"></iframe>
-          <p class="embed-fallback">Your browser can&rsquo;t display the report here. <a href="/pricing/sample-monthly-report.pdf" target="_blank" rel="noopener">Open the sample report &rarr;</a></p>
-        </object>
-      </div>
+      <a class="report-shot" href="/pricing/sample-monthly-report.pdf" target="_blank" rel="noopener">
+        <img src="/pricing/sample-monthly-report.png" width="1236" height="1600" loading="lazy" alt="First page of a sample Jackdaw monthly performance report: headline metrics, where leads came from, search visibility, and next-month priorities">
+      </a>
       <a href="/pricing/sample-monthly-report.pdf" class="btn solid" target="_blank" rel="noopener">View sample report &rarr;</a>
     </div>
     <div class="detail-block">
