@@ -3,10 +3,14 @@
 <head>
 <meta charset="utf-8">
 <script>
-  /* Only reachable through /the-vault/: this flag is set right before
-     the preview loads and cleared on exit, so a direct link to this
-     page without going through the password gate bounces back there. */
-  if (sessionStorage.getItem("jackdaw-vault-unlocked") !== "earcare") {
+  /* The gate only applies to the copy served under /the-vault/, where this
+     flag is set right before the preview loads and cleared on exit, so a
+     direct link without going through the password gate bounces back there.
+     Served from the root of its own site instead, the page is public and
+     this does nothing -- so one file covers both without a second copy to
+     keep in sync. */
+  if (location.pathname.indexOf("/the-vault/") === 0 &&
+      sessionStorage.getItem("jackdaw-vault-unlocked") !== "earcare") {
     location.replace("/the-vault/");
   }
 </script>
