@@ -23,11 +23,13 @@
      Only a shadow changes on scroll. The header never changes height, so the
      page underneath cannot shift and flicker back and forth near the top. */
   var bar = d.getElementById('actionbar');
+  var smallScreen = window.matchMedia('(max-width:1040px)');
   function onScroll(){
     var y = window.scrollY;
     header.classList.toggle('scrolled', y > 8);
-    if(bar) bar.classList.toggle('show', y > 360);
+    if(bar) bar.classList.toggle('show', smallScreen.matches || y > 360);
   }
+  if(smallScreen.addEventListener) smallScreen.addEventListener('change', onScroll);
   window.addEventListener('scroll', onScroll, {passive:true});
   onScroll();
 

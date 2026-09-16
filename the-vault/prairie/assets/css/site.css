@@ -769,3 +769,36 @@ main p a:not(.btn):hover, .info-list a:hover, .map-note a:hover, .crumbs a:hover
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
   .reveal{opacity:1;transform:none}
 }
+
+/* ==========================================================================
+   PHONE-ONLY TRIMS
+   Everything here is inside a phone media query, so the desktop layout is
+   untouched: the brown info strip and its wave, and the "Now open" notice,
+   are desktop furniture that costs too much room on a small screen.
+   ========================================================================== */
+@media (max-width:760px){
+  /* the brown strip folds away; the text size control moves into the cream
+     bar beside the menu button, so the header is one short row */
+  .infobar{background:none;color:var(--ink);container-type:normal;position:static}
+  .infobar-in{min-height:0;padding:0}
+  .info-items{display:none}
+  .infobar-wave{display:none}
+  .infobar .ts-group{
+    position:absolute;top:0;bottom:0;right:calc(20px + 50px + 12px);z-index:3;
+    padding-left:0;border-left:0;
+  }
+  .infobar .ts-group .ts-label{display:none}
+  .infobar .ts-opts{border-color:var(--line-strong);background:var(--paper)}
+  .infobar .ts-thumb{background:var(--green)}
+  .infobar .ts-opt .glyph{color:var(--green-deep)}
+  .infobar .ts-opt[aria-checked="true"] .glyph{color:#fff}
+  .infobar .ts-opt:hover{background:rgba(92,110,74,.12)}
+  .infobar :focus-visible{outline-color:var(--green)}
+
+  /* the "Now open" notice is a desktop nicety; the phone needs the headline */
+  .status{display:none}
+}
+
+@media (max-width:420px){
+  .infobar .ts-group{right:calc(16px + 50px + 8px)}
+}
