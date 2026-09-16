@@ -797,6 +797,9 @@ main p a:not(.btn):hover, .info-list a:hover, .map-note a:hover, .crumbs a:hover
 
   /* the "Now open" notice is a desktop nicety; the phone needs the headline */
   .status{display:none}
+
+  /* contact page: the booking form comes first, right under the hero buttons */
+  .visit-grid .book-card{order:-1}
 }
 
 @media (max-width:420px){
