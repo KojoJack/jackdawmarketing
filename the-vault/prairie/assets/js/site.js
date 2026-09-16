@@ -189,7 +189,8 @@
      for it — hover, keyboard focus, touch, or an in-page button coming into
      view — so by the time they click, the form is usually already there.
      Nothing is fetched for visitors who never go near a booking button. */
-  var bookLinks = Array.prototype.slice.call(d.querySelectorAll('a[href$="contact.html#book"], a[href="#book"]'));
+  var bookLinks = Array.prototype.slice.call(
+    d.querySelectorAll('a[data-book], a[href$="contact.html#book"], a[href="#book"]'));
   var bookDlg = d.getElementById('book-dialog');
   if(bookDlg && bookLinks.length){
     var bookFrame = bookDlg.querySelector('iframe.jotform');
