@@ -2,3 +2,7 @@
 
 # Local-only working files — never deployed
 _local/
+
+# Prairie Hearing Westwood working folder stays local (originals, full-size
+# photos, build script). The gated preview ships from the-vault/prairie/.
+Prairie Hearing Westwood/
