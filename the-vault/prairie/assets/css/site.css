@@ -47,6 +47,7 @@ html{
   scroll-behavior:smooth;-webkit-text-size-adjust:100%;font-size:100%;
   scroll-padding-top:calc(var(--header-h) + 16px);
   overflow-x:hidden;overflow-x:clip;
+  overscroll-behavior-y:contain;
 }
 html.ts-2{font-size:112%}
 html.ts-3{font-size:124%}
