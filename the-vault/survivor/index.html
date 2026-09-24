@@ -137,6 +137,12 @@ textarea{width:100%;min-height:90px;resize:vertical}
 .cc .av{width:96px;height:96px;padding:3px}
 .cc-name{font-weight:800;line-height:1.2;margin-top:4px}
 .cc-sub{font-size:13px;color:var(--muted);line-height:1.35}
+.cc-job{font-size:12px;font-weight:600;color:var(--sun);line-height:1.3;margin-top:-4px}
+.m-bio{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;margin:0 0 16px}
+.m-bio dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 16px;margin:0 0 12px}
+.m-bio dt{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.m-bio dd{margin:2px 0 0;font-weight:700;line-height:1.3}
+.m-bio p{margin:0;line-height:1.55;color:var(--bone)}
 .cc-pts{font-family:var(--display);font-size:24px;line-height:1;margin-top:2px}
 .cc-pts small{font-family:var(--body);font-size:12px;color:var(--muted);font-weight:600}
 .cc.is-out{opacity:.72}
@@ -454,13 +460,58 @@ const OWNERS = [
   { id: "sean",   owner: "Sean",   color: "#5CC49A" },
   { id: "deanna", owner: "Deanna", color: "#E2708E" }
 ];
+/* Castaway bios: age, occupation, hometown, residence, bio. Keyed by the cast ids above. */
+const BIO = {
+  aaliyah:  { age:24, occupation:"Chef", hometown:"Gloucester City, New Jersey", residence:"Providence, Rhode Island",
+    bio:"A confident young chef who says she was raised by bold, independent women. Wise beyond her years, with a spontaneous streak that could make her hard to predict." },
+  alexis:   { age:34, occupation:"Criminal Defense Attorney", hometown:"Atlanta, Georgia", residence:"Atlanta, Georgia",
+    bio:"An outgoing defense lawyer who argues for a living. Thoughtful and determined, she'll be used to reading a room and making her case." },
+  thienan:  { age:24, occupation:"Medical Student", hometown:"Fort Worth, Texas", residence:"Fort Worth, Texas",
+    bio:"A quick-witted med student who pairs empathy with a sharp mind. Outgoing and easy to talk to, which could make her a natural at building bonds." },
+  ana:      { age:34, occupation:"Voice Actress", hometown:"Richmond Hill, Ontario", residence:"Toronto, Ontario",
+    bio:"A voice actress who has worked on dozens of audiobooks and animated projects, including Prime Video's The Boys. Goofy, ambitious, and a little chaotic, and one of two Ontario castaways this season." },
+  jelly:    { age:29, occupation:"Sociology Professor", hometown:"Garland, Texas / Midwest City, Oklahoma", residence:"Bloomington, Indiana",
+    bio:"A sociology professor who literally studies how people and groups behave. Curious and passionate, she's bringing a lot of social science to a social game." },
+  brady:    { age:27, occupation:"Pro Wrestler", hometown:"La Salle, Illinois", residence:"Knoxville, Tennessee",
+    bio:"A professional wrestler with big energy and a love for a good show. Intense and fun, he looks like one of the season's challenge threats." },
+  carter:   { age:24, occupation:"Livestock Farmer", hometown:"Rock Rapids, Iowa", residence:"Sioux Falls, South Dakota",
+    bio:"A young Midwestern livestock farmer used to hard work and long days. Adventurous and competitive, he's out to prove himself." },
+  cristian: { age:26, occupation:"Head of HR", hometown:"Salt Lake City, Utah", residence:"Salt Lake City, Utah",
+    bio:"An HR head who spends his days managing people and their problems. Loud, fun, and a bit chaotic, he's likely to be hard to miss around camp." },
+  kilby:    { age:30, occupation:"Game Designer", hometown:"Mount Forest, Ontario", residence:"London, Ontario",
+    bio:"A game designer from Ontario who builds games for a living and now gets to play the ultimate one. Wacky and playful, with a creative way of thinking." },
+  devin:    { age:33, occupation:"Actor", hometown:"Lufkin, Texas", residence:"Los Angeles, California",
+    bio:"A Texas-born actor now working in LA. Charming and playful, with loyalty he calls one of his defining traits." },
+  eric:     { age:34, occupation:"Mental Health Counselor", hometown:"Lincoln, Rhode Island", residence:"Windsor Locks, Connecticut",
+    bio:"A mental health counselor who knows how to get people to open up. Animated and charismatic, with an empathetic side that could make him a trusted ally." },
+  jenna:    { age:30, occupation:"Wedding Photographer", hometown:"Perrysburg, Ohio", residence:"Toledo, Ohio",
+    bio:"A wedding photographer who's used to reading people at their most emotional moments. Energetic, empathetic, and determined." },
+  kristin:  { age:49, occupation:"Crisis Management", hometown:"Ketchum, Idaho", residence:"Santa Barbara, California",
+    bio:"The oldest castaway this season, with a career in crisis management that should come in handy when things go sideways. Determined and joyful." },
+  lewis:    { age:28, occupation:"Farmer", hometown:"Dublin, Ireland", residence:"Puerto Rico",
+    bio:"An Irish farmer now living in Puerto Rico. Cheeky and charming, with a devilish streak that could make him fun to watch." },
+  linnea:   { age:25, occupation:"Entrepreneur", hometown:"Kearny, New Jersey", residence:"Jersey City, New Jersey",
+    bio:"A young New Jersey entrepreneur who runs her own business. Rational and optimistic, she comes across as a level-headed strategist." },
+  maggie:   { age:40, occupation:"Farmer", hometown:"Middleway, West Virginia", residence:"Charlestown, West Virginia",
+    bio:"A West Virginia farmer who proudly calls herself a redneck. Joyful and intentional, she's no stranger to hard work outdoors." },
+  mike:     { age:32, occupation:"Baseball Executive", hometown:"New York City", residence:"New York City",
+    bio:"A baseball front-office executive who evaluates talent for a living. Enthusiastic, strategic, and driven, he may treat the game like building a roster." },
+  ori:      { age:27, occupation:"Personal Trainer", hometown:"Spring Valley, New York", residence:"Spring Valley, New York",
+    bio:"A personal trainer who describes himself as a consistent hustler. Physically strong and self-driven, he could be a force in challenges." },
+  patt:     { age:33, occupation:"Federal Prosecutor", hometown:"Tampa, Florida", residence:"Washington, D.C.",
+    bio:"A federal prosecutor used to building cases and grilling witnesses. Goofy and loyal, but with an intense side when it counts." },
+  rob:      { age:40, occupation:"Airline Gate Agent", hometown:"Johnston, Rhode Island", residence:"Cumberland, Rhode Island",
+    bio:"A Logan Airport gate agent and father of three who met his wife on a cruise. Competitive and funny, and he's playing to bring the money home to his kids." },
+  sharonda: { age:34, occupation:"OB-GYN Resident", hometown:"Pompano Beach, Florida", residence:"Richmond, Kentucky",
+    bio:"An OB-GYN resident who's used to long shifts and high-pressure calls. Charismatic, resilient, and reliable." }
+};
 const CAST = [
   ["aaliyah","Aaliyah Puglia"],["alexis","Alexis Levine"],["thienan","Thien An Nguyen"],["ana","Ana Sani"],
   ["jelly","Jelly Loblack"],["brady","Brady Booker"],["carter","Carter Krull"],["cristian","Cristian Chavez"],
   ["kilby","Kilby"],["devin","Devin Way"],["eric","Eric Macksoud"],["jenna","Jenna Doore"],
   ["kristin","Kristin Flickinger"],["lewis","Lewis Kelly"],["linnea","Linnea Capobianco"],["maggie","Maggie Nestor"],
   ["mike","Mike Pinsky"],["ori","Ori Jean-Charles"],["patt","Patt Cannaday"],["rob","Rob Antonson"],["sharonda","Sharonda Cox"]
-].map(([id,name]) => ({ id, name }));
+].map(([id,name]) => ({ id, name, ...BIO[id] }));
 const CAST_BY = Object.fromEntries(CAST.map(c => [c.id, c]));
 
 const EVENTS = [
@@ -734,7 +785,7 @@ function castCard(id){
   const c = CAST_BY[id], out = state.cast[id].out;
   return `<button class="cc ${out ? "is-out" : ""}" type="button" data-act="open-cast" data-id="${id}">
     ${avatar(id, "md")}${out ? `<span class="stamp">Voted out</span>` : ""}
-    <span class="cc-name">${esc(c.name)}</span>
+    <span class="cc-name">${esc(c.name)}</span>${c.occupation ? `<span class="cc-job">${esc(c.occupation)}</span>` : ""}
     <span class="cc-sub">${tribePill(id) || "&nbsp;"}<br>${statusText(id)}</span>
     ${ownerTag(id)}
     <span class="cc-pts">${castTotal(id)} <small>pts</small></span>
@@ -957,6 +1008,10 @@ function openCast(id){
       <div class="m-head">${avatar(id,"lg")}<div><h3>${esc(c.name)}</h3>
         <div class="bsub" style="display:flex;gap:10px;flex-wrap:wrap">${tribePill(id)}<span>${statusText(id)}</span></div>
         <div style="margin-top:8px">${ownerTag(id)}</div></div></div>
+      ${c.bio ? `<div class="m-bio">
+        <dl><div><dt>Age</dt><dd>${esc(c.age)}</dd></div><div><dt>Occupation</dt><dd>${esc(c.occupation)}</dd></div>
+          <div><dt>Hometown</dt><dd>${esc(c.hometown)}</dd></div><div><dt>Lives in</dt><dd>${esc(c.residence)}</dd></div></dl>
+        <p>${esc(c.bio)}</p></div>` : ""}
       <p style="margin:0 0 10px"><b style="font-family:var(--display);font-weight:400;font-size:26px">${castTotal(id)}</b> <span class="muted">points this season</span></p>
       ${rows ? `<table class="ep-table">${rows}</table>` : `<p class="muted">No points yet.</p>`}
     </div></div>`;
