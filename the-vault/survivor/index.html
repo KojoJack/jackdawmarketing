@@ -403,6 +403,34 @@ footer button:hover{border-color:var(--sun);color:var(--sun)}
   *,*::before,*::after{animation:none !important;transition:none !important}
   .embers{display:none}
 }
+
+/* tribe assignment, grouping, eliminated */
+.roster-row.is-out{background:rgba(229,96,74,.08);box-shadow:inset 3px 0 0 var(--bad)}
+.roster-row.is-out .rr-name{text-decoration:none;color:#ff8f7a}
+.roster-row.is-out .rr-pts{color:#ff8f7a}
+.elim{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--bad);padding:1px 8px;border-radius:99px}
+.cc.is-out{opacity:1;border-color:rgba(229,96,74,.45);background:linear-gradient(180deg,rgba(229,96,74,.14),var(--card))}
+.cc.is-out .cc-name{color:#ff8f7a}
+.cast-group + .cast-group{margin-top:28px}
+.group-head{display:flex;align-items:center;gap:12px;margin:0 0 12px;padding:10px 16px;border-radius:12px;border-left:4px solid var(--tc);
+  background:linear-gradient(90deg,color-mix(in srgb,var(--tc) 22%,transparent),transparent 75%)}
+.gh-name{display:block;font-family:var(--display);font-size:20px;line-height:1.15}
+.gh-sub{font-size:13px;color:var(--muted)}
+.group-head b{margin-left:auto;font-family:var(--display);font-weight:400;font-size:26px;line-height:1;color:var(--tc);white-space:nowrap}
+.group-head b small{font-family:var(--body);font-size:12px;font-weight:600;color:var(--muted)}
+.assign{margin:0 0 16px}
+.assign-list{margin-top:10px;display:grid;gap:6px}
+.assign-list[hidden]{display:none}
+.assign-opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:rgba(242,228,196,.03);transition:border-color .2s,background .2s}
+.assign-opt:hover{border-color:var(--tc);background:rgba(242,228,196,.06)}
+.assign-opt i{width:12px;height:12px;border-radius:50%;background:var(--tc);flex:none}
+.assign-opt span{flex:1;min-width:0}
+.assign-opt b{display:block;line-height:1.25}
+.assign-opt small{color:var(--muted);font-size:12px}
+.assign-opt em{font-style:normal;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--sun)}
+.assign-opt.on{border-color:var(--tc);background:color-mix(in srgb,var(--tc) 14%,transparent)}
+.assign-from{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin-top:4px}
+.assign-from input{width:64px}
 </style>
 </head>
 <body>
@@ -669,7 +697,12 @@ function avatar(id, size){
   return `<span class="av av-${size}" style="--tc:${t ? esc(t.color) : "#5b7772"}"><img src="${IMG[id] || ""}" alt="" loading="lazy"></span>`;
 }
 function tribePill(id){ const t = tribeOf(id); return t ? `<span class="tribe" style="--c:${esc(t.color)}"><i></i>${esc(t.name)}</span>` : ""; }
-function statusText(id){ const c = state.cast[id]; return c.out ? (c.place ? `Out, ${ordinal(c.place)}` : "Out") : "Still in"; }
+function statusText(id){ const c = state.cast[id]; return c.out ? (c.place ? `Eliminated, ${ordinal(c.place)}` : "Eliminated") : "Still in"; }
+/* still-in first (keeping the given order), eliminated after, most recent boot first */
+function aliveFirst(list, idOf = x => x.id){
+  const place = x => state.cast[idOf(x)].place || 99;
+  return [...list.filter(x => !state.cast[idOf(x)].out), ...list.filter(x => state.cast[idOf(x)].out).sort((a,b) => place(a) - place(b))];
+}
 function ownerTag(id){
   const w = ownerOf(id);
   return w ? `<span class="owner-tag" style="--oc:${w.o.color}">${esc(w.o.owner)}</span>` : `<span class="owner-tag none">Free agent</span>`;
@@ -736,27 +769,19 @@ function viewTeams(){
   const anyPts = epList().length > 0;
   const drafted = new Set(OWNERS.flatMap(o => state.teams[o.id].roster.map(r => r.id)));
   const free = CAST.filter(c => !drafted.has(c.id));
-  const le = latestEp(); const defFrom = le ? le + 1 : FIRST_EP;
-
   const cards = OWNERS.map(o => {
     const t = state.teams[o.id];
     const alive = t.roster.filter(r => !state.cast[r.id].out).length;
-    const rows = t.roster.map(r => {
+    const rows = aliveFirst(t.roster).map(r => {
       const c = CAST_BY[r.id], out = state.cast[r.id].out;
       const pts = castTotal(r.id, Math.max(r.from || FIRST_EP, FIRST_EP));
       return `<div class="roster-row ${out ? "is-out" : ""}" role="button" tabindex="0" data-act="open-cast" data-id="${r.id}">
         ${avatar(r.id, "sm")}
         <div class="rr-main"><div class="rr-name">${esc(c.name)}</div>
-          <div class="rr-sub">${tribePill(r.id)}<span>${statusText(r.id)}</span>${(r.from || FIRST_EP) > FIRST_EP ? `<span>Counts from ep ${r.from}</span>` : ""}</div></div>
+          <div class="rr-sub">${out ? `<span class="elim">Eliminated</span>${state.cast[r.id].place ? `<span>${ordinal(state.cast[r.id].place)} place</span>` : ""}` : `${tribePill(r.id)}<span>Still in</span>`}${(r.from || FIRST_EP) > FIRST_EP ? `<span>Counts from ep ${r.from}</span>` : ""}</div></div>
         <div class="rr-pts">${pts}</div>
-        ${admin ? `<button class="x" type="button" data-act="remove-player" data-team="${o.id}" data-id="${r.id}" aria-label="Remove ${esc(c.name)}">×</button>` : ""}
       </div>`;
     }).join("");
-    const add = admin ? `<div class="add-row">
-        <select id="add-${o.id}" aria-label="Castaway to add">${free.length ? free.map(c => `<option value="${c.id}">${esc(c.name)}${state.cast[c.id].out ? " (out)" : ""}</option>`).join("") : `<option value="">Everyone's drafted</option>`}</select>
-        <label>From ep <input type="number" id="from-${o.id}" min="${FIRST_EP}" value="${defFrom}"></label>
-        <button class="btn small" type="button" data-act="add-player" data-team="${o.id}">Add</button>
-      </div>` : "";
     return `<article class="team" style="--tc:${o.color}">
       <div class="buff"></div>
       <div class="team-head">
@@ -766,19 +791,18 @@ function viewTeams(){
         <div class="team-meta">${t.roster.length ? `${alive} of ${t.roster.length} still in the game` : "No castaways yet"}</div>
         <div class="team-score"><b data-count="${teamTotal(o.id)}" data-ckey="team-${o.id}">${teamTotal(o.id)}</b><span>points</span></div>
       </div>
-      <div class="roster">${rows || `<div class="empty-roster">${admin ? "Add this team's picks below." : "Waiting on the draft."}</div>`}</div>
-      ${add}
+      <div class="roster">${rows || `<div class="empty-roster">${admin ? "Tap any castaway and choose Assign to tribe." : "Waiting on the draft."}</div>`}</div>
     </article>`;
   }).join("");
 
   const freeList = free.length ? `<section class="panel" style="margin-top:22px">
       <h3>Free agents</h3>
-      <p class="help">Undrafted castaways. Lose a player and the person in last place gets first pick from here.</p>
-      <div class="cast-grid">${free.map(c => castCard(c.id)).join("")}</div>
+      <p class="help">${admin ? "Tap a castaway to assign them to a tribe. " : ""}Undrafted castaways. Lose a player and the person in last place gets first pick from here.</p>
+      <div class="cast-grid">${aliveFirst(free).map(c => castCard(c.id)).join("")}</div>
     </section>` : "";
 
   return `<h2 class="sec">Teams</h2>
-    <p class="lede">${admin ? "Tap a team name to rename it. " : ""}Points count from episode 2 on, and a player picked up later only scores from the episode they joined.</p>
+    <p class="lede">${admin ? "Tap a team name to rename it, or tap any castaway to assign them to a tribe. " : ""}Points count from episode 2 on, and a player picked up later only scores from the episode they joined.</p>
     <div class="teams">${cards}</div>${freeList}`;
 }
 
@@ -786,7 +810,7 @@ function viewTeams(){
 function castCard(id){
   const c = CAST_BY[id], out = state.cast[id].out;
   return `<button class="cc ${out ? "is-out" : ""}" type="button" data-act="open-cast" data-id="${id}">
-    ${avatar(id, "md")}${out ? `<span class="stamp">Voted out</span>` : ""}
+    ${avatar(id, "md")}${out ? `<span class="stamp">Eliminated</span>` : ""}
     <span class="cc-name">${esc(c.name)}</span>${c.occupation ? `<span class="cc-job">${esc(c.occupation)}</span>` : ""}
     <span class="cc-sub">${tribePill(id) || "&nbsp;"}<br>${statusText(id)}</span>
     ${ownerTag(id)}
@@ -816,23 +840,36 @@ function castList(){
 }
 function castGridHTML(){
   const l = castList();
-  return l.length ? l.map(c => castCard(c.id)).join("") : `<p class="muted">No castaways match that search.</p>`;
+  if (!l.length) return `<p class="muted">No castaways match that search.</p>`;
+  const groups = [...OWNERS.map(o => ({ o, list: l.filter(c => { const w = ownerOf(c.id); return w && w.o.id === o.id; }) })),
+                  { o: null, list: l.filter(c => !ownerOf(c.id)) }];
+  return groups.filter(g => g.list.length).map(g => {
+    let head;
+    if (g.o){
+      const t = state.teams[g.o.id], alive = t.roster.filter(r => !state.cast[r.id].out).length;
+      head = `<div><span class="gh-name">${esc(t.name)}</span><span class="gh-sub">${esc(g.o.owner)} · ${alive} of ${t.roster.length} still in</span></div>
+        <b>${teamTotal(g.o.id)} <small>pts</small></b>`;
+    } else head = `<div><span class="gh-name">Free agents</span><span class="gh-sub">Not on anyone's tribe</span></div>`;
+    return `<section class="cast-group" style="--tc:${g.o ? g.o.color : "#5b7772"}">
+      <div class="group-head">${head}</div>
+      <div class="cast-grid">${aliveFirst(g.list).map(c => castCard(c.id)).join("")}</div></section>`;
+  }).join("");
 }
 function viewCast(){
   const opt = (v, l, cur) => `<option value="${v}" ${v === cur ? "selected" : ""}>${l}</option>`;
   return `<h2 class="sec">Cast</h2>
-    <p class="lede">All 21 castaways and their points from episode 2 on. Tap anyone for their episode-by-episode breakdown.</p>
+    <p class="lede">All 21 castaways by tribe, with their points from episode 2 on. Tap anyone for their bio and episode-by-episode breakdown.</p>
     <div class="controls">
       <input type="search" id="castSearch" placeholder="Search castaways" value="${esc(castSearch)}" aria-label="Search castaways">
       <select id="castSort" aria-label="Sort by">
-        ${opt("points","Most points",castSort)}${opt("name","Name",castSort)}${opt("owner","Owner",castSort)}${opt("tribe","Tribe",castSort)}${opt("finish","Finish",castSort)}
+        ${opt("points","Most points",castSort)}${opt("name","Name",castSort)}${opt("tribe","Tribe",castSort)}${opt("finish","Finish",castSort)}
       </select>
       <select id="castFilter" aria-label="Show">
-        ${opt("all","Everyone",castFilter)}${opt("in","Still in the game",castFilter)}${opt("out","Voted out",castFilter)}${opt("free","Free agents",castFilter)}
+        ${opt("all","Everyone",castFilter)}${opt("in","Still in the game",castFilter)}${opt("out","Eliminated",castFilter)}${opt("free","Free agents",castFilter)}
         ${OWNERS.map(o => opt("team:" + o.id, o.owner + "'s team", castFilter)).join("")}
       </select>
     </div>
-    <div class="cast-grid" id="castGrid">${castGridHTML()}</div>`;
+    <div id="castGrid">${castGridHTML()}</div>`;
 }
 
 /* ---------------- views: rankings ---------------- */
@@ -967,7 +1004,7 @@ function viewAdmin(){
   const castRows = CAST.map(c => { const cs = state.cast[c.id]; return `<tr>
       <td style="display:flex;align-items:center;gap:10px">${avatar(c.id,"sm")}${esc(c.name)}</td>
       <td><select data-act="cast-tribe" data-id="${c.id}" aria-label="Tribe for ${esc(c.name)}">${tribeOpts(cs.tribe)}</select></td>
-      <td><button type="button" class="status-btn ${cs.out ? "out" : "in"}" data-act="cast-out" data-id="${c.id}">${cs.out ? "Out" : "In"}</button></td>
+      <td><button type="button" class="status-btn ${cs.out ? "out" : "in"}" data-act="cast-out" data-id="${c.id}">${cs.out ? "Eliminated" : "In"}</button></td>
       <td>${cs.out ? `<input type="number" min="1" max="21" value="${cs.place || ""}" data-act="cast-place" data-id="${c.id}" aria-label="Finish for ${esc(c.name)}">` : `<span class="muted">–</span>`}</td></tr>`; }).join("");
 
   return `<h2 class="sec">Update scores</h2>
@@ -1010,6 +1047,7 @@ function openCast(id){
       <div class="m-head">${avatar(id,"lg")}<div><h3>${esc(c.name)}</h3>
         <div class="bsub" style="display:flex;gap:10px;flex-wrap:wrap">${tribePill(id)}<span>${statusText(id)}</span></div>
         <div style="margin-top:8px">${ownerTag(id)}</div></div></div>
+      ${admin ? assignPicker(id, w) : ""}
       ${c.bio ? `<div class="m-bio">
         <dl><div><dt>Age</dt><dd>${esc(c.age)}</dd></div><div><dt>Occupation</dt><dd>${esc(c.occupation)}</dd></div>
           <div><dt>Hometown</dt><dd>${esc(c.hometown)}</dd></div><div><dt>Lives in</dt><dd>${esc(c.residence)}</dd></div></dl>
@@ -1018,6 +1056,18 @@ function openCast(id){
       ${rows ? `<table class="ep-table">${rows}</table>` : `<p class="muted">No points yet.</p>`}
     </div></div>`;
   document.querySelector("#modalRoot .close").focus();
+}
+function assignPicker(id, w){
+  const le = latestEp(), from = w ? Math.max(w.r.from || FIRST_EP, FIRST_EP) : (le ? le + 1 : FIRST_EP);
+  const opt = (teamId, color, name, sub, on) => `<button type="button" class="assign-opt ${on ? "on" : ""}" style="--tc:${color}" data-act="assign" data-id="${id}" data-team="${teamId}">
+      <i></i><span><b>${esc(name)}</b><small>${esc(sub)}</small></span>${on ? "<em>Current</em>" : ""}</button>`;
+  return `<div class="assign">
+    <button class="btn small" type="button" data-act="assign-open" aria-expanded="false">${w ? "Change tribe" : "Assign to tribe"}</button>
+    <div class="assign-list" hidden>
+      ${OWNERS.map(o => { const n = state.teams[o.id].roster.length; return opt(o.id, o.color, state.teams[o.id].name, `${o.owner} · ${n} castaway${n === 1 ? "" : "s"}`, w && w.o.id === o.id); }).join("")}
+      ${opt("", "#5b7772", "Free agent", "Not on anyone's tribe", !w)}
+      <label class="assign-from">Points count from episode <input type="number" id="assignFrom" min="${FIRST_EP}" value="${from}"></label>
+    </div></div>`;
 }
 function closeModal(){ document.getElementById("modalRoot").innerHTML = ""; }
 
@@ -1036,18 +1086,24 @@ document.addEventListener("click", e => {
   const a = el.dataset.act;
   if (a === "close-modal"){ if (e.target === el || el.classList.contains("close")) closeModal(); return; }
   if (a === "open-cast"){ openCast(el.dataset.id); return; }
-  if (a === "remove-player"){
-    e.stopPropagation();
-    const t = el.dataset.team, id = el.dataset.id;
-    if (!confirm(`Remove ${CAST_BY[id].name} from ${state.teams[t].name}?`)) return;
-    write(["teams", t, "roster"], state.teams[t].roster.filter(r => r.id !== id)); return;
+  if (a === "assign-open"){
+    const list = el.nextElementSibling, open = list.hidden;
+    list.hidden = !open; el.setAttribute("aria-expanded", open); return;
   }
-  if (a === "add-player"){
-    const t = el.dataset.team, id = document.getElementById("add-" + t).value;
-    const from = Math.max(FIRST_EP, parseInt(document.getElementById("from-" + t).value, 10) || FIRST_EP);
-    if (!id) return;
-    if (ownerOf(id)){ toast(CAST_BY[id].name + " is already on a team."); return; }
-    write(["teams", t, "roster"], [...state.teams[t].roster, { id, from }]); return;
+  if (a === "assign"){
+    const id = el.dataset.id, to = el.dataset.team, cur = ownerOf(id), name = CAST_BY[id].name;
+    const fromEl = document.getElementById("assignFrom");
+    const from = Math.max(FIRST_EP, parseInt(fromEl && fromEl.value, 10) || FIRST_EP);
+    const sameTeam = cur ? cur.o.id === to : !to;
+    if (sameTeam && (!cur || (cur.r.from || FIRST_EP) === from)){ closeModal(); return; }
+    const pairs = [];
+    if (cur && cur.o.id !== to) pairs.push([["teams", cur.o.id, "roster"], state.teams[cur.o.id].roster.filter(r => r.id !== id)]);
+    if (to) pairs.push([["teams", to, "roster"], sameTeam
+      ? state.teams[to].roster.map(r => r.id === id ? { id, from } : r)
+      : [...state.teams[to].roster, { id, from }]]);
+    closeModal();
+    writeMany(pairs);
+    toast(to ? `${name} joined ${state.teams[to].name}.` : `${name} is now a free agent.`); return;
   }
   if (a === "step"){
     const { id, k } = el.dataset, d = +el.dataset.d;
