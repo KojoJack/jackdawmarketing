@@ -87,7 +87,8 @@ h3{font-size:18px;margin:0 0 10px;font-weight:800}
 .team-head{padding:14px 16px 12px;display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:start}
 .team-owner{font-size:14px;color:var(--muted);font-weight:600}
 .team-name{grid-column:1;width:100%;background:transparent;border:0;border-bottom:1px dashed transparent;padding:0 0 2px;font-family:var(--display);font-size:22px;line-height:1.15;color:var(--bone)}
-.team-name:hover{border-bottom-color:var(--line)}
+input.team-name{border-bottom-color:var(--line)}
+input.team-name:hover{border-bottom-color:rgba(242,228,196,.35)}
 .team-name:focus{outline:none;border-bottom-color:var(--sun)}
 .team-score{grid-column:2;grid-row:1 / span 3;text-align:right}
 .team-score b{display:block;font-family:var(--display);font-weight:400;font-size:34px;line-height:1;color:var(--tc)}
@@ -760,7 +761,8 @@ function viewTeams(){
       <div class="buff"></div>
       <div class="team-head">
         <div class="team-owner">${anyPts ? `<span class="rank-chip ${rankOf[o.id] === 1 ? "lead" : ""}">${rankOf[o.id] === 1 ? FLAME : ""}#${rankOf[o.id]}</span>` : ""}${esc(o.owner)}'s team</div>
-        <input class="team-name" data-act="team-name" data-team="${o.id}" value="${esc(t.name)}" maxlength="40" aria-label="${esc(o.owner)}'s team name" title="Tap to rename">
+        ${admin ? `<input class="team-name" data-act="team-name" data-team="${o.id}" value="${esc(t.name)}" maxlength="40" aria-label="${esc(o.owner)}'s team name" title="Tap to rename">`
+                : `<div class="team-name">${esc(t.name)}</div>`}
         <div class="team-meta">${t.roster.length ? `${alive} of ${t.roster.length} still in the game` : "No castaways yet"}</div>
         <div class="team-score"><b data-count="${teamTotal(o.id)}" data-ckey="team-${o.id}">${teamTotal(o.id)}</b><span>points</span></div>
       </div>
@@ -776,7 +778,7 @@ function viewTeams(){
     </section>` : "";
 
   return `<h2 class="sec">Teams</h2>
-    <p class="lede">Tap a team name to rename it. Points count from episode 2 on, and a player picked up later only scores from the episode they joined.</p>
+    <p class="lede">${admin ? "Tap a team name to rename it. " : ""}Points count from episode 2 on, and a player picked up later only scores from the episode they joined.</p>
     <div class="teams">${cards}</div>${freeList}`;
 }
 
