@@ -508,6 +508,26 @@ footer button:hover{border-color:var(--sun);color:var(--sun)}
   .gp-slot .gn,.gp-badge small{font-size:8px}
   .gp-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
+/* used items */
+.gp-slot.used{border-color:rgba(242,228,196,.14);background:rgba(0,0,0,.28)}
+.gp-slot.used .gi{filter:grayscale(1) brightness(.6)}
+.gp-slot.used .gn{color:var(--muted)}
+.gp-usedtag{position:absolute;top:50%;left:50%;transform:translate(-50%,-70%) rotate(-12deg);font:700 11px/1 "Silkscreen",monospace;letter-spacing:.06em;text-transform:uppercase;
+  color:#ff8f7a;border:2px solid #ff8f7a;border-radius:4px;padding:3px 6px;background:rgba(7,31,29,.85);white-space:nowrap;text-align:center}
+.gp-usedtag small{display:block;font-size:.8em;margin-top:2px}
+.gp-slot{overflow:hidden}
+@media (max-width:520px){.gp-usedtag{font-size:9px;padding:2px 4px}}
+.gp-item-list{display:grid;gap:6px;margin-bottom:12px}
+.gp-item-row{display:flex;align-items:center;gap:10px;padding:6px 8px 6px 10px;border:1px solid var(--line);border-radius:8px;background:rgba(0,0,0,.2)}
+.gp-item-row .gi{font-size:20px;line-height:1}
+.gp-item-row .nm{flex:1;min-width:0;font-weight:700;font-size:14px}
+.gp-item-row.used .nm{color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(242,228,196,.3)}
+.gp-item-row .ep{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--muted)}
+.gp-item-row .ep input{width:52px;padding:4px 6px}
+.gp-item-row .gp-chip{padding:4px 10px;font-size:12px}
+.gp-item-row .gp-x{position:static;flex:none;width:28px;height:28px}
+.gp-item-row .lock{width:28px;text-align:center;font-size:13px;opacity:.6}
 </style>
 </head>
 <body>
@@ -554,7 +574,7 @@ const FIREBASE_CONFIG = {
   appId: "1:4948180492:web:e2686e532c6fefde28b829"
 };
 const DOC = { collection: "pools", id: "survivor51" };
-const FIRST_EP = 2; // episode 1 never counts
+const FIRST_EP = 2; // episode 1 can be logged for stats, but its points never count
 const LS_KEY = "rfsp-s51-state";
 const ADMIN_KEY = "rfsp-admin";
 
@@ -647,6 +667,13 @@ const SHORT = { survived:"Survived", tribeWin:"Tribe win", indImm:"Immunity", in
   outIdol:"Out with idol", quit:"Quit", badIdol:"Wasted idol" };
 
 const TRIBE_KEYS = ["a","b","x","m"]; // Savu, Toka, Exile Island, merged
+/* items are { k, used?, ep? }; older saves stored bare keys. Everyone starts with a Shot in the Dark. */
+function normItems(arr){
+  const it = (Array.isArray(arr) ? arr : []).map(x => typeof x === "string" ? { k: x }
+    : x && x.k ? Object.assign({ k: x.k }, x.used ? { used: true } : {}, x.used && x.ep ? { ep: x.ep } : {}) : null).filter(Boolean);
+  if (!it.some(x => x.k === "sitd")) it.unshift({ k: "sitd" });
+  return it;
+}
 function defaultState(){
   return {
     teams: Object.fromEntries(OWNERS.map(o => [o.id, { name: o.owner + "'s Tribe", roster: [] }])),
@@ -665,7 +692,7 @@ function normalize(d){
   for (const k of TRIBE_KEYS) s.tribes[k] = Object.assign(s.tribes[k], (d.tribes || {})[k] || {});
   for (const c of CAST){
     s.cast[c.id] = Object.assign(s.cast[c.id], (d.cast || {})[c.id] || {});
-    if (!Array.isArray(s.cast[c.id].items)) s.cast[c.id].items = [];
+    s.cast[c.id].items = normItems(s.cast[c.id].items);
   }
   s.episodes = d.episodes || {};
   s.blurbs = d.blurbs || {};
@@ -741,6 +768,8 @@ const write = (path, val) => writeMany([[path, val]]);
 /* ---------------- scoring math ---------------- */
 function epList(){ return Object.keys(state.episodes).map(Number).filter(n => n >= FIRST_EP).sort((a,b) => a-b); }
 function latestEp(){ const e = epList(); return e.length ? e[e.length-1] : null; }
+/* every logged episode, including episode 1 (stats only) */
+function allEps(){ return Object.keys(state.episodes).map(Number).filter(n => n >= 1).sort((a,b) => a-b); }
 function evCount(ep, id, k){ return ((state.episodes[ep] || {})[id] || {})[k] || 0; }
 function castEpPts(id, ep){
   const ev = (state.episodes[ep] || {})[id] || {};
@@ -767,7 +796,7 @@ function ownerOf(id){
   for (const o of OWNERS){ const r = state.teams[o.id].roster.find(x => x.id === id); if (r) return { o, r }; }
   return null;
 }
-function castTally(k){ const m = {}; for (const c of CAST){ let n = 0; for (const ep of epList()) n += evCount(ep, c.id, k); m[c.id] = n; } return m; }
+function castTally(k){ const m = {}; for (const c of CAST){ let n = 0; for (const ep of allEps()) n += evCount(ep, c.id, k); m[c.id] = n; } return m; }
 
 /* ---------------- helpers ---------------- */
 const esc = s => String(s ?? "").replace(/[&<>"']/g, ch => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[ch]));
@@ -1034,7 +1063,7 @@ function viewScoring(){
       ${EVENTS.filter(e => e.g === g).map(e => `<tr><td>${esc(e.label)}</td><td class="${e.pts < 0 ? "neg" : "pos"}">${signed(e.pts)}</td></tr>`).join("")}
     </table></section>`).join("");
   return `<h2 class="sec">How scoring works</h2>
-    <p class="lede">Everything counts from episode 2 onward. Nothing from the premiere counts, since we all watched it before drafting.</p>
+    <p class="lede">Points count from episode 2 onward. The premiere can be logged for castaway stats and achievements, but its points don't count, since we all watched it before drafting.</p>
     <div class="rules">${tables}</div>
     <section class="panel prose" style="margin-top:18px">
       <h3>League rules</h3>
@@ -1048,14 +1077,14 @@ function viewScoring(){
 
 /* ---------------- views: admin ---------------- */
 function viewAdmin(){
-  const eps = epList();
-  if (adminEp === null || !state.episodes[adminEp]) adminEp = latestEp();
+  const eps = allEps();
+  if (adminEp === null || !state.episodes[adminEp]) adminEp = eps.length ? eps[eps.length-1] : null;
   const tribeOpts = cur => `<option value="" ${!cur ? "selected" : ""}>None</option>` +
     TRIBE_KEYS.map(k => `<option value="${k}" ${cur === k ? "selected" : ""}>${esc(state.tribes[k].name)}</option>`).join("");
 
   let epSection;
   if (adminEp === null){
-    epSection = `<p class="help">No episodes yet. Add episode 2 when you're ready to score it.</p>`;
+    epSection = `<p class="help">No episodes yet. Start with episode 1 to log stats (no points), or add episode 2 when you're ready to score.</p>`;
   } else {
     const ids = CAST.filter(c => showOut || !state.cast[c.id].out || Object.keys((state.episodes[adminEp] || {})[c.id] || {}).length).map(c => c.id);
     const rows = ids.map(id => {
@@ -1064,7 +1093,7 @@ function viewAdmin(){
       const key = adminEp + ":" + id;
       return `<details class="ep-card" data-key="${key}" ${openRows.has(key) ? "open" : ""}>
         <summary>${avatar(id,"sm")}<div><div style="font-weight:700">${esc(CAST_BY[id].name)}</div><div class="sum-ev">${summary || "No points yet"}</div></div>
-          <span class="sum-pts">${castEpPts(id, adminEp)}</span></summary>
+          <span class="sum-pts">${adminEp < FIRST_EP ? `<span class="muted" style="font-size:12px;font-weight:600">stats only</span>` : castEpPts(id, adminEp)}</span></summary>
         <div class="ev-grid">${EVENTS.map(e => { const n = ev[e.k] || 0; return `<div class="ev"><span class="l">${esc(SHORT[e.k])}</span><span class="p">${signed(e.pts)}</span>
           <span class="step ${n ? "on" : ""}"><button type="button" data-act="step" data-id="${id}" data-k="${e.k}" data-d="-1" aria-label="Less ${esc(SHORT[e.k])}">−</button><b>${n}</b><button type="button" data-act="step" data-id="${id}" data-k="${e.k}" data-d="1" aria-label="More ${esc(SHORT[e.k])}">+</button></span></div>`; }).join("")}</div>
       </details>`;
@@ -1077,6 +1106,7 @@ function viewAdmin(){
         <label class="muted" style="font-size:14px;display:flex;gap:6px;align-items:center"><input type="checkbox" id="showOut" ${showOut ? "checked" : ""}> Show castaways who are out</label>
       </div>
       <p class="help">Tip: mark who went home under Castaways first, then use the survived button so they're left out.</p>
+      ${adminEp < FIRST_EP ? `<p class="help" style="color:var(--sun)">Episode 1 is stats only: it feeds profiles, stat bars and achievements, but adds no points.</p>` : ""}
       ${rows}
       <div class="panel" style="margin-top:14px"><h3>Episode ${adminEp} write-up</h3>
         <p class="help">Optional. Shows at the top of Power rankings.</p>
@@ -1095,8 +1125,9 @@ function viewAdmin(){
       <section class="panel">
         <h3>Episode scoring</h3>
         <div class="admin-bar" style="margin-bottom:14px">
-          <select id="epSelect" aria-label="Episode">${eps.map(e => `<option value="${e}" ${e === adminEp ? "selected" : ""}>Episode ${e}</option>`).join("")}</select>
-          <button class="btn small" type="button" data-act="ep-add">Add episode ${eps.length ? eps[eps.length-1] + 1 : FIRST_EP}</button>
+          <select id="epSelect" aria-label="Episode">${eps.map(e => `<option value="${e}" ${e === adminEp ? "selected" : ""}>Episode ${e}${e < FIRST_EP ? " (stats only)" : ""}</option>`).join("")}</select>
+          <button class="btn small" type="button" data-act="ep-add">Add episode ${eps.length ? eps[eps.length-1] + 1 : 1}</button>
+          ${eps.length && !state.episodes[1] ? `<button class="btn small ghost" type="button" data-act="ep-add" data-n="1">Add episode 1 (stats only)</button>` : ""}
           ${adminEp !== null ? `<button class="btn small ghost" type="button" data-act="ep-del">Delete episode ${adminEp}</button>` : ""}
         </div>
         ${epSection}
@@ -1146,20 +1177,21 @@ const BADGES = [
 let modalId = null;
 function castTallies(id){
   const t = {};
-  for (const ep of epList()){ const ev = (state.episodes[ep] || {})[id] || {}; for (const k in ev) if (EV_BY[k]) t[k] = (t[k] || 0) + ev[k]; }
+  for (const ep of allEps()){ const ev = (state.episodes[ep] || {})[id] || {}; for (const k in ev) if (EV_BY[k]) t[k] = (t[k] || 0) + ev[k]; }
   return t;
 }
 function heldIcons(id){
-  const it = state.cast[id].items || [];
-  return it.length ? ` <span class="held" title="Holding: ${esc(it.map(k => itemOf(k).name).join(", "))}">${it.map(k => itemOf(k).icon).join("")}</span>` : "";
+  const it = state.cast[id].items.filter(x => !x.used && x.k !== "sitd");
+  return it.length ? ` <span class="held" title="Holding: ${esc(it.map(x => itemOf(x.k).name).join(", "))}">${it.map(x => itemOf(x.k).icon).join("")}</span>` : "";
 }
-/* finding an idol/advantage puts it in their bag; playing one takes it out */
+/* finding an idol/advantage puts it in their bag; playing one marks it used */
 function autoItems(id, k){
-  const it = [...(state.cast[id].items || [])];
-  if (k === "idolFound") it.push("idol");
-  else if (k === "advFound") it.push("advantage");
-  else if (k === "idolSave" || k === "outIdol"){ const i = it.indexOf("idol"); if (i < 0) return null; it.splice(i, 1); }
-  else if (k === "advUsed"){ const i = it.findIndex(x => x !== "idol"); if (i < 0) return null; it.splice(i, 1); }
+  const it = state.cast[id].items.map(x => ({ ...x }));
+  const useFirst = pred => { const x = it.find(y => !y.used && pred(y)); if (!x) return false; x.used = true; if (adminEp) x.ep = adminEp; return true; };
+  if (k === "idolFound") it.push({ k: "idol" });
+  else if (k === "advFound") it.push({ k: "advantage" });
+  else if (k === "idolSave" || k === "badIdol"){ if (!useFirst(y => y.k === "idol")) return null; }
+  else if (k === "advUsed"){ if (!useFirst(y => y.k !== "idol" && y.k !== "sitd") && !useFirst(y => y.k === "sitd")) return null; }
   else return null;
   return it;
 }
@@ -1179,27 +1211,36 @@ function openCast(id, quiet){
     const v = sum(tal, st.keys), max = Math.max(1, ...all.map(t => sum(t, st.keys)));
     return `<div class="gp-stat"><span>${st.name}</span><div class="gp-bar"><i style="--w:${Math.round(v / max * 100)}%"></i></div><b>${v}</b></div>`;
   }).join("");
-  const items = cs.items || [];
+  const items = cs.items;
   const slots = [
-    ...items.map((k, i) => `<div class="gp-slot ${k === "idol" ? "idol" : ""}"><span class="gi">${itemOf(k).icon}</span><span class="gn">${esc(itemOf(k).name)}</span>
-      ${admin ? `<button type="button" class="gp-x" data-act="item-remove" data-id="${id}" data-i="${i}" aria-label="Remove ${esc(itemOf(k).name)}">×</button>` : ""}</div>`),
+    ...items.map(x => `<div class="gp-slot ${x.used ? "used" : x.k === "idol" ? "idol" : ""}"><span class="gi">${itemOf(x.k).icon}</span><span class="gn">${esc(itemOf(x.k).name)}</span>
+      ${x.used ? `<span class="gp-usedtag">Used${x.ep ? `<small>Ep ${x.ep}</small>` : ""}</span>` : ""}</div>`),
     ...Array.from({ length: Math.max(0, 4 - items.length) }, () => `<div class="gp-slot empty"><span class="gn">Empty</span></div>`)
   ].join("");
+  const itemRows = items.map((x, i) => `<div class="gp-item-row ${x.used ? "used" : ""}">
+      <span class="gi">${itemOf(x.k).icon}</span><span class="nm">${esc(itemOf(x.k).name)}</span>
+      ${x.used ? `<label class="ep">Ep <input type="number" min="1" value="${x.ep || ""}" data-act="item-ep" data-id="${id}" data-i="${i}" aria-label="Episode used"></label>` : ""}
+      <button type="button" class="gp-chip ${x.used ? "on" : ""}" style="--c:${x.used ? "#E5604A" : "#6BCB8B"}" data-act="item-toggle" data-id="${id}" data-i="${i}">${x.used ? "Used" : "Unused"}</button>
+      ${x.k === "sitd" ? `<span class="lock" title="Everyone keeps a Shot in the Dark">🔒</span>` : `<button type="button" class="gp-x" data-act="item-remove" data-id="${id}" data-i="${i}" aria-label="Remove ${esc(itemOf(x.k).name)}">×</button>`}
+    </div>`).join("");
   const badges = BADGES.map(bd => { const on = (tal[bd.k] || 0) >= bd.n;
     return `<div class="gp-badge ${on ? "on" : ""}" title="${esc(bd.name)}${on ? "" : " (locked)"}"><span>${on ? bd.icon : "🔒"}</span><small>${bd.name}</small></div>`; }).join("");
-  const rows = epList().map(ep => {
+  const rows = allEps().map(ep => {
     const ev = (state.episodes[ep] || {})[id] || {};
     const keys = Object.keys(ev).filter(k => EV_BY[k]);
     if (!keys.length) return "";
-    const counted = !w || ep >= Math.max(w.r.from || FIRST_EP, FIRST_EP);
-    return `<tr><td>Ep ${ep}</td><td>${keys.map(k => SHORT[k] + (ev[k] > 1 ? " ×" + ev[k] : "")).join(", ")}${counted ? "" : `<br><span class="muted">Before joining ${esc(w.o.owner)}'s team</span>`}</td><td>${signed(castEpPts(id, ep))}</td></tr>`;
+    const statsOnly = ep < FIRST_EP;
+    const counted = statsOnly || !w || ep >= Math.max(w.r.from || FIRST_EP, FIRST_EP);
+    return `<tr><td>Ep ${ep}</td><td>${keys.map(k => SHORT[k] + (ev[k] > 1 ? " ×" + ev[k] : "")).join(", ")}${statsOnly ? `<br><span class="muted">Stats only, no points</span>` : counted ? "" : `<br><span class="muted">Before joining ${esc(w.o.owner)}'s team</span>`}</td><td>${statsOnly ? `<span class="muted">–</span>` : signed(castEpPts(id, ep))}</td></tr>`;
   }).join("");
   const chip = (act, k, color, label, on) => `<button type="button" class="gp-chip ${on ? "on" : ""}" style="--c:${esc(color)}" data-act="${act}" data-id="${id}" data-k="${k}">${label}</button>`;
   const adminBox = admin ? `<section class="gp-sec gp-admin"><h4>Admin</h4>
       <div class="gp-label">Game tribe</div>
       <div class="gp-chips">${TRIBE_KEYS.map(k => chip("set-tribe", k, state.tribes[k].color, esc(state.tribes[k].name), cs.tribe === k)).join("")}${chip("set-tribe", "", "#5b7772", "None", !cs.tribe)}</div>
+      <div class="gp-label">Items · tap Unused/Used to flip</div>
+      <div class="gp-item-list">${itemRows}</div>
       <div class="gp-label">Give an item</div>
-      <div class="gp-chips">${Object.entries(ITEMS).map(([k, it]) => chip("item-add", k, "var(--sun)", `${it.icon} ${esc(it.name)}`, false)).join("")}</div>
+      <div class="gp-chips">${Object.entries(ITEMS).filter(([k]) => k !== "sitd").map(([k, it]) => chip("item-add", k, "var(--sun)", `${it.icon} ${esc(it.name)}`, false)).join("")}</div>
       <div class="gp-label">Family tribe</div>
       ${assignPicker(id, w)}
     </section>` : "";
@@ -1271,12 +1312,16 @@ document.addEventListener("click", e => {
   if (a === "set-tribe"){ write(["cast", el.dataset.id, "tribe"], el.dataset.k); return; }
   if (a === "item-add"){
     const id = el.dataset.id, it = ITEMS[el.dataset.k];
-    write(["cast", id, "items"], [...(state.cast[id].items || []), el.dataset.k]);
+    write(["cast", id, "items"], [...state.cast[id].items, { k: el.dataset.k }]);
     toast(`${CAST_BY[id].name} now holds ${/^[AEIOU]/.test(it.name) ? "an" : "a"} ${it.name}.`); return;
   }
   if (a === "item-remove"){
     const id = el.dataset.id, i = +el.dataset.i;
-    write(["cast", id, "items"], (state.cast[id].items || []).filter((_, j) => j !== i)); return;
+    write(["cast", id, "items"], state.cast[id].items.filter((x, j) => j !== i || x.k === "sitd")); return;
+  }
+  if (a === "item-toggle"){
+    const id = el.dataset.id, i = +el.dataset.i, eps = allEps(), last = eps.length ? eps[eps.length-1] : null;
+    write(["cast", id, "items"], state.cast[id].items.map((x, j) => j !== i ? x : x.used ? { k: x.k } : Object.assign({ k: x.k, used: true }, last ? { ep: last } : {}))); return;
   }
   if (a === "assign-open"){
     const list = el.nextElementSibling, open = list.hidden;
@@ -1318,7 +1363,7 @@ document.addEventListener("click", e => {
     toast(`+1 tribe win for ${ids.length} castaways on ${state.tribes[k].name}.`); return;
   }
   if (a === "ep-add"){
-    const eps = epList(); const n = eps.length ? eps[eps.length-1] + 1 : FIRST_EP;
+    const eps = allEps(); const n = el.dataset.n ? +el.dataset.n : eps.length ? eps[eps.length-1] + 1 : 1;
     adminEp = n; write(["episodes", n], {}); return;
   }
   if (a === "ep-del"){
@@ -1345,6 +1390,10 @@ document.addEventListener("change", e => {
   if (a === "cast-place"){ write(["cast", el.dataset.id, "place"], Math.max(0, parseInt(el.value, 10) || 0)); return; }
   if (a === "tribe-name"){ const v = el.value.trim(); if (v) write(["tribes", el.dataset.k, "name"], v); return; }
   if (a === "tribe-color"){ write(["tribes", el.dataset.k, "color"], el.value); return; }
+  if (a === "item-ep"){
+    const id = el.dataset.id, i = +el.dataset.i, n = parseInt(el.value, 10);
+    write(["cast", id, "items"], state.cast[id].items.map((x, j) => j !== i ? x : Object.assign({ k: x.k, used: true }, n > 0 ? { ep: n } : {}))); return;
+  }
   if (el.id === "castSort"){ castSort = el.value; document.getElementById("castGrid").innerHTML = castGridHTML(); return; }
   if (el.id === "castFilter"){ castFilter = el.value; document.getElementById("castGrid").innerHTML = castGridHTML(); return; }
   if (el.id === "epSelect"){ adminEp = +el.value; render(true); return; }
