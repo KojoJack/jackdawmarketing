@@ -653,6 +653,7 @@ const EVENTS = [
   { k:"merge",     g:"Big moments", label:"Makes the merge", pts:5 },
   { k:"jury",      g:"Big moments", label:"Makes the jury (finalists included)", pts:3 },
   { k:"fire",      g:"Big moments", label:"Wins a fire-making challenge", pts:5 },
+  { k:"coinFlip",  g:"Big moments", label:"Calls the million-dollar coin flip correctly", pts:5 },
   { k:"ftc",       g:"Endgame",     label:"Makes final tribal council", pts:10 },
   { k:"juryVote",  g:"Endgame",     label:"Each jury vote received", pts:2 },
   { k:"winner",    g:"Endgame",     label:"Wins Sole Survivor", pts:12 },
@@ -663,7 +664,7 @@ const EVENTS = [
 const EV_BY = Object.fromEntries(EVENTS.map(e => [e.k, e]));
 const SHORT = { survived:"Survived", tribeWin:"Tribe win", indImm:"Immunity", indReward:"Reward", rightVote:"Right vote",
   idolFound:"Idol found", advFound:"Advantage found", idolSave:"Idol played", advUsed:"Advantage used", merge:"Merge",
-  jury:"Jury", fire:"Fire win", ftc:"Final tribal", juryVote:"Jury votes", winner:"Sole Survivor",
+  jury:"Jury", fire:"Fire win", coinFlip:"Coin flip", ftc:"Final tribal", juryVote:"Jury votes", winner:"Sole Survivor",
   outIdol:"Out with idol", quit:"Quit", badIdol:"Wasted idol" };
 
 const TRIBE_KEYS = ["a","b","x","m"]; // Savu, Toka, Exile Island, merged
@@ -1162,7 +1163,7 @@ const STATS = [
   { name:"Challenges", keys:["tribeWin","indImm","indReward"] },
   { name:"Strategy",   keys:["rightVote"] },
   { name:"Scavenging", keys:["idolFound","advFound"] },
-  { name:"Clutch",     keys:["idolSave","advUsed","fire"] }
+  { name:"Clutch",     keys:["idolSave","advUsed","fire","coinFlip"] }
 ];
 const BADGES = [
   { k:"indImm",    n:1, icon:"🏅", name:"Immunity" },
@@ -1438,7 +1439,7 @@ function spawnEmbers(){
   }
   document.getElementById("embers").innerHTML = h;
 }
-const SPARK = { idolFound:"🗿", indImm:"🏅", indReward:"🎁", winner:"👑", fire:"🔥", ftc:"⚖️", merge:"🤝", juryVote:"🗳️", jury:"⚖️" };
+const SPARK = { coinFlip:"🪙", idolFound:"🗿", indImm:"🏅", indReward:"🎁", winner:"👑", fire:"🔥", ftc:"⚖️", merge:"🤝", juryVote:"🗳️", jury:"⚖️" };
 function burst(x, y, k){
   if (reduceMotion) return;
   const ev = EV_BY[k], bad = ev && ev.pts < 0, sym = bad ? "💀" : (SPARK[k] || "✦");
