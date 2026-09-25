@@ -14,7 +14,7 @@
 <title>Reily Family Survivor Pool</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Silkscreen:wght@400;700&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --deep:#062B29;      /* night lagoon */
@@ -431,6 +431,83 @@ footer button:hover{border-color:var(--sun);color:var(--sun)}
 .assign-opt.on{border-color:var(--tc);background:color-mix(in srgb,var(--tc) 14%,transparent)}
 .assign-from{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin-top:4px}
 .assign-from input{width:64px}
+
+/* character sheet */
+.sheet.gp{max-width:640px;padding:0 0 18px;border:2px solid color-mix(in srgb,var(--tc) 70%,transparent);
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 4px),linear-gradient(180deg,#0d3431,#071f1d);
+  box-shadow:0 0 0 1px rgba(0,0,0,.6),0 0 40px -8px color-mix(in srgb,var(--tc) 55%,transparent),0 30px 80px -20px rgba(0,0,0,.8)}
+.modal.quiet,.modal.quiet *{animation:none !important}
+.sheet.gp .close{z-index:2}
+.gp-head{display:flex;gap:18px;align-items:center;padding:24px 22px 18px;
+  background:radial-gradient(120% 140% at 0% 0%,color-mix(in srgb,var(--tc) 30%,transparent),transparent 60%);border-bottom:1px solid var(--line)}
+.gp-portrait{position:relative;flex:none}
+.gp-portrait .av{width:118px;height:118px;padding:4px;background:conic-gradient(from 0deg,var(--gp),#fff8,var(--gp),#0008,var(--gp));box-shadow:0 0 28px color-mix(in srgb,var(--gp) 60%,transparent)}
+.gp-lv{position:absolute;left:50%;bottom:-8px;transform:translateX(-50%);font:700 12px/1 "Silkscreen",monospace;background:#0b0f0e;color:var(--sun);border:2px solid var(--sun);padding:4px 8px;border-radius:4px;white-space:nowrap;box-shadow:0 4px 12px rgba(0,0,0,.5)}
+.gp-id{min-width:0;flex:1}
+.gp-id h3{font-family:var(--display);font-weight:400;font-size:clamp(24px,5vw,30px);line-height:1.05;margin:6px 0 4px;text-shadow:0 2px 0 #000}
+.gp-class{font:400 12px/1.3 "Silkscreen",monospace;color:var(--sun);letter-spacing:.04em;text-transform:uppercase}
+.gp-tags{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px;font-size:13px}
+.gp-status{display:inline-block;font:700 11px/1 "Silkscreen",monospace;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:4px}
+.gp-status.in{background:rgba(107,203,139,.16);color:var(--good);box-shadow:inset 0 0 0 1px rgba(107,203,139,.5)}
+.gp-status.out{background:rgba(229,96,74,.18);color:#ff8f7a;box-shadow:inset 0 0 0 1px rgba(229,96,74,.55)}
+.gp-status.exile{background:rgba(143,163,179,.18);color:#c9d6df;box-shadow:inset 0 0 0 1px rgba(143,163,179,.55)}
+.gp-xp{margin-top:10px}
+.gp-xp small{font:400 10px/1 "Silkscreen",monospace;color:var(--muted);display:block;margin-top:5px}
+.gp-bar{position:relative;height:12px;background:rgba(0,0,0,.45);border:1px solid rgba(242,228,196,.14);border-radius:3px;overflow:hidden}
+.gp-bar i{position:absolute;inset:0 auto 0 0;width:var(--w);background:linear-gradient(90deg,var(--tc),color-mix(in srgb,var(--tc) 55%,#fff));box-shadow:0 0 12px color-mix(in srgb,var(--tc) 70%,transparent);animation:fillbar .9s .15s cubic-bezier(.2,.7,.2,1) both}
+.gp-bar::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 calc(10% - 2px),rgba(0,0,0,.55) calc(10% - 2px) 10%)}
+.gp-bar.xp{height:8px}
+.gp-bar.xp i{background:linear-gradient(90deg,var(--sun),#fff3b0)}
+@keyframes fillbar{from{width:0}}
+.gp-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:16px 22px 4px}
+.gp-tiles div{background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:8px;padding:10px 8px;text-align:center;position:relative}
+.gp-tiles div::before{content:"";position:absolute;left:8px;right:8px;top:0;height:2px;background:var(--tc);opacity:.8}
+.gp-tiles b{display:block;font-family:var(--display);font-weight:400;font-size:24px;line-height:1.1}
+.gp-tiles small{font:400 10px/1.2 "Silkscreen",monospace;color:var(--muted);text-transform:uppercase}
+.gp-sec{padding:14px 22px 2px}
+.gp-sec h4{display:flex;align-items:center;gap:10px;margin:0 0 12px;font:700 13px/1 "Silkscreen",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--sun)}
+.gp-sec h4::before{content:"▸";color:var(--tc)}
+.gp-sec h4::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(242,228,196,.25),transparent)}
+.gp-stat{display:grid;grid-template-columns:96px 1fr 30px;gap:10px;align-items:center;margin-bottom:9px}
+.gp-stat span{font:400 11px/1 "Silkscreen",monospace;text-transform:uppercase;color:var(--bone)}
+.gp-stat b{font-family:var(--display);font-weight:400;font-size:17px;text-align:right}
+.gp-stat:nth-child(3) i{animation-delay:.2s}.gp-stat:nth-child(4) i{animation-delay:.25s}.gp-stat:nth-child(5) i{animation-delay:.3s}.gp-stat:nth-child(6) i{animation-delay:.35s}
+.gp-slots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.gp-slot{position:relative;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:8px;text-align:center;
+  background:linear-gradient(180deg,rgba(242,228,196,.08),rgba(0,0,0,.3));border:2px solid rgba(242,228,196,.22);border-radius:8px;box-shadow:inset 0 0 0 2px rgba(0,0,0,.35)}
+.gp-slot .gi{font-size:30px;line-height:1;filter:drop-shadow(0 3px 6px rgba(0,0,0,.5))}
+.gp-slot .gn{font:400 9px/1.25 "Silkscreen",monospace;text-transform:uppercase;color:var(--bone)}
+.gp-slot.empty{border-style:dashed;border-color:rgba(242,228,196,.12);background:rgba(0,0,0,.2)}
+.gp-slot.empty .gn{color:rgba(159,192,182,.45)}
+.gp-slot.idol{border-color:var(--sun);background:radial-gradient(circle at 50% 40%,rgba(246,196,67,.3),rgba(0,0,0,.3) 70%);animation:idolglow 2.2s ease-in-out infinite}
+@keyframes idolglow{0%,100%{box-shadow:inset 0 0 0 2px rgba(0,0,0,.35),0 0 0 rgba(246,196,67,0)}50%{box-shadow:inset 0 0 0 2px rgba(0,0,0,.35),0 0 22px rgba(246,196,67,.55)}}
+.gp-x{position:absolute;top:3px;right:3px;width:22px;height:22px;border:0;border-radius:4px;background:rgba(229,96,74,.25);color:#ffb3a5;font-size:15px;line-height:1}
+.gp-badges{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.gp-badge{display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 4px;border-radius:8px;background:rgba(0,0,0,.22);border:1px solid var(--line);opacity:.4;filter:grayscale(1)}
+.gp-badge span{font-size:24px;line-height:1}
+.gp-badge small{font:400 9px/1.2 "Silkscreen",monospace;text-transform:uppercase;text-align:center}
+.gp-badge.on{opacity:1;filter:none;border-color:rgba(246,196,67,.5);background:radial-gradient(circle at 50% 30%,rgba(246,196,67,.18),rgba(0,0,0,.25) 70%)}
+.gp-badge.on small{color:var(--sun)}
+.gp .m-bio{border:0;padding:0;margin:0}
+.gp .ep-table td{padding:7px 4px}
+.gp-admin{margin-top:10px;border-top:1px dashed rgba(246,196,67,.35);padding-top:16px}
+.gp-label{font:400 10px/1 "Silkscreen",monospace;text-transform:uppercase;color:var(--muted);margin:4px 0 8px}
+.gp-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.gp-chip{border:1px solid color-mix(in srgb,var(--c) 55%,transparent);background:color-mix(in srgb,var(--c) 10%,transparent);border-radius:99px;padding:6px 12px;font-size:13px;font-weight:700;color:var(--bone)}
+.gp-chip.on{background:var(--c);color:var(--banner);border-color:var(--c)}
+.gp-chip:active{transform:scale(.95)}
+.held{font-size:.9em;margin-left:2px;filter:drop-shadow(0 0 6px rgba(246,196,67,.6))}
+@media (max-width:520px){
+  .gp-head{padding:22px 16px 16px;gap:14px}
+  .gp-portrait .av{width:92px;height:92px}
+  .gp-tiles{grid-template-columns:repeat(2,1fr);padding:14px 16px 2px}
+  .gp-sec{padding:14px 16px 2px}
+  .gp-stat{grid-template-columns:84px 1fr 26px}
+  .gp-slot{padding:6px 4px;gap:4px}
+  .gp-slot .gi{font-size:24px}
+  .gp-slot .gn,.gp-badge small{font-size:8px}
+  .gp-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 </style>
 </head>
 <body>
@@ -569,11 +646,12 @@ const SHORT = { survived:"Survived", tribeWin:"Tribe win", indImm:"Immunity", in
   jury:"Jury", fire:"Fire win", ftc:"Final tribal", juryVote:"Jury votes", winner:"Sole Survivor",
   outIdol:"Out with idol", quit:"Quit", badIdol:"Wasted idol" };
 
+const TRIBE_KEYS = ["a","b","x","m"]; // Savu, Toka, Exile Island, merged
 function defaultState(){
   return {
     teams: Object.fromEntries(OWNERS.map(o => [o.id, { name: o.owner + "'s Tribe", roster: [] }])),
-    tribes: { a:{ name:"Tribe 1", color:"#EE8A2A" }, b:{ name:"Tribe 2", color:"#2E8FC9" }, m:{ name:"Merged tribe", color:"#E9D29A" } },
-    cast: Object.fromEntries(CAST.map(c => [c.id, { tribe:"", out:false, place:0 }])),
+    tribes: { a:{ name:"Savu", color:"#9B6BE8" }, b:{ name:"Toka", color:"#F2C230" }, x:{ name:"Exile Island", color:"#8FA3B3" }, m:{ name:"Merged tribe", color:"#E9D29A" } },
+    cast: Object.fromEntries(CAST.map(c => [c.id, { tribe:"", out:false, place:0, items:[] }])),
     episodes: {},
     blurbs: {}
   };
@@ -584,8 +662,11 @@ function normalize(d){
     const t = (d.teams || {})[o.id] || {};
     s.teams[o.id] = { name: t.name || s.teams[o.id].name, roster: Array.isArray(t.roster) ? t.roster.filter(r => r && CAST_BY[r.id]) : [] };
   }
-  for (const k of ["a","b","m"]) s.tribes[k] = Object.assign(s.tribes[k], (d.tribes || {})[k] || {});
-  for (const c of CAST) s.cast[c.id] = Object.assign(s.cast[c.id], (d.cast || {})[c.id] || {});
+  for (const k of TRIBE_KEYS) s.tribes[k] = Object.assign(s.tribes[k], (d.tribes || {})[k] || {});
+  for (const c of CAST){
+    s.cast[c.id] = Object.assign(s.cast[c.id], (d.cast || {})[c.id] || {});
+    if (!Array.isArray(s.cast[c.id].items)) s.cast[c.id].items = [];
+  }
   s.episodes = d.episodes || {};
   s.blurbs = d.blurbs || {};
   return s;
@@ -744,6 +825,7 @@ function render(force){
     clearTimeout(render.t); render.t = setTimeout(() => app.classList.remove("enter"), 1900);
   }
   runCounters();
+  if (modalId && document.querySelector("#modalRoot .sheet")) openCast(modalId, true);
   if (searchFocused){ const s = document.getElementById("castSearch"); if (s){ s.focus(); s.setSelectionRange(s.value.length, s.value.length); } }
   document.getElementById("adminToggle").textContent = admin ? "Admin mode: on" : "Admin mode";
 }
@@ -777,7 +859,7 @@ function viewTeams(){
       const pts = castTotal(r.id, Math.max(r.from || FIRST_EP, FIRST_EP));
       return `<div class="roster-row ${out ? "is-out" : ""}" role="button" tabindex="0" data-act="open-cast" data-id="${r.id}">
         ${avatar(r.id, "sm")}
-        <div class="rr-main"><div class="rr-name">${esc(c.name)}</div>
+        <div class="rr-main"><div class="rr-name">${esc(c.name)}${heldIcons(r.id)}</div>
           <div class="rr-sub">${out ? `<span class="elim">Eliminated</span>${state.cast[r.id].place ? `<span>${ordinal(state.cast[r.id].place)} place</span>` : ""}` : `${tribePill(r.id)}<span>Still in</span>`}${(r.from || FIRST_EP) > FIRST_EP ? `<span>Counts from ep ${r.from}</span>` : ""}</div></div>
         <div class="rr-pts">${pts}</div>
       </div>`;
@@ -811,7 +893,7 @@ function castCard(id){
   const c = CAST_BY[id], out = state.cast[id].out;
   return `<button class="cc ${out ? "is-out" : ""}" type="button" data-act="open-cast" data-id="${id}">
     ${avatar(id, "md")}${out ? `<span class="stamp">Eliminated</span>` : ""}
-    <span class="cc-name">${esc(c.name)}</span>${c.occupation ? `<span class="cc-job">${esc(c.occupation)}</span>` : ""}
+    <span class="cc-name">${esc(c.name)}${heldIcons(id)}</span>${c.occupation ? `<span class="cc-job">${esc(c.occupation)}</span>` : ""}
     <span class="cc-sub">${tribePill(id) || "&nbsp;"}<br>${statusText(id)}</span>
     ${ownerTag(id)}
     <span class="cc-pts">${castTotal(id)} <small>pts</small></span>
@@ -969,7 +1051,7 @@ function viewAdmin(){
   const eps = epList();
   if (adminEp === null || !state.episodes[adminEp]) adminEp = latestEp();
   const tribeOpts = cur => `<option value="" ${!cur ? "selected" : ""}>None</option>` +
-    ["a","b","m"].map(k => `<option value="${k}" ${cur === k ? "selected" : ""}>${esc(state.tribes[k].name)}</option>`).join("");
+    TRIBE_KEYS.map(k => `<option value="${k}" ${cur === k ? "selected" : ""}>${esc(state.tribes[k].name)}</option>`).join("");
 
   let epSection;
   if (adminEp === null){
@@ -990,7 +1072,7 @@ function viewAdmin(){
     epSection = `
       <div class="admin-bar" style="margin-bottom:12px">
         <button class="btn small ghost" type="button" data-act="bulk-survive">Everyone still in survived tribal</button>
-        <select id="bulkTribe" aria-label="Tribe">${["a","b","m"].map(k => `<option value="${k}">${esc(state.tribes[k].name)}</option>`).join("")}</select>
+        <select id="bulkTribe" aria-label="Tribe">${TRIBE_KEYS.filter(k => k !== "x").map(k => `<option value="${k}">${esc(state.tribes[k].name)}</option>`).join("")}</select>
         <button class="btn small ghost" type="button" data-act="bulk-tribe">+1 tribe win for that tribe</button>
         <label class="muted" style="font-size:14px;display:flex;gap:6px;align-items:center"><input type="checkbox" id="showOut" ${showOut ? "checked" : ""}> Show castaways who are out</label>
       </div>
@@ -1026,14 +1108,85 @@ function viewAdmin(){
       </section>
       <section class="panel">
         <h3>Tribes</h3>
-        ${["a","b","m"].map(k => `<div class="tribe-edit"><input type="color" value="${esc(state.tribes[k].color)}" data-act="tribe-color" data-k="${k}" aria-label="Colour"><input type="text" value="${esc(state.tribes[k].name)}" data-act="tribe-name" data-k="${k}" aria-label="Tribe name" maxlength="30"></div>`).join("")}
+        ${TRIBE_KEYS.map(k => `<div class="tribe-edit"><input type="color" value="${esc(state.tribes[k].color)}" data-act="tribe-color" data-k="${k}" aria-label="Colour"><input type="text" value="${esc(state.tribes[k].name)}" data-act="tribe-name" data-k="${k}" aria-label="Tribe name" maxlength="30"></div>`).join("")}
       </section>
     </div>`;
 }
 
 /* ---------------- castaway modal ---------------- */
-function openCast(id){
-  const c = CAST_BY[id], w = ownerOf(id);
+/* ---------------- castaway profile (character sheet) ---------------- */
+const ITEMS = {
+  idol:      { icon:"🗿", name:"Hidden Immunity Idol" },
+  nullifier: { icon:"🧿", name:"Idol Nullifier" },
+  extraVote: { icon:"🗳️", name:"Extra Vote" },
+  blockVote: { icon:"🚫", name:"Block a Vote" },
+  stealVote: { icon:"✋", name:"Steal a Vote" },
+  sitd:      { icon:"🎲", name:"Shot in the Dark" },
+  kip:       { icon:"📜", name:"Knowledge is Power" },
+  advantage: { icon:"🎁", name:"Advantage" }
+};
+const itemOf = k => ITEMS[k] || ITEMS.advantage;
+const STATS = [
+  { name:"Survival",   keys:["survived"] },
+  { name:"Challenges", keys:["tribeWin","indImm","indReward"] },
+  { name:"Strategy",   keys:["rightVote"] },
+  { name:"Scavenging", keys:["idolFound","advFound"] },
+  { name:"Clutch",     keys:["idolSave","advUsed","fire"] }
+];
+const BADGES = [
+  { k:"indImm",    n:1, icon:"🏅", name:"Immunity" },
+  { k:"idolFound", n:1, icon:"🗿", name:"Idol Hunter" },
+  { k:"rightVote", n:3, icon:"🎯", name:"Blindsider" },
+  { k:"survived",  n:5, icon:"🛡️", name:"Iron Will" },
+  { k:"merge",     n:1, icon:"🤝", name:"Merged" },
+  { k:"jury",      n:1, icon:"⚖️", name:"Juror" },
+  { k:"fire",      n:1, icon:"🔥", name:"Fire Maker" },
+  { k:"winner",    n:1, icon:"👑", name:"Sole Survivor" }
+];
+let modalId = null;
+function castTallies(id){
+  const t = {};
+  for (const ep of epList()){ const ev = (state.episodes[ep] || {})[id] || {}; for (const k in ev) if (EV_BY[k]) t[k] = (t[k] || 0) + ev[k]; }
+  return t;
+}
+function heldIcons(id){
+  const it = state.cast[id].items || [];
+  return it.length ? ` <span class="held" title="Holding: ${esc(it.map(k => itemOf(k).name).join(", "))}">${it.map(k => itemOf(k).icon).join("")}</span>` : "";
+}
+/* finding an idol/advantage puts it in their bag; playing one takes it out */
+function autoItems(id, k){
+  const it = [...(state.cast[id].items || [])];
+  if (k === "idolFound") it.push("idol");
+  else if (k === "advFound") it.push("advantage");
+  else if (k === "idolSave" || k === "outIdol"){ const i = it.indexOf("idol"); if (i < 0) return null; it.splice(i, 1); }
+  else if (k === "advUsed"){ const i = it.findIndex(x => x !== "idol"); if (i < 0) return null; it.splice(i, 1); }
+  else return null;
+  return it;
+}
+function openCast(id, quiet){
+  const c = CAST_BY[id], w = ownerOf(id), cs = state.cast[id], tr = tribeOf(id);
+  const tc = tr ? tr.color : w ? w.o.color : "#F2E4C4";
+  const tal = castTallies(id), all = CAST.map(x => castTallies(x.id));
+  const pts = castTotal(id), rank = 1 + CAST.filter(x => castTotal(x.id) > pts).length;
+  const lv = 1 + Math.max(0, Math.floor(pts / 10)), xp = Math.max(0, pts) % 10;
+  let best = null;
+  for (const ep of epList()){ const p = castEpPts(id, ep); if (p > 0 && (!best || p > best.p)) best = { ep, p }; }
+
+  const status = cs.out ? `<span class="gp-status out">Eliminated${cs.place ? " · " + ordinal(cs.place) : ""}</span>`
+    : cs.tribe === "x" ? `<span class="gp-status exile">On Exile Island</span>` : `<span class="gp-status in">Active</span>`;
+  const sum = (t, keys) => keys.reduce((n, k) => n + (t[k] || 0), 0);
+  const stats = STATS.map(st => {
+    const v = sum(tal, st.keys), max = Math.max(1, ...all.map(t => sum(t, st.keys)));
+    return `<div class="gp-stat"><span>${st.name}</span><div class="gp-bar"><i style="--w:${Math.round(v / max * 100)}%"></i></div><b>${v}</b></div>`;
+  }).join("");
+  const items = cs.items || [];
+  const slots = [
+    ...items.map((k, i) => `<div class="gp-slot ${k === "idol" ? "idol" : ""}"><span class="gi">${itemOf(k).icon}</span><span class="gn">${esc(itemOf(k).name)}</span>
+      ${admin ? `<button type="button" class="gp-x" data-act="item-remove" data-id="${id}" data-i="${i}" aria-label="Remove ${esc(itemOf(k).name)}">×</button>` : ""}</div>`),
+    ...Array.from({ length: Math.max(0, 4 - items.length) }, () => `<div class="gp-slot empty"><span class="gn">Empty</span></div>`)
+  ].join("");
+  const badges = BADGES.map(bd => { const on = (tal[bd.k] || 0) >= bd.n;
+    return `<div class="gp-badge ${on ? "on" : ""}" title="${esc(bd.name)}${on ? "" : " (locked)"}"><span>${on ? bd.icon : "🔒"}</span><small>${bd.name}</small></div>`; }).join("");
   const rows = epList().map(ep => {
     const ev = (state.episodes[ep] || {})[id] || {};
     const keys = Object.keys(ev).filter(k => EV_BY[k]);
@@ -1041,21 +1194,50 @@ function openCast(id){
     const counted = !w || ep >= Math.max(w.r.from || FIRST_EP, FIRST_EP);
     return `<tr><td>Ep ${ep}</td><td>${keys.map(k => SHORT[k] + (ev[k] > 1 ? " ×" + ev[k] : "")).join(", ")}${counted ? "" : `<br><span class="muted">Before joining ${esc(w.o.owner)}'s team</span>`}</td><td>${signed(castEpPts(id, ep))}</td></tr>`;
   }).join("");
-  document.getElementById("modalRoot").innerHTML = `<div class="modal" data-act="close-modal">
-    <div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(c.name)}">
+  const chip = (act, k, color, label, on) => `<button type="button" class="gp-chip ${on ? "on" : ""}" style="--c:${esc(color)}" data-act="${act}" data-id="${id}" data-k="${k}">${label}</button>`;
+  const adminBox = admin ? `<section class="gp-sec gp-admin"><h4>Admin</h4>
+      <div class="gp-label">Game tribe</div>
+      <div class="gp-chips">${TRIBE_KEYS.map(k => chip("set-tribe", k, state.tribes[k].color, esc(state.tribes[k].name), cs.tribe === k)).join("")}${chip("set-tribe", "", "#5b7772", "None", !cs.tribe)}</div>
+      <div class="gp-label">Give an item</div>
+      <div class="gp-chips">${Object.entries(ITEMS).map(([k, it]) => chip("item-add", k, "var(--sun)", `${it.icon} ${esc(it.name)}`, false)).join("")}</div>
+      <div class="gp-label">Family tribe</div>
+      ${assignPicker(id, w)}
+    </section>` : "";
+
+  const prev = document.querySelector("#modalRoot .sheet");
+  const scroll = quiet && prev ? prev.scrollTop : 0;
+  modalId = id;
+  document.getElementById("modalRoot").innerHTML = `<div class="modal ${quiet ? "quiet" : ""}" data-act="close-modal">
+    <div class="sheet gp" style="--tc:${esc(tc)};--gp:${esc(tc)}" role="dialog" aria-modal="true" aria-label="${esc(c.name)}">
       <button class="close" type="button" data-act="close-modal" aria-label="Close">×</button>
-      <div class="m-head">${avatar(id,"lg")}<div><h3>${esc(c.name)}</h3>
-        <div class="bsub" style="display:flex;gap:10px;flex-wrap:wrap">${tribePill(id)}<span>${statusText(id)}</span></div>
-        <div style="margin-top:8px">${ownerTag(id)}</div></div></div>
-      ${admin ? assignPicker(id, w) : ""}
-      ${c.bio ? `<div class="m-bio">
-        <dl><div><dt>Age</dt><dd>${esc(c.age)}</dd></div><div><dt>Occupation</dt><dd>${esc(c.occupation)}</dd></div>
-          <div><dt>Hometown</dt><dd>${esc(c.hometown)}</dd></div><div><dt>Lives in</dt><dd>${esc(c.residence)}</dd></div></dl>
-        <p>${esc(c.bio)}</p></div>` : ""}
-      <p style="margin:0 0 10px"><b style="font-family:var(--display);font-weight:400;font-size:26px">${castTotal(id)}</b> <span class="muted">points this season</span></p>
-      ${rows ? `<table class="ep-table">${rows}</table>` : `<p class="muted">No points yet.</p>`}
+      <div class="gp-head">
+        <div class="gp-portrait">${avatar(id, "lg")}<span class="gp-lv">LV ${lv}</span></div>
+        <div class="gp-id">
+          ${status}
+          <h3>${esc(c.name)}</h3>
+          <div class="gp-class">${esc(c.occupation || "Castaway")}${c.age ? ` · Age ${c.age}` : ""}</div>
+          <div class="gp-tags">${tribePill(id)}${ownerTag(id)}</div>
+          <div class="gp-xp"><div class="gp-bar xp"><i style="--w:${xp * 10}%"></i></div><small>XP ${xp}/10 to LV ${lv + 1}</small></div>
+        </div>
+      </div>
+      <div class="gp-tiles">
+        <div><b>${pts}</b><small>Points</small></div>
+        <div><b>#${rank}</b><small>Cast rank</small></div>
+        <div><b>${best ? "+" + best.p : "–"}</b><small>${best ? "Best · Ep " + best.ep : "Best episode"}</small></div>
+        <div><b>${tal.survived || 0}</b><small>Tribals survived</small></div>
+      </div>
+      <section class="gp-sec"><h4>Stats</h4>${stats}</section>
+      <section class="gp-sec"><h4>Held items</h4><div class="gp-slots">${slots}</div></section>
+      <section class="gp-sec"><h4>Achievements</h4><div class="gp-badges">${badges}</div></section>
+      ${c.bio ? `<section class="gp-sec"><h4>Bio</h4><div class="m-bio">
+        <dl><div><dt>Hometown</dt><dd>${esc(c.hometown)}</dd></div><div><dt>Lives in</dt><dd>${esc(c.residence)}</dd></div></dl>
+        <p>${esc(c.bio)}</p></div></section>` : ""}
+      <section class="gp-sec"><h4>Episode log</h4>${rows ? `<table class="ep-table">${rows}</table>` : `<p class="muted">No points yet.</p>`}</section>
+      ${adminBox}
     </div></div>`;
-  document.querySelector("#modalRoot .close").focus();
+  const sheet = document.querySelector("#modalRoot .sheet");
+  if (quiet) sheet.scrollTop = scroll;
+  else document.querySelector("#modalRoot .close").focus();
 }
 function assignPicker(id, w){
   const le = latestEp(), from = w ? Math.max(w.r.from || FIRST_EP, FIRST_EP) : (le ? le + 1 : FIRST_EP);
@@ -1069,7 +1251,7 @@ function assignPicker(id, w){
       <label class="assign-from">Points count from episode <input type="number" id="assignFrom" min="${FIRST_EP}" value="${from}"></label>
     </div></div>`;
 }
-function closeModal(){ document.getElementById("modalRoot").innerHTML = ""; }
+function closeModal(){ modalId = null; document.getElementById("modalRoot").innerHTML = ""; }
 
 /* ---------------- events ---------------- */
 document.getElementById("tabs").addEventListener("click", e => {
@@ -1086,6 +1268,16 @@ document.addEventListener("click", e => {
   const a = el.dataset.act;
   if (a === "close-modal"){ if (e.target === el || el.classList.contains("close")) closeModal(); return; }
   if (a === "open-cast"){ openCast(el.dataset.id); return; }
+  if (a === "set-tribe"){ write(["cast", el.dataset.id, "tribe"], el.dataset.k); return; }
+  if (a === "item-add"){
+    const id = el.dataset.id, it = ITEMS[el.dataset.k];
+    write(["cast", id, "items"], [...(state.cast[id].items || []), el.dataset.k]);
+    toast(`${CAST_BY[id].name} now holds ${/^[AEIOU]/.test(it.name) ? "an" : "a"} ${it.name}.`); return;
+  }
+  if (a === "item-remove"){
+    const id = el.dataset.id, i = +el.dataset.i;
+    write(["cast", id, "items"], (state.cast[id].items || []).filter((_, j) => j !== i)); return;
+  }
   if (a === "assign-open"){
     const list = el.nextElementSibling, open = list.hidden;
     list.hidden = !open; el.setAttribute("aria-expanded", open); return;
@@ -1109,7 +1301,10 @@ document.addEventListener("click", e => {
     const { id, k } = el.dataset, d = +el.dataset.d;
     if (d > 0) burst(e.clientX, e.clientY, k);
     const n = Math.max(0, evCount(adminEp, id, k) + d);
-    write(["episodes", adminEp, id, k], n || null); return;
+    const pairs = [[["episodes", adminEp, id, k], n || null]];
+    const items = d > 0 ? autoItems(id, k) : null;
+    if (items) pairs.push([["cast", id, "items"], items]);
+    writeMany(pairs); return;
   }
   if (a === "bulk-survive"){
     const pairs = CAST.filter(c => !state.cast[c.id].out && !evCount(adminEp, c.id, "survived")).map(c => [["episodes", adminEp, c.id, "survived"], 1]);
