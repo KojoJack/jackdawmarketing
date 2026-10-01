@@ -408,6 +408,9 @@ footer button:hover{border-color:var(--sun);color:var(--sun)}
 .roster-row.is-out{background:rgba(229,96,74,.08);box-shadow:inset 3px 0 0 var(--bad)}
 .roster-row.is-out .rr-name{text-decoration:none;color:#ff8f7a}
 .roster-row.is-out .rr-pts{color:#ff8f7a}
+.roster-row.is-former{opacity:.62}
+.roster-row.is-former .av img{filter:grayscale(1)}
+.former-tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);padding:0 7px;border-radius:99px}
 .elim{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--bad);padding:1px 8px;border-radius:99px}
 .cc.is-out{opacity:1;border-color:rgba(229,96,74,.45);background:linear-gradient(180deg,rgba(229,96,74,.14),var(--card))}
 .cc.is-out .cc-name{color:#ff8f7a}
@@ -657,6 +660,7 @@ const EVENTS = [
   { k:"ftc",       g:"Endgame",     label:"Makes final tribal council", pts:10 },
   { k:"juryVote",  g:"Endgame",     label:"Each jury vote received", pts:2 },
   { k:"winner",    g:"Endgame",     label:"Wins Sole Survivor", pts:12 },
+  { k:"elim",      g:"Penalties",   label:"Eliminated from the game (not medevacs)", pts:-2 },
   { k:"outIdol",   g:"Penalties",   label:"Voted out holding an idol", pts:-4 },
   { k:"quit",      g:"Penalties",   label:"Quits the game", pts:-10 },
   { k:"badIdol",   g:"Penalties",   label:"Plays an idol on someone with no votes while an ally goes home", pts:-2 }
@@ -665,7 +669,7 @@ const EV_BY = Object.fromEntries(EVENTS.map(e => [e.k, e]));
 const SHORT = { survived:"Survived", tribeWin:"Tribe win", indImm:"Immunity", indReward:"Reward", rightVote:"Right vote",
   idolFound:"Idol found", advFound:"Advantage found", idolSave:"Idol played", advUsed:"Advantage used", merge:"Merge",
   jury:"Jury", fire:"Fire win", coinFlip:"Coin flip", ftc:"Final tribal", juryVote:"Jury votes", winner:"Sole Survivor",
-  outIdol:"Out with idol", quit:"Quit", badIdol:"Wasted idol" };
+  elim:"Eliminated", outIdol:"Out with idol", quit:"Quit", badIdol:"Wasted idol" };
 
 const TRIBE_KEYS = ["a","b","x","m"]; // Savu, Toka, Exile Island, merged
 /* items are { k, used?, ep? }; older saves stored bare keys. Everyone starts with a Shot in the Dark. */
@@ -781,11 +785,23 @@ function castTotal(id, from = FIRST_EP, to = Infinity){
   let t = 0; for (const ep of epList()) if (ep >= from && ep <= to) t += castEpPts(id, ep);
   return t;
 }
+/* roster entries are stints: { id, from, to? }. A traded or dropped player keeps their entry with `to`
+   set to the last episode they scored for that team, so the team keeps those points. No `to` = still on the team. */
+const stintFrom = r => Math.max(r.from || FIRST_EP, FIRST_EP);
+const stintTo = r => r.to == null ? Infinity : r.to;
+function stintPts(r, to = Infinity){ return castTotal(r.id, stintFrom(r), Math.min(stintTo(r), to)); }
+function activeRoster(tid){ return state.teams[tid].roster.filter(r => r.to == null); }
+function formerRoster(tid){ return state.teams[tid].roster.filter(r => r.to != null); }
 function teamTotal(tid, to = Infinity){
-  return state.teams[tid].roster.reduce((s, r) => s + castTotal(r.id, Math.max(r.from || FIRST_EP, FIRST_EP), to), 0);
+  return state.teams[tid].roster.reduce((s, r) => s + stintPts(r, to), 0);
 }
 function teamEpPts(tid, ep){
-  return state.teams[tid].roster.reduce((s, r) => s + (ep >= Math.max(r.from || FIRST_EP, FIRST_EP) ? castEpPts(r.id, ep) : 0), 0);
+  return state.teams[tid].roster.reduce((s, r) => s + (ep >= stintFrom(r) && ep <= stintTo(r) ? castEpPts(r.id, ep) : 0), 0);
+}
+/* which team banked this castaway's points for an episode */
+function scoredFor(id, ep){
+  for (const o of OWNERS) if (state.teams[o.id].roster.some(r => r.id === id && ep >= stintFrom(r) && ep <= stintTo(r))) return o;
+  return null;
 }
 function standings(to = Infinity){
   const rows = OWNERS.map(o => ({ o, tot: teamTotal(o.id, to) })).sort((a,b) => b.tot - a.tot);
@@ -794,7 +810,7 @@ function standings(to = Infinity){
   return rows;
 }
 function ownerOf(id){
-  for (const o of OWNERS){ const r = state.teams[o.id].roster.find(x => x.id === id); if (r) return { o, r }; }
+  for (const o of OWNERS){ const r = state.teams[o.id].roster.find(x => x.id === id && x.to == null); if (r) return { o, r }; }
   return null;
 }
 function castTally(k){ const m = {}; for (const c of CAST){ let n = 0; for (const ep of allEps()) n += evCount(ep, c.id, k); m[c.id] = n; } return m; }
@@ -879,28 +895,34 @@ function renderTabs(){
 function viewTeams(){
   const st = standings(); const rankOf = Object.fromEntries(st.map(r => [r.o.id, r.rank]));
   const anyPts = epList().length > 0;
-  const drafted = new Set(OWNERS.flatMap(o => state.teams[o.id].roster.map(r => r.id)));
+  const drafted = new Set(OWNERS.flatMap(o => activeRoster(o.id).map(r => r.id)));
   const free = CAST.filter(c => !drafted.has(c.id));
   const cards = OWNERS.map(o => {
     const t = state.teams[o.id];
-    const alive = t.roster.filter(r => !state.cast[r.id].out).length;
-    const rows = aliveFirst(t.roster).map(r => {
+    const roster = activeRoster(o.id), former = formerRoster(o.id);
+    const alive = roster.filter(r => !state.cast[r.id].out).length;
+    const rows = aliveFirst(roster).map(r => {
       const c = CAST_BY[r.id], out = state.cast[r.id].out;
-      const pts = castTotal(r.id, Math.max(r.from || FIRST_EP, FIRST_EP));
+      const pts = stintPts(r);
       return `<div class="roster-row ${out ? "is-out" : ""}" role="button" tabindex="0" data-act="open-cast" data-id="${r.id}">
         ${avatar(r.id, "sm")}
         <div class="rr-main"><div class="rr-name">${esc(c.name)}${heldIcons(r.id)}</div>
           <div class="rr-sub">${out ? `<span class="elim">Eliminated</span>${state.cast[r.id].place ? `<span>${ordinal(state.cast[r.id].place)} place</span>` : ""}` : `${tribePill(r.id)}<span>Still in</span>`}${(r.from || FIRST_EP) > FIRST_EP ? `<span>Counts from ep ${r.from}</span>` : ""}</div></div>
         <div class="rr-pts">${pts}</div>
       </div>`;
-    }).join("");
+    }).join("") + former.map(r => `<div class="roster-row is-former" role="button" tabindex="0" data-act="open-cast" data-id="${r.id}">
+        ${avatar(r.id, "sm")}
+        <div class="rr-main"><div class="rr-name">${esc(CAST_BY[r.id].name)}</div>
+          <div class="rr-sub"><span class="former-tag">Former</span><span>Points kept, ep ${stintFrom(r)}–${r.to}</span></div></div>
+        <div class="rr-pts">${stintPts(r)}</div>
+      </div>`).join("");
     return `<article class="team" style="--tc:${o.color}">
       <div class="buff"></div>
       <div class="team-head">
         <div class="team-owner">${anyPts ? `<span class="rank-chip ${rankOf[o.id] === 1 ? "lead" : ""}">${rankOf[o.id] === 1 ? FLAME : ""}#${rankOf[o.id]}</span>` : ""}${esc(o.owner)}'s team</div>
         ${admin ? `<input class="team-name" data-act="team-name" data-team="${o.id}" value="${esc(t.name)}" maxlength="40" aria-label="${esc(o.owner)}'s team name" title="Tap to rename">`
                 : `<div class="team-name">${esc(t.name)}</div>`}
-        <div class="team-meta">${t.roster.length ? `${alive} of ${t.roster.length} still in the game` : "No castaways yet"}</div>
+        <div class="team-meta">${roster.length ? `${alive} of ${roster.length} still in the game` : "No castaways yet"}</div>
         <div class="team-score"><b data-count="${teamTotal(o.id)}" data-ckey="team-${o.id}">${teamTotal(o.id)}</b><span>points</span></div>
       </div>
       <div class="roster">${rows || `<div class="empty-roster">${admin ? "Tap any castaway and choose Assign to tribe." : "Waiting on the draft."}</div>`}</div>
@@ -909,12 +931,12 @@ function viewTeams(){
 
   const freeList = free.length ? `<section class="panel" style="margin-top:22px">
       <h3>Free agents</h3>
-      <p class="help">${admin ? "Tap a castaway to assign them to a tribe. " : ""}Undrafted castaways. Lose a player and the person in last place gets first pick from here.</p>
+      <p class="help">${admin ? "Tap a castaway to assign them to a tribe. " : ""}Castaways not on anyone's tribe. Each team gets one free agent pickup this season, and last place picks first.</p>
       <div class="cast-grid">${aliveFirst(free).map(c => castCard(c.id)).join("")}</div>
     </section>` : "";
 
   return `<h2 class="sec">Teams</h2>
-    <p class="lede">${admin ? "Tap a team name to rename it, or tap any castaway to assign them to a tribe. " : ""}Points count from episode 2 on, and a player picked up later only scores from the episode they joined.</p>
+    <p class="lede">${admin ? "Tap a team name to rename it, or tap any castaway to assign them to a tribe. " : ""}Points count from episode 2 on. A player picked up later only scores from the episode they joined, and a team keeps the points a player earned before being traded or dropped.</p>
     <div class="teams">${cards}</div>${freeList}`;
 }
 
@@ -958,8 +980,8 @@ function castGridHTML(){
   return groups.filter(g => g.list.length).map(g => {
     let head;
     if (g.o){
-      const t = state.teams[g.o.id], alive = t.roster.filter(r => !state.cast[r.id].out).length;
-      head = `<div><span class="gh-name">${esc(t.name)}</span><span class="gh-sub">${esc(g.o.owner)} · ${alive} of ${t.roster.length} still in</span></div>
+      const t = state.teams[g.o.id], roster = activeRoster(g.o.id), alive = roster.filter(r => !state.cast[r.id].out).length;
+      head = `<div><span class="gh-name">${esc(t.name)}</span><span class="gh-sub">${esc(g.o.owner)} · ${alive} of ${roster.length} still in</span></div>
         <b>${teamTotal(g.o.id)} <small>pts</small></b>`;
     } else head = `<div><span class="gh-name">Free agents</span><span class="gh-sub">Not on anyone's tribe</span></div>`;
     return `<section class="cast-group" style="--tc:${g.o ? g.o.color : "#5b7772"}">
@@ -1022,12 +1044,12 @@ function viewRankings(){
   const prev = eps.length >= 2 ? Object.fromEntries(standings(eps[eps.length-2]).map(r => [r.o.id, r.rank])) : null;
   const board = now.map(r => {
     const t = state.teams[r.o.id];
-    const alive = t.roster.filter(x => !state.cast[x.id].out).length;
+    const roster = activeRoster(r.o.id), alive = roster.filter(x => !state.cast[x.id].out).length;
     let mv = "";
     if (prev){ const d = prev[r.o.id] - r.rank; mv = d > 0 ? `<span class="mv up">▲ ${d}</span>` : d < 0 ? `<span class="mv down">▼ ${-d}</span>` : `<span class="mv same">no change</span>`; }
     return `<div class="brow ${eps.length && r.rank === 1 ? "first" : ""}" style="--tc:${r.o.color}">
       <div class="brank">${eps.length ? r.rank : "–"}</div>
-      <div><div class="bname">${esc(t.name)}${mv}</div><div class="bsub">${esc(r.o.owner)}, ${t.roster.length ? `${alive} of ${t.roster.length} left` : "no picks yet"}</div></div>
+      <div><div class="bname">${esc(t.name)}${mv}</div><div class="bsub">${esc(r.o.owner)}, ${roster.length ? `${alive} of ${roster.length} left` : "no picks yet"}</div></div>
       <div class="bpts"><b data-count="${r.tot}" data-ckey="rank-${r.o.id}">${r.tot}</b><span>${le ? `${signed(teamEpPts(r.o.id, le))} in ep ${le}` : "points"}</span></div>
     </div>`;
   }).join("");
@@ -1069,7 +1091,10 @@ function viewScoring(){
     <section class="panel prose" style="margin-top:18px">
       <h3>League rules</h3>
       <p><strong>The draft.</strong> We draft after episode 1 in a snake order drawn from a hat. If 20 castaways are left, everyone takes 4. If 19 or fewer are left, everyone takes 3 and the rest become free agents.</p>
-      <p><strong>Replacements.</strong> Lose a player and you can pick up a free agent, with whoever is in last place choosing first. A pickup only scores from the episode after they join your team.</p>
+      <p><strong>Eliminations.</strong> When one of your players goes home, your team loses 2 points. Medevacs are the exception.</p>
+      <p><strong>Pickups.</strong> Each team gets one free agent pickup for the season: add a free agent and drop one of your players, with whoever is in last place choosing first. A pickup only scores from the episode after they join your team.</p>
+      <p><strong>Trades.</strong> Each team can make one 1-for-1 trade with another team during the season.</p>
+      <p><strong>Points stay put.</strong> Dropping or trading a player never costs you points. Your team keeps everything that player scored while they were yours, and their new team only scores from the episode they join.</p>
       <p><strong>Survival.</strong> Survival points are per tribal council, so a double-boot episode is worth 2 if your player makes it through both.</p>
       <p><strong>Medevacs.</strong> Leaving for medical reasons carries no penalty. Only quitting costs points.</p>
       <p><strong>Returns.</strong> If a twist brings someone back into the game, they pick up scoring again when they return. No bonus for coming back and no points while they're out.</p>
@@ -1231,8 +1256,11 @@ function openCast(id, quiet){
     const keys = Object.keys(ev).filter(k => EV_BY[k]);
     if (!keys.length) return "";
     const statsOnly = ep < FIRST_EP;
-    const counted = statsOnly || !w || ep >= Math.max(w.r.from || FIRST_EP, FIRST_EP);
-    return `<tr><td>Ep ${ep}</td><td>${keys.map(k => SHORT[k] + (ev[k] > 1 ? " ×" + ev[k] : "")).join(", ")}${statsOnly ? `<br><span class="muted">Stats only, no points</span>` : counted ? "" : `<br><span class="muted">Before joining ${esc(w.o.owner)}'s team</span>`}</td><td>${statsOnly ? `<span class="muted">–</span>` : signed(castEpPts(id, ep))}</td></tr>`;
+    const by = statsOnly ? null : scoredFor(id, ep);
+    const note = statsOnly ? "Stats only, no points"
+      : by && (!w || by.id !== w.o.id) ? `Scored for ${by.owner}'s team`
+      : !by && w ? `Before joining ${w.o.owner}'s team` : "";
+    return `<tr><td>Ep ${ep}</td><td>${keys.map(k => SHORT[k] + (ev[k] > 1 ? " ×" + ev[k] : "")).join(", ")}${note ? `<br><span class="muted">${esc(note)}</span>` : ""}</td><td>${statsOnly ? `<span class="muted">–</span>` : signed(castEpPts(id, ep))}</td></tr>`;
   }).join("");
   const chip = (act, k, color, label, on) => `<button type="button" class="gp-chip ${on ? "on" : ""}" style="--c:${esc(color)}" data-act="${act}" data-id="${id}" data-k="${k}">${label}</button>`;
   const adminBox = admin ? `<section class="gp-sec gp-admin"><h4>Admin</h4>
@@ -1288,9 +1316,10 @@ function assignPicker(id, w){
   return `<div class="assign">
     <button class="btn small" type="button" data-act="assign-open" aria-expanded="false">${w ? "Change tribe" : "Assign to tribe"}</button>
     <div class="assign-list" hidden>
-      ${OWNERS.map(o => { const n = state.teams[o.id].roster.length; return opt(o.id, o.color, state.teams[o.id].name, `${o.owner} · ${n} castaway${n === 1 ? "" : "s"}`, w && w.o.id === o.id); }).join("")}
+      ${OWNERS.map(o => { const n = activeRoster(o.id).length; return opt(o.id, o.color, state.teams[o.id].name, `${o.owner} · ${n} castaway${n === 1 ? "" : "s"}`, w && w.o.id === o.id); }).join("")}
       ${opt("", "#5b7772", "Free agent", "Not on anyone's tribe", !w)}
-      <label class="assign-from">Points count from episode <input type="number" id="assignFrom" min="${FIRST_EP}" value="${from}"></label>
+      <label class="assign-from">Move counts from episode <input type="number" id="assignFrom" min="${FIRST_EP}" value="${from}"></label>
+      ${w ? `<p class="help">${esc(w.o.owner)}'s team keeps everything ${esc(CAST_BY[id].name)} scored before that episode.</p>` : ""}
     </div></div>`;
 }
 function closeModal(){ modalId = null; document.getElementById("modalRoot").innerHTML = ""; }
@@ -1333,11 +1362,17 @@ document.addEventListener("click", e => {
     const fromEl = document.getElementById("assignFrom");
     const from = Math.max(FIRST_EP, parseInt(fromEl && fromEl.value, 10) || FIRST_EP);
     const sameTeam = cur ? cur.o.id === to : !to;
-    if (sameTeam && (!cur || (cur.r.from || FIRST_EP) === from)){ closeModal(); return; }
+    if (sameTeam && (!cur || stintFrom(cur.r) === from)){ closeModal(); return; }
     const pairs = [];
-    if (cur && cur.o.id !== to) pairs.push([["teams", cur.o.id, "roster"], state.teams[cur.o.id].roster.filter(r => r.id !== id)]);
+    if (cur && cur.o.id !== to){
+      // close the old stint the episode before the move so that team keeps those points;
+      // a stint that never reached a scored episode (e.g. fixing a draft mistake) is just removed
+      const end = from - 1;
+      pairs.push([["teams", cur.o.id, "roster"], state.teams[cur.o.id].roster.flatMap(r =>
+        r !== cur.r ? [r] : end >= stintFrom(r) ? [{ ...r, to: end }] : [])]);
+    }
     if (to) pairs.push([["teams", to, "roster"], sameTeam
-      ? state.teams[to].roster.map(r => r.id === id ? { id, from } : r)
+      ? state.teams[to].roster.map(r => r === cur.r ? { id, from } : r)
       : [...state.teams[to].roster, { id, from }]]);
     closeModal();
     writeMany(pairs);
@@ -1373,8 +1408,18 @@ document.addEventListener("click", e => {
   }
   if (a === "cast-out"){
     const id = el.dataset.id, cs = state.cast[id];
-    if (cs.out) write(["cast", id], { ...cs, out: false, place: 0 });
-    else { const inCount = CAST.filter(c => !state.cast[c.id].out).length; write(["cast", id], { ...cs, out: true, place: inCount }); }
+    const eps = allEps(), last = eps.length ? eps[eps.length-1] : null;
+    if (cs.out){
+      const pairs = [[["cast", id], { ...cs, out: false, place: 0 }]];
+      if (last !== null && evCount(last, id, "elim")) pairs.push([["episodes", last, id, "elim"], null]);
+      writeMany(pairs);
+    } else {
+      const inCount = CAST.filter(c => !state.cast[c.id].out).length;
+      const pairs = [[["cast", id], { ...cs, out: true, place: inCount }]];
+      if (last !== null && !evCount(last, id, "elim")) pairs.push([["episodes", last, id, "elim"], 1]);
+      writeMany(pairs);
+      if (last !== null) toast(`${CAST_BY[id].name} is out: −2 logged in episode ${last}. Medevac? Remove it in that episode.`);
+    }
     return;
   }
 });
