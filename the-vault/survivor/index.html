@@ -512,6 +512,18 @@ footer button:hover{border-color:var(--sun);color:var(--sun)}
   .gp-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
+/* admin: items panel */
+.items-admin{display:grid;gap:6px}
+.ia-row{display:grid;grid-template-columns:minmax(150px,200px) 1fr auto;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:rgba(0,0,0,.14)}
+.ia-who{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px;min-width:0}
+.ia-items{display:flex;flex-wrap:wrap;gap:6px}
+.ia-pill{display:inline-flex;align-items:center;border:1px solid var(--sun);border-radius:99px;overflow:hidden;font-size:12px;font-weight:700}
+.ia-pill button{background:none;border:0;color:var(--bone);padding:4px 10px;cursor:pointer;font:inherit}
+.ia-pill .ia-x{padding:4px 9px 4px 4px;color:var(--muted);font-size:14px;line-height:1}
+.ia-pill .ia-x:hover{color:var(--bad)}
+.ia-pill.used{border-color:var(--line);opacity:.6}
+.ia-row select{max-width:190px}
+@media (max-width:640px){.ia-row{grid-template-columns:1fr}.ia-row select{max-width:none}}
 /* used items */
 .gp-slot.used{border-color:rgba(242,228,196,.14);background:rgba(0,0,0,.28)}
 .gp-slot.used .gi{filter:grayscale(1) brightness(.6)}
@@ -671,7 +683,7 @@ const SHORT = { survived:"Survived", tribeWin:"Tribe win", indImm:"Immunity", in
   jury:"Jury", fire:"Fire win", coinFlip:"Coin flip", ftc:"Final tribal", juryVote:"Jury votes", winner:"Sole Survivor",
   elim:"Eliminated", outIdol:"Out with idol", quit:"Quit", badIdol:"Wasted idol" };
 
-const TRIBE_KEYS = ["a","b","x","m"]; // Savu, Toka, Exile Island, merged
+const TRIBE_KEYS = ["a","b","c","x","m"]; // Savu, Toka, Dina, Exile Island, merged
 /* items are { k, used?, ep? }; older saves stored bare keys. Everyone starts with a Shot in the Dark. */
 function normItems(arr){
   const it = (Array.isArray(arr) ? arr : []).map(x => typeof x === "string" ? { k: x }
@@ -682,7 +694,7 @@ function normItems(arr){
 function defaultState(){
   return {
     teams: Object.fromEntries(OWNERS.map(o => [o.id, { name: o.owner + "'s Tribe", roster: [] }])),
-    tribes: { a:{ name:"Savu", color:"#9B6BE8" }, b:{ name:"Toka", color:"#F2C230" }, x:{ name:"Exile Island", color:"#8FA3B3" }, m:{ name:"Merged tribe", color:"#E9D29A" } },
+    tribes: { a:{ name:"Savu", color:"#9B6BE8" }, b:{ name:"Toka", color:"#F2C230" }, c:{ name:"Dina", color:"#F06BB4" }, x:{ name:"Exile Island", color:"#8FA3B3" }, m:{ name:"Merged tribe", color:"#E9D29A" } },
     cast: Object.fromEntries(CAST.map(c => [c.id, { tribe:"", out:false, place:0, items:[] }])),
     episodes: {},
     blurbs: {}
@@ -1145,6 +1157,17 @@ function viewAdmin(){
       <td><button type="button" class="status-btn ${cs.out ? "out" : "in"}" data-act="cast-out" data-id="${c.id}">${cs.out ? "Eliminated" : "In"}</button></td>
       <td>${cs.out ? `<input type="number" min="1" max="21" value="${cs.place || ""}" data-act="cast-place" data-id="${c.id}" aria-label="Finish for ${esc(c.name)}">` : `<span class="muted">–</span>`}</td></tr>`; }).join("");
 
+  const giveOpts = `<option value="">+ Give item…</option>` +
+    Object.entries(ITEMS).filter(([k]) => k !== "sitd").map(([k, it]) => `<option value="${k}">${it.icon} ${esc(it.name)}</option>`).join("");
+  const itemAdminRows = CAST.filter(c => !state.cast[c.id].out).map(c => {
+    const pills = state.cast[c.id].items.map((x, i) => `<span class="ia-pill ${x.used ? "used" : ""}">
+        <button type="button" data-act="item-toggle" data-id="${c.id}" data-i="${i}" title="${x.used ? "Used" + (x.ep ? " in ep " + x.ep : "") + ", tap to mark unused" : "Unused, tap to mark used"}">${itemOf(x.k).icon} ${esc(itemOf(x.k).name)}${x.used ? " · used" : ""}</button>
+        ${x.k === "sitd" ? "" : `<button type="button" class="ia-x" data-act="item-remove" data-id="${c.id}" data-i="${i}" aria-label="Take away ${esc(itemOf(x.k).name)}">×</button>`}</span>`).join("");
+    return `<div class="ia-row"><div class="ia-who">${avatar(c.id,"sm")}<span>${esc(c.name)}</span></div>
+      <div class="ia-items">${pills}</div>
+      <select data-act="item-give" data-id="${c.id}" aria-label="Give ${esc(c.name)} an item">${giveOpts}</select></div>`;
+  }).join("");
+
   return `<h2 class="sec">Update scores</h2>
     <p class="lede">Log what happened each episode and the site does the math. Changes go live for everyone right away.</p>
     <div class="stack">
@@ -1162,6 +1185,11 @@ function viewAdmin(){
         <h3>Castaways</h3>
         <p class="help">Set tribes, mark who's out, and their finish (21st is the first one out).</p>
         <div class="table-scroll"><table class="ctable"><thead><tr><th>Castaway</th><th>Tribe</th><th>Status</th><th>Finish</th></tr></thead><tbody>${castRows}</tbody></table></div>
+      </section>
+      <section class="panel">
+        <h3>Idols and advantages</h3>
+        <p class="help">Give or take away items here. Tap an item to flip it between unused and used, or × to take it away. This never changes anyone's points; to score a find or a play, use Episode scoring above.</p>
+        <div class="items-admin">${itemAdminRows}</div>
       </section>
       <section class="panel">
         <h3>Tribes</h3>
@@ -1436,6 +1464,11 @@ document.addEventListener("change", e => {
   if (a === "cast-place"){ write(["cast", el.dataset.id, "place"], Math.max(0, parseInt(el.value, 10) || 0)); return; }
   if (a === "tribe-name"){ const v = el.value.trim(); if (v) write(["tribes", el.dataset.k, "name"], v); return; }
   if (a === "tribe-color"){ write(["tribes", el.dataset.k, "color"], el.value); return; }
+  if (a === "item-give"){
+    const id = el.dataset.id, k = el.value, it = ITEMS[k]; if (!it) return;
+    write(["cast", id, "items"], [...state.cast[id].items, { k }]);
+    toast(`${CAST_BY[id].name} now holds ${/^[AEIOU]/.test(it.name) ? "an" : "a"} ${it.name}.`); return;
+  }
   if (a === "item-ep"){
     const id = el.dataset.id, i = +el.dataset.i, n = parseInt(el.value, 10);
     write(["cast", id, "items"], state.cast[id].items.map((x, j) => j !== i ? x : Object.assign({ k: x.k, used: true }, n > 0 ? { ep: n } : {}))); return;
