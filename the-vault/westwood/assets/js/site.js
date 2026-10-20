@@ -2,7 +2,7 @@
    Plain JS, no dependencies. Content lives in the HTML itself so search
    engines read it without running any of this. The menu, text size, pop-ups
    and booking form work exactly as in the main build; the motion layer
-   (curtains, word reveals, parallax, slider, count-up) is new. */
+   (photo fades, word reveals, slider, count-up) is new. */
 (function(){
   "use strict";
   var d = document, root = d.documentElement;
@@ -69,8 +69,8 @@
     }, {rootMargin:'0px 0px -10% 0px', threshold:.08});
     var watch = function(el, cls){ if(below(el)){ if(cls) el.classList.add(cls); io.observe(el); } };
 
-    // photos: the cinnamon curtain
-    d.querySelectorAll('main .curtain:not(.curtain-load)').forEach(function(el){ watch(el, 'is-pending'); });
+    // photos fade gently in
+    d.querySelectorAll('main .fade').forEach(function(el){ watch(el, 'is-pending'); });
 
     // section headings rise word by word (text nodes are split; <em> etc. kept)
     d.querySelectorAll('main .band h2, main .band-head h2').forEach(function(h){
@@ -111,27 +111,6 @@
     d.querySelectorAll('.grid, .values, .fv-steps, .checks, .svc-grid').forEach(function(g){
       Array.prototype.slice.call(g.children).forEach(function(c, i){ c.style.setProperty('--d', Math.min(i, 5) * 90 + 'ms'); });
     });
-
-    /* parallax: photos drift a little slower than the page. Only elements on
-       screen are touched, once per frame. */
-    var paras = Array.prototype.slice.call(d.querySelectorAll('.hero-media img, .photo.para img'));
-    if(paras.length){
-      var ticking = false;
-      var update = function(){
-        ticking = false;
-        var vh = window.innerHeight;
-        paras.forEach(function(img){
-          var r = img.parentNode.getBoundingClientRect();
-          if(r.bottom < -100 || r.top > vh + 100) return;
-          var p = (r.top + r.height / 2 - vh / 2) / vh;      // -1 .. 1 across the screen
-          var amt = img.closest('.hero-media') ? 0.10 : 0.06;
-          img.style.setProperty('--py', (p * r.height * -amt).toFixed(1) + 'px');
-        });
-      };
-      window.addEventListener('scroll', function(){ if(!ticking){ ticking = true; requestAnimationFrame(update); } }, {passive:true});
-      window.addEventListener('resize', update);
-      update();
-    }
 
     // numbers count up once when they come into view
     var counts = d.querySelectorAll('[data-count]');

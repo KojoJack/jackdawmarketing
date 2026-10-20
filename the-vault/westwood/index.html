@@ -38,7 +38,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&amp;family=Jost:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/site.css">
-<link rel="preload" as="image" href="assets/img/westwood-hero-760.webp" fetchpriority="high">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": ["LocalBusiness", "MedicalBusiness"], "@id": "https://www.prairiehearingwestwood.ca/#business", "name": "Prairie Hearing Westwood", "description": "Prairie Hearing Westwood is a locally run hearing clinic offering hearing tests, hearing aid fittings and repairs, and custom hearing protection. Personal care from a practitioner who knows your name.", "url": "https://www.prairiehearingwestwood.ca/", "telephone": "(204) 594-9792", "email": "info@prairiehearingwestwood.ca", "image": "https://www.prairiehearingwestwood.ca/assets/img/og-image.jpg", "logo": "https://www.prairiehearingwestwood.ca/assets/img/logo-stacked.png", "address": {"@type": "PostalAddress", "streetAddress": "3006 Portage Ave.", "addressLocality": "Winnipeg", "addressRegion": "MB", "postalCode": "R3K 0X8", "addressCountry": "CA"}, "areaServed": "Westwood, Winnipeg", "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": "https://schema.org/Monday", "opens": "08:30", "closes": "16:30"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "https://schema.org/Tuesday", "opens": "08:30", "closes": "16:30"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "https://schema.org/Wednesday", "opens": "08:30", "closes": "16:30"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "https://schema.org/Thursday", "opens": "08:30", "closes": "16:30"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "https://schema.org/Friday", "opens": "08:30", "closes": "16:30"}], "employee": {"@type": "Person", "name": "Paige McCombs", "jobTitle": "BC-HIS (Board Certified Hearing Instrument Practitioner)"}, "makesOffer": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Hearing Tests", "url": "https://www.prairiehearingwestwood.ca/services/hearing-tests"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Hearing Aid Fittings", "url": "https://www.prairiehearingwestwood.ca/services/hearing-aid-fittings"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Hearing Aid Repairs", "url": "https://www.prairiehearingwestwood.ca/services/hearing-aid-repairs"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Custom Hearing Protection", "url": "https://www.prairiehearingwestwood.ca/services/custom-hearing-protection"}}]}</script>
 </head>
 <body>
@@ -103,9 +102,11 @@
             <a class="btn btn-line-light btn-lg" href="services.html">See our services</a>
           </div>
         </div>
-        <div class="hero-media curtain curtain-load">
-          <img src="assets/img/westwood-hero.webp" width="1000" height="1250" alt="Paige McCombs of Prairie Hearing Westwood" srcset="assets/img/westwood-hero-480.webp 480w, assets/img/westwood-hero-760.webp 760w, assets/img/westwood-hero.webp 1000w" sizes="(max-width:1040px) 100vw, 560px" fetchpriority="high">
-          <div class="hello"><b>Hello, neighbour</b><span>Friendly, independent hearing care, right here in Westwood.</span></div>
+        <div class="hero-media">
+          <div class="hero-portrait">
+            <img src="assets/img/westwood-hero.webp" width="1000" height="1250" alt="Paige McCombs of Prairie Hearing Westwood" srcset="assets/img/westwood-hero-480.webp 480w, assets/img/westwood-hero-760.webp 760w, assets/img/westwood-hero.webp 1000w" sizes="(max-width:760px) 300px, 400px" fetchpriority="high">
+            <div class="hello"><b>Hello, neighbour</b><span>Friendly, independent hearing care, right here in Westwood.</span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -191,7 +192,7 @@
 
   <section class="band band-burlap" id="about">
     <div class="wrap split">
-      <div class="matted"><div class="photo curtain para tall"><img src="assets/img/paige-mike-together.webp" width="1000" height="1250" alt="Paige McCombs and Mike Kuchirka, the team behind Prairie Hearing Westwood" srcset="assets/img/paige-mike-together-480.webp 480w, assets/img/paige-mike-together-760.webp 760w, assets/img/paige-mike-together.webp 1000w" sizes="(max-width:760px) 92vw, (max-width:1040px) 46vw, 700px" loading="lazy" decoding="async"></div></div>
+      <div class="matted"><div class="photo fade tall"><img src="assets/img/paige-mike-together.webp" width="1000" height="1250" alt="Paige McCombs and Mike Kuchirka, the team behind Prairie Hearing Westwood" srcset="assets/img/paige-mike-together-480.webp 480w, assets/img/paige-mike-together-760.webp 760w, assets/img/paige-mike-together.webp 1000w" sizes="(max-width:760px) 92vw, (max-width:1040px) 46vw, 700px" loading="lazy" decoding="async"></div></div>
       <div>
         <p class="eyebrow">Meet the clinic</p>
         <h2>The person behind <em>your care</em></h2>
@@ -216,7 +217,7 @@
         <div style="margin-top:28px"><ul class="checks"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10" opacity=".3"/><path d="m8 12 3 3 5-6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>One familiar face</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10" opacity=".3"/><path d="m8 12 3 3 5-6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Honest advice</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10" opacity=".3"/><path d="m8 12 3 3 5-6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Properly local</span></li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10" opacity=".3"/><path d="m8 12 3 3 5-6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Time to listen</span></li></ul></div>
         <div class="btn-row"><a class="btn btn-solid" href="about.html">Meet the clinic <svg class="arw" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
       </div>
-      <div class="matted"><div class="photo curtain para tall"><img src="assets/img/waiting-room-dog.webp" width="1000" height="1250" alt="The waiting room at Prairie Hearing Westwood, with a friendly dog sitting on the rug" srcset="assets/img/waiting-room-dog-480.webp 480w, assets/img/waiting-room-dog-760.webp 760w, assets/img/waiting-room-dog.webp 1000w" sizes="(max-width:760px) 92vw, (max-width:1040px) 46vw, 700px" loading="lazy" decoding="async"></div></div>
+      <div class="matted"><div class="photo fade tall"><img src="assets/img/waiting-room-dog.webp" width="1000" height="1250" alt="The waiting room at Prairie Hearing Westwood, with a friendly dog sitting on the rug" srcset="assets/img/waiting-room-dog-480.webp 480w, assets/img/waiting-room-dog-760.webp 760w, assets/img/waiting-room-dog.webp 1000w" sizes="(max-width:760px) 92vw, (max-width:1040px) 46vw, 700px" loading="lazy" decoding="async"></div></div>
     </div>
   </section>
 

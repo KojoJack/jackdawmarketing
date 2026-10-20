@@ -103,15 +103,15 @@ button,a{-webkit-tap-highlight-color:rgba(135,95,69,.18)}
   min-height:58px;padding:16px 30px;border:1px solid transparent;border-radius:0;
   font-family:var(--body);font-size:.95rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;line-height:1.2;
   text-decoration:none;cursor:pointer;white-space:nowrap;overflow:hidden;isolation:isolate;
-  transition:color .35s var(--ease), border-color .35s var(--ease), transform .2s var(--ease), box-shadow .35s var(--ease);
+  transition:color .18s var(--ease), border-color .18s var(--ease), transform .15s var(--ease), box-shadow .2s var(--ease);
 }
 .btn::before{
   content:"";position:absolute;inset:0;z-index:-1;transform:scaleX(0);transform-origin:right;
-  transition:transform .5s var(--ease-io);
+  transition:transform .22s var(--ease);
 }
 .btn:hover::before{transform:scaleX(1);transform-origin:left}
 .btn:active{transform:scale(.96);transition-duration:.08s}
-.btn svg{flex:none;transition:transform .4s var(--ease)}
+.btn svg{flex:none;transition:transform .2s var(--ease)}
 .btn:hover .arw{transform:translateX(6px)}
 .btn:hover svg:not(.arw){transform:rotate(-12deg) scale(1.1)}
 .btn-solid{background:var(--cinnamon);color:#FBF8F2}
@@ -134,9 +134,9 @@ button,a{-webkit-tap-highlight-color:rgba(135,95,69,.18)}
   font-size:.92rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;color:var(--cinnamon-dk);
   background-image:linear-gradient(currentColor,currentColor),linear-gradient(var(--rule-light),var(--rule-light));
   background-size:0% 2px,100% 1px;background-position:0 calc(100% - 6px),0 calc(100% - 6px);background-repeat:no-repeat;
-  transition:background-size .45s var(--ease), color .25s var(--ease);
+  transition:background-size .22s var(--ease), color .15s var(--ease);
 }
-.more svg{transition:transform .4s var(--ease)}
+.more svg{transition:transform .2s var(--ease)}
 .more:hover{background-size:100% 2px,100% 1px;color:var(--ink)}
 .more:hover svg{transform:translateX(6px)}
 
@@ -178,11 +178,11 @@ button,a{-webkit-tap-highlight-color:rgba(135,95,69,.18)}
 .nav a{
   position:relative;display:inline-flex;align-items:center;min-height:48px;padding:10px 14px;
   font-size:.92rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;
-  color:var(--on-dark-soft);text-decoration:none;transition:color .25s var(--ease);
+  color:var(--on-dark-soft);text-decoration:none;transition:color .15s var(--ease);
 }
 .nav a::after{
   content:"";position:absolute;left:14px;right:14px;bottom:8px;height:1px;background:var(--tan);
-  transform:scaleX(0);transition:transform .4s var(--ease);
+  transform:scaleX(0);transition:transform .2s var(--ease);
 }
 .nav a:hover{color:var(--on-dark)}
 .nav a:hover::after,.nav a[aria-current="page"]::after{transform:scaleX(1)}
@@ -292,11 +292,14 @@ button,a{-webkit-tap-highlight-color:rgba(135,95,69,.18)}
 .status b{color:var(--on-dark);font-weight:500;letter-spacing:.18em;text-transform:uppercase;font-size:.9rem}
 .status .dot{width:9px;height:9px;border-radius:50%;background:var(--tan);animation:pulse 2.4s infinite;flex:none}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(217,191,166,.6)}70%{box-shadow:0 0 0 11px rgba(217,191,166,0)}100%{box-shadow:0 0 0 0 rgba(217,191,166,0)}}
-.hero-media{position:relative;overflow:hidden;min-height:420px;background:#3B3531}
-.hero-media img{position:absolute;inset:-7% 0;width:100%;height:114%;object-fit:cover;object-position:50% 30%;will-change:transform;transform:translate3d(0,var(--py,0px),0)}
+/* a framed portrait at a modest size, with a thin offset outline behind it */
+.hero-media{position:relative;display:grid;place-items:center;padding:clamp(48px,6vw,80px) clamp(40px,5vw,72px) clamp(56px,7vw,96px)}
+.hero-portrait{position:relative;width:100%;max-width:400px}
+.hero-portrait::before{content:"";position:absolute;inset:0;transform:translate(22px,22px);border:1px solid var(--tan);pointer-events:none}
+.hero-portrait img{position:relative;width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 30%}
 .hero-media .hello{
-  position:absolute;left:0;bottom:0;z-index:2;max-width:300px;padding:20px 24px;
-  background:var(--linen);color:var(--ink);border-top:3px solid var(--cinnamon);
+  position:absolute;left:-44px;bottom:28px;z-index:2;max-width:270px;padding:18px 22px;
+  background:var(--linen);color:var(--ink);border-top:3px solid var(--cinnamon);box-shadow:var(--sh);
 }
 .hero-media .hello b{display:block;font-family:var(--display);font-size:1.45rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;line-height:1.1;margin-bottom:6px}
 .hero-media .hello span{display:block;font-size:1rem;line-height:1.5;color:var(--soft)}
@@ -339,7 +342,6 @@ button,a{-webkit-tap-highlight-color:rgba(135,95,69,.18)}
 .photo img{width:100%;height:100%;object-fit:cover}
 .photo.tall img{aspect-ratio:4/5}
 .photo.wide img{aspect-ratio:3/2}
-.photo.para img{transform:translate3d(0,var(--py,0px),0) scale(1.12);will-change:transform}
 /* an offset thin outline behind a photo, like a mat */
 .matted{position:relative;margin:0 22px 22px 0}
 .matted::before{content:"";position:absolute;inset:0;transform:translate(22px,22px);border:1px solid var(--cinnamon);pointer-events:none}
@@ -353,14 +355,14 @@ button,a{-webkit-tap-highlight-color:rgba(135,95,69,.18)}
   padding:24px 0;border-top:1px solid var(--rule-light);text-decoration:none;color:inherit;
   transition:transform .25s var(--ease);
 }
-.svc::before{content:"";position:absolute;left:0;top:-1px;height:2px;width:100%;background:var(--cinnamon);transform:scaleX(0);transform-origin:left;transition:transform .6s var(--ease-io)}
+.svc::before{content:"";position:absolute;left:0;top:-1px;height:2px;width:100%;background:var(--cinnamon);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
 .svc:hover::before{transform:scaleX(1)}
 .svc:active{transform:scale(.985)}
 .svc-img{overflow:hidden;aspect-ratio:4/5;background:var(--coconut)}
-.svc-img img{width:100%;height:100%;object-fit:cover;transition:transform 1s var(--ease)}
+.svc-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
 .svc:hover .svc-img img{transform:scale(1.08)}
 .svc-num{display:block;font-family:var(--display);font-style:italic;font-size:1.3rem;color:var(--cinnamon);margin-bottom:6px}
-.svc h3{margin-bottom:10px;transition:color .3s var(--ease)}
+.svc h3{margin-bottom:10px;transition:color .15s var(--ease)}
 .svc:hover h3{color:var(--cinnamon-dk)}
 .svc p{color:var(--soft);margin:0 0 10px;font-size:1.06rem}
 .svc:hover .more{background-size:100% 2px,100% 1px;color:var(--ink)}
@@ -411,7 +413,7 @@ button,a{-webkit-tap-highlight-color:rgba(135,95,69,.18)}
 .js-slider .slider-nav{display:flex}
 .slider-btn{
   width:56px;height:56px;display:grid;place-content:center;cursor:pointer;background:transparent;color:var(--on-dark);
-  border:1px solid var(--rule-dark);transition:background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease), transform .2s var(--ease);
+  border:1px solid var(--rule-dark);transition:background .15s var(--ease), color .15s var(--ease), border-color .15s var(--ease), transform .15s var(--ease);
 }
 .slider-btn svg{width:22px;height:22px;transition:transform .35s var(--ease)}
 .slider-btn:hover{background:var(--on-dark);color:var(--espresso);border-color:var(--on-dark)}
@@ -553,8 +555,8 @@ button,a{-webkit-tap-highlight-color:rgba(135,95,69,.18)}
 .aside .call{display:block;text-align:center;margin-top:10px;padding:12px 0;color:var(--ink);text-decoration:underline;text-decoration-color:var(--burlap);text-underline-offset:6px;transition:color .2s, text-decoration-color .2s}
 .aside .call:hover{color:var(--cinnamon-dk);text-decoration-color:var(--cinnamon)}
 .pager{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:clamp(64px,7vw,96px)}
-.pager a{position:relative;display:block;padding:24px 28px;border:1px solid var(--rule-light);text-decoration:none;color:var(--ink);overflow:hidden;isolation:isolate;transition:color .35s var(--ease), transform .2s var(--ease)}
-.pager a::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--espresso);transform:scaleY(0);transform-origin:bottom;transition:transform .5s var(--ease-io)}
+.pager a{position:relative;display:block;padding:24px 28px;border:1px solid var(--rule-light);text-decoration:none;color:var(--ink);overflow:hidden;isolation:isolate;transition:color .18s var(--ease), transform .15s var(--ease)}
+.pager a::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--espresso);transform:scaleY(0);transform-origin:bottom;transition:transform .22s var(--ease)}
 .pager a:hover{color:var(--on-dark)}
 .pager a:hover::before{transform:scaleY(1)}
 .pager a:active{transform:scale(.98)}
@@ -573,7 +575,7 @@ button,a{-webkit-tap-highlight-color:rgba(135,95,69,.18)}
 /* blog cards */
 .post-card{position:relative;display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:transform .2s var(--ease)}
 .post-card .pc-img{overflow:hidden;aspect-ratio:16/10;background:var(--coconut)}
-.post-card .pc-img img{width:100%;height:100%;object-fit:cover;transition:transform 1s var(--ease)}
+.post-card .pc-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
 .post-card:hover .pc-img img{transform:scale(1.07)}
 .post-card:active{transform:scale(.985)}
 .post-card .pc-body{padding:24px 0 8px;display:flex;flex-direction:column;flex:1;border-bottom:1px solid var(--rule-light)}
@@ -659,7 +661,7 @@ dialog.modal:not([open]){display:none}
 
 /* ---------- footer ---------- */
 .footer{background:var(--espresso-2);color:var(--on-dark-soft);padding:80px 0 36px;font-size:1.02rem}
-.footer a{color:var(--on-dark-soft);text-decoration:none;display:inline-block;overflow-wrap:anywhere;padding:3px 0;transition:color .25s var(--ease), transform .25s var(--ease)}
+.footer a{color:var(--on-dark-soft);text-decoration:none;display:inline-block;overflow-wrap:anywhere;padding:3px 0;transition:color .15s var(--ease), transform .2s var(--ease)}
 .footer a:hover{color:var(--on-dark);transform:translateX(5px)}
 .footer-grid{display:grid;grid-template-columns:1.25fr .7fr 1.05fr 1.3fr 1.3fr;gap:36px;margin-bottom:56px}
 .footer-grid>*{min-width:0}
@@ -690,8 +692,7 @@ dialog.modal:not([open]){display:none}
    <head>). Without it, or without JavaScript, everything is simply visible.
    ========================================================================== */
 
-/* on load: the hero copy rises line by line, the frame draws, the portrait
-   unveils behind a cinnamon curtain */
+/* on load: the hero copy rises line by line and the frame draws */
 .motion .hero-copy>*,.motion .page-hero-copy>*{animation:rise 1s var(--ease) both}
 .motion .hero-copy>:nth-child(1),.motion .page-hero-copy>:nth-child(1){animation-delay:.15s}
 .motion .hero-copy>:nth-child(2),.motion .page-hero-copy>:nth-child(2){animation-delay:.25s}
@@ -711,26 +712,13 @@ dialog.modal:not([open]){display:none}
 .motion .trust li:nth-child(2){animation-delay:.8s}
 .motion .trust li:nth-child(3){animation-delay:.9s}
 
-/* the curtain: a block of colour sweeps across, then pulls away to show the photo */
-.curtain{position:relative}
-.curtain::after{content:"";position:absolute;inset:0;z-index:2;background:var(--cinnamon);transform:scaleX(0);pointer-events:none}
-.motion .curtain-load::after{animation:curtain 1.5s var(--ease-io) .25s both}
-.motion .curtain-load img{animation:unveil 1.6s var(--ease) .95s both}
-.motion .curtain-load .hello{animation:rise 1s var(--ease) 1.5s both}
-.curtain.is-pending::after{transform:scaleX(0)}
-.curtain.is-pending img{opacity:0}
-.curtain.in::after{animation:curtain 1.3s var(--ease-io) both}
-.curtain.in img{animation:unveil 1.4s var(--ease) .6s both}
-.band-dark .curtain::after,.page-hero .curtain::after{background:var(--tan)}
-.band-burlap .curtain::after{background:var(--espresso)}
-@keyframes curtain{
-  0%{transform:scaleX(0);transform-origin:left}
-  48%{transform:scaleX(1);transform-origin:left}
-  52%{transform:scaleX(1);transform-origin:right}
-  100%{transform:scaleX(0);transform-origin:right}
-}
-/* the hero portrait has its own parallax transform, so it only fades */
-@keyframes unveil{from{opacity:0;scale:1.12}to{opacity:1;scale:1}}
+/* photos fade gently in: on load at the top of the page, on scroll further down */
+.motion .hero-portrait{animation:fadeUp 1s var(--ease) .3s both}
+.motion .hero-portrait .hello{animation:rise .8s var(--ease) .8s both}
+.motion .fade-load{animation:fadeUp 1s var(--ease) .3s both}
+.fade.is-pending{opacity:0}
+.fade.in{animation:fadeUp .8s var(--ease) both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
 /* scroll reveals for smaller pieces */
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .9s var(--ease), transform .9s var(--ease);transition-delay:var(--d,0ms)}
@@ -749,9 +737,8 @@ dialog.modal:not([open]){display:none}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-  .reveal,.curtain.is-pending img{opacity:1;transform:none}
+  .reveal,.fade.is-pending{opacity:1;transform:none}
   .split-words .w>span{transform:none}
-  .photo.para img,.hero-media img{transform:none}
   .marquee{-webkit-mask-image:none;mask-image:none}
   .marquee-track{width:auto}
   .marquee ul{flex-wrap:wrap;justify-content:center;row-gap:10px}
@@ -770,7 +757,10 @@ dialog.modal:not([open]){display:none}
 
 @media (max-width:1040px){
   .hero-box{grid-template-columns:1fr;min-height:0}
-  .hero-media{order:-1;min-height:0;aspect-ratio:4/3;max-height:560px}
+  .hero-media{order:-1;padding:48px 32px 56px}
+  .hero-portrait{max-width:340px}
+  /* the hello card sits under the photo here, so it never covers Paige's face */
+  .hero-media .hello{position:relative;left:auto;bottom:auto;margin:-28px 0 0 -18px;max-width:calc(100% - 8px)}
   .frame-lines .fl-m{display:none}
   .page-hero-box.has-media,.split,.visit-grid,.detail-grid,.cta-grid{grid-template-columns:1fr}
   .svc-grid{grid-template-columns:1fr}
@@ -806,8 +796,10 @@ dialog.modal:not([open]){display:none}
   .brand-name{white-space:normal;line-height:1.05}
   .hero-copy{padding:36px 22px 40px}
   .page-hero-box{padding:40px 22px 44px}
-  .hero-media{aspect-ratio:4/5;max-height:72vh}
-  .hero-media .hello{max-width:240px;padding:14px 18px}
+  .hero-media{padding:36px 22px 44px}
+  .hero-portrait{max-width:280px}
+  .hero-portrait::before{transform:translate(14px,14px)}
+  .hero-media .hello{margin:-24px 0 0 -10px;padding:14px 18px}
   .hero-media .hello b{font-size:1.2rem}
   .trust ul{grid-template-columns:1fr;padding:16px 0}
   .trust li+li::before{left:15%;right:15%;top:0;bottom:auto;width:auto;height:1px}
