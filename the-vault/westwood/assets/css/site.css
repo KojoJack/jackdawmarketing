@@ -516,7 +516,7 @@ figcaption{font-size:.88rem;font-weight:500;letter-spacing:.18em;text-transform:
 .visit-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(36px,5vw,88px);align-items:start}
 .visit-grid>*{min-width:0}
 .clinic-photo{margin:36px 0 0}
-.clinic-photo .photo img{aspect-ratio:3/2}
+.clinic-photo .photo img{aspect-ratio:3/2;object-position:50% 8%}
 .book-card{background:var(--cream-2);border:1px solid var(--rule);border-top:3px solid var(--tan);padding:clamp(24px,3vw,44px)}
 .book-card h2{font-size:clamp(1.6rem,2.4vw,2rem);margin-bottom:10px}
 .book-card .sub{color:var(--soft);margin-bottom:22px}
@@ -664,11 +664,9 @@ dialog.modal:not([open]){display:none}
   .values{grid-template-columns:repeat(2,minmax(0,1fr))}
   .value:nth-child(3){border-left:0}
   .value:nth-child(n+3){border-top:1px solid var(--rule-dark)}
-  .cta-grid{grid-template-columns:1fr}
-  .cta-photo{max-width:420px;justify-self:start}
-  .person,.person-rev{grid-template-columns:1fr}
-  .person-rev .person-photo{order:0}
-  .person-photo{position:static;max-width:300px}
+  .person{grid-template-columns:240px 1fr}
+  .person-rev{grid-template-columns:1fr 240px}
+  .person-photo{position:static}
   .aside{position:static}
   .g3{grid-template-columns:repeat(2,minmax(0,1fr))}
   .actionbar{display:flex}
@@ -688,7 +686,7 @@ dialog.modal:not([open]){display:none}
   .burger{padding:0}
   .banner-home{min-height:calc(100svh - 68px)}
   .banner-page{min-height:0}
-  .banner-in{padding-top:52px;padding-bottom:72px}
+  .banner-in{padding-top:64px;padding-bottom:72px}
   .banner .lede{font-size:1.15rem}
   .scroll-cue{display:none}
   .trust ul{flex-direction:column;align-items:center;gap:4px}
@@ -705,7 +703,10 @@ dialog.modal:not([open]){display:none}
   .value+.value{border-left:0;border-top:1px solid var(--rule-dark)}
   .visit3{grid-template-columns:1fr}
   .visit3 .map{aspect-ratio:4/3}
+  .brand-row{gap:6px 0}
   .brand-row li{padding:2px 16px;font-size:1.3rem}
+  .brand-row li+li{border-left:0}
+  .status{display:none}
   .btn{white-space:normal;text-align:center}
   .btn-row .btn{width:100%}
   .card{padding:28px 24px}
@@ -720,7 +721,18 @@ dialog.modal:not([open]){display:none}
   .modal-grid{grid-template-columns:1fr}
   .modal-photo img{aspect-ratio:16/9}
   .prose{font-size:1.1rem}
-  .footer-grid{grid-template-columns:1fr;gap:32px}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:32px 20px}
+  .footer-grid>:nth-child(n+3){grid-column:1 / -1}
+  .footer .brand{max-width:none}
+  .footer .brand-sub{display:block}
+  .cta-grid{grid-template-columns:1fr}
+  .cta-photo{max-width:calc(100% - 14px);justify-self:start;margin:0 14px 14px 0}
+  .cta-photo::before{transform:translate(14px,14px)}
+  .person,.person-rev{grid-template-columns:1fr}
+  .person-rev .person-photo{order:0}
+  .person-photo{max-width:280px}
+  .gallery figure:last-child:nth-child(odd){grid-column:1 / -1}
+  .gallery figure:last-child:nth-child(odd) img{aspect-ratio:3/2}
   .contact-grid .book-card{order:-1}
 
   /* the top strip folds away; the text size control moves into the bar
