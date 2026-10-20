@@ -96,19 +96,13 @@
       h.classList.add('split-words'); io.observe(h);
     });
 
-    // rules that draw in
-    d.querySelectorAll('main .eyebrow, main .tick, .fv-steps li').forEach(function(el){
-      if(el.closest('.hero, .page-hero')) return;
-      watch(el, 'draw');
-    });
-
     // smaller repeated pieces fade up, staggered inside their row
-    d.querySelectorAll('.svc-body, .fv-steps li, .value, .aid, .brand-card, .post-card, .card, .cred, .checks li, .gallery figcaption, .section-head p, .split .lede, .split .btn-row, .slider')
+    d.querySelectorAll('.svc, .steps li, .value, .aid, .brand-card, .post-card, .card, .cred, .checks li, figcaption, .section-intro, .split-copy .lede, .split-copy .btn-row, .slider, .brand-row li, .info-list li')
       .forEach(function(el){
-        if(el.closest('.aside, .modal, .hero, .page-hero')) return;
+        if(el.closest('.aside, .modal, .banner')) return;
         watch(el, 'reveal');
       });
-    d.querySelectorAll('.grid, .values, .fv-steps, .checks, .svc-grid').forEach(function(g){
+    d.querySelectorAll('.grid, .values, .steps, .checks, .svc-grid, .brand-row, .info-list').forEach(function(g){
       Array.prototype.slice.call(g.children).forEach(function(c, i){ c.style.setProperty('--d', Math.min(i, 5) * 90 + 'ms'); });
     });
 
