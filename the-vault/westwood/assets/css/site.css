@@ -369,10 +369,10 @@ figcaption{font-size:.88rem;font-weight:500;letter-spacing:.18em;text-transform:
 .brands .center-link{margin-top:28px}
 
 /* ---------- visit: photo, map and details side by side ---------- */
-.visit3{display:grid;grid-template-columns:1.1fr 1.1fr .9fr;gap:clamp(20px,2.6vw,40px);align-items:start}
+.visit3{display:grid;grid-template-columns:1fr 1fr 1.05fr;gap:clamp(20px,2.6vw,40px);align-items:start}
 .visit3>*{min-width:0}
-.visit3 .photo img{aspect-ratio:3/2}
-.visit3 .map{aspect-ratio:3/2}
+.visit3 .photo img{aspect-ratio:3/4}
+.visit3 .map{aspect-ratio:3/4}
 .visit3 .map iframe{height:100%}
 .info-list{list-style:none;padding:0;margin:0;display:grid;gap:22px;align-content:start}
 .info-list li{min-width:0}
@@ -393,12 +393,12 @@ figcaption{font-size:.88rem;font-weight:500;letter-spacing:.18em;text-transform:
 .map-note{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:16px;color:var(--soft);font-size:1.02rem}
 .map-note svg{width:20px;height:20px;flex:none;color:var(--tan-dk)}
 
-/* ---------- closing booking band: photo left, chocolate panel right ---------- */
-.cta{background:var(--choc);color:var(--on-dark);position:relative}
-.cta-grid{display:grid;grid-template-columns:.85fr 1.15fr;min-height:540px}
-.cta-photo{position:relative;overflow:hidden;background:var(--beige)}
-.cta-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 40%}
-.cta-copy{padding:clamp(56px,7vw,120px) clamp(32px,6vw,110px);display:flex;flex-direction:column;justify-content:center}
+/* ---------- closing booking band: copy beside a modest framed photo ---------- */
+.cta{background:var(--choc);color:var(--on-dark);padding:clamp(72px,8vw,112px) 0}
+.cta-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(40px,6vw,96px);align-items:center}
+.cta-photo{position:relative;justify-self:center;width:100%;max-width:460px;margin:0 22px 22px 0}
+.cta-photo::before{content:"";position:absolute;inset:0;transform:translate(22px,22px);border:1px solid var(--tan);pointer-events:none}
+.cta-photo img{position:relative;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:50% 40%}
 .cta h2{color:var(--on-dark);margin-bottom:20px;max-width:16em}
 .cta .eyebrow{color:var(--tan)}
 .cta p{color:var(--on-dark-soft);font-size:1.18rem;max-width:42ch}
@@ -589,6 +589,7 @@ dialog.modal:not([open]){display:none}
 .footer-top p{margin:0;max-width:44ch}
 .footer a{color:var(--on-dark-soft);text-decoration:none;display:inline-block;overflow-wrap:anywhere;padding:3px 0;transition:color .15s, transform .2s var(--ease)}
 .footer a:hover{color:var(--tan-lt);transform:translateX(4px)}
+.footer .brand{display:inline-flex;align-items:center}
 .footer .brand:hover{transform:none}
 .footer-grid{display:grid;grid-template-columns:.8fr 1.1fr 1.2fr 1.3fr;gap:40px;margin-bottom:52px}
 .footer-grid>*{min-width:0}
@@ -664,7 +665,7 @@ dialog.modal:not([open]){display:none}
   .value:nth-child(3){border-left:0}
   .value:nth-child(n+3){border-top:1px solid var(--rule-dark)}
   .cta-grid{grid-template-columns:1fr}
-  .cta-photo{min-height:0;aspect-ratio:4/3;max-height:520px}
+  .cta-photo{max-width:420px;justify-self:start}
   .person,.person-rev{grid-template-columns:1fr}
   .person-rev .person-photo{order:0}
   .person-photo{position:static;max-width:300px}
@@ -703,6 +704,7 @@ dialog.modal:not([open]){display:none}
   .values{grid-template-columns:1fr}
   .value+.value{border-left:0;border-top:1px solid var(--rule-dark)}
   .visit3{grid-template-columns:1fr}
+  .visit3 .map{aspect-ratio:4/3}
   .brand-row li{padding:2px 16px;font-size:1.3rem}
   .btn{white-space:normal;text-align:center}
   .btn-row .btn{width:100%}
