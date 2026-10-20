@@ -188,6 +188,7 @@ button,a{-webkit-tap-highlight-color:rgba(194,158,114,.25)}
   .burger{display:inline-flex}
   .nav{
     position:absolute;top:100%;left:0;right:0;z-index:5;flex-direction:column;align-items:stretch;gap:0;
+    justify-self:stretch;   /* the desktop centring would otherwise shrink the drop-down to a narrow panel */
     background:var(--choc);border-top:1px solid var(--rule-dark);box-shadow:0 30px 50px -30px rgba(0,0,0,.7);padding:8px 20px 22px;
     opacity:0;visibility:hidden;transform:translateY(-8px);
     transition:opacity .25s var(--ease), transform .25s var(--ease), visibility 0s .25s;
@@ -211,7 +212,7 @@ button,a{-webkit-tap-highlight-color:rgba(194,158,114,.25)}
 .ts-opts[data-active="1"] .ts-thumb{transform:translateX(100%)}
 .ts-opts[data-active="2"] .ts-thumb{transform:translateX(200%)}
 .ts-opt{
-  position:relative;z-index:1;flex:1 1 0;min-width:44px;min-height:38px;
+  position:relative;z-index:1;flex:1 1 0;min-width:44px;min-height:44px;
   display:flex;align-items:flex-end;justify-content:center;padding:0 8px 7px;
   background:none;border:0;cursor:pointer;font-family:var(--display);line-height:1;transition:background-color .15s;
 }
@@ -689,9 +690,11 @@ dialog.modal:not([open]){display:none}
   .burger{padding:0}
   .banner-home{min-height:calc(100svh - 68px)}
   .banner-page{min-height:0}
-  .banner-in{padding-top:64px;padding-bottom:72px}
+  .banner .banner-in{padding-top:64px;padding-bottom:72px}   /* .banner prefix: the phone .wrap padding reset must not wipe this */
   .banner .lede{font-size:1.15rem}
   .scroll-cue{display:none}
+  .banner .eyebrow{font-size:.86rem;letter-spacing:.15em}
+  .trust li{text-align:center}
   .trust ul{flex-direction:column;align-items:center;gap:4px}
   .trust li+li::before{display:none}
   .ruled-title::before,.ruled-title::after{max-width:36px}
@@ -728,6 +731,9 @@ dialog.modal:not([open]){display:none}
   .footer-grid>:nth-child(n+3){grid-column:1 / -1}
   .footer .brand{max-width:none}
   .footer .brand-sub{display:block}
+  .footer ul{gap:0}
+  .footer ul a{padding:9px 0}   /* 44px tap targets */
+  .crumbs a{padding:11px 0}
   .cta-grid{grid-template-columns:1fr}
   .cta-photo{max-width:calc(100% - 14px);justify-self:start;margin:0 14px 14px 0}
   .cta-photo::before{transform:translate(14px,14px)}
