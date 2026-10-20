@@ -354,6 +354,10 @@ button,a{-webkit-tap-highlight-color:rgba(92,110,74,.18)}
 .photo.tall img{aspect-ratio:4/5}
 .photo.wide img{aspect-ratio:3/2}
 .photo-stack{position:relative}
+.gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.gallery figure{margin:0}
+.gallery img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:var(--r-lg);box-shadow:var(--sh-2)}
+.gallery figcaption{margin-top:12px;font-family:var(--display);font-weight:600;font-size:1.1rem;text-align:center}
 .photo-stack .badge{
   position:absolute;right:-14px;bottom:-24px;background:var(--paper);border-radius:var(--r);
   padding:16px 20px;box-shadow:var(--sh-2);display:flex;align-items:center;gap:14px;max-width:300px;
@@ -722,6 +726,8 @@ main p a:not(.btn):hover, .info-list a:hover, .map-note a:hover, .crumbs a:hover
 }
 
 @media (max-width:760px){
+  .gallery{gap:12px}
+  .gallery figcaption{font-size:.94rem;margin-top:8px}
   body{font-size:1.1rem}
   .wrap{padding:0 20px}
   .hero-media{width:auto;max-width:300px;justify-self:center;margin:8px auto 22px}
