@@ -463,6 +463,11 @@ figcaption{font-size:.88rem;font-weight:500;letter-spacing:.18em;text-transform:
 .person .hi{font-family:var(--display);font-size:1.45rem;color:var(--ink);line-height:1.4}
 .person p{color:var(--soft)}
 
+/* closing line under the team bios */
+.pullquote{margin:clamp(64px,8vw,104px) auto 0;padding-top:clamp(56px,7vw,88px);border-top:1px solid var(--rule);text-align:center;max-width:900px}
+.pullquote .quote-mark{border-color:var(--tan-dk);color:var(--tan-dk);margin-bottom:28px}
+.pullquote blockquote{margin:0;font-family:var(--display);font-size:clamp(2rem,4.4vw,3.4rem);line-height:1.2;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);text-wrap:balance}
+
 /* clinic gallery (about) */
 .gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2vw,28px)}
 .gallery figure{margin:0}
