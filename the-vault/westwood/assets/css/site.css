@@ -611,6 +611,15 @@ dialog.modal:not([open]){display:none}
 .footer .hours li.today b,.footer .hours li.today span{color:var(--tan)}
 .footer-base{border-top:1px solid var(--rule-dark);padding-top:26px;display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;font-size:.95rem}
 
+/* social links: round outline buttons */
+.social,.footer .social{display:flex;gap:12px;list-style:none;margin:0;padding:0}
+.footer .social a,.social a{display:grid;place-content:center;width:46px;height:46px;padding:0;border-radius:50%;border:1px solid var(--rule-dark);color:var(--on-dark);transition:background .15s, color .15s, border-color .15s, transform .15s}
+.social svg{width:20px;height:20px}
+.footer .social a:hover,.social a:hover{background:var(--tan);border-color:var(--tan);color:var(--choc);transform:translateY(-2px)}
+.social-light{margin-top:8px}
+.social-light a{border-color:var(--rule);color:var(--ink)}
+.social-light a:hover{background:var(--choc);border-color:var(--choc);color:var(--on-dark)}
+
 /* ---------- mobile action bar ---------- */
 .actionbar{
   position:fixed;left:0;right:0;bottom:0;z-index:70;display:none;gap:10px;
