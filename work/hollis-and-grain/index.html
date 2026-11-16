@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hollis & Grain | Custom Kitchens and Millwork</title>
+<meta name="description" content="A concept site for a custom cabinetry and millwork studio, designed and built by Jackdaw Marketing.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F3EF; --ink:#111110; --mute:#75726C; --hair:#D5D1C8; --oak:#A9793F;
+    --sans:'Inter Tight','Helvetica Neue',Helvetica,Arial,sans-serif;
+    --pad:clamp(16px,2.6vw,36px);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-weight:400;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,p,figure{margin:0}
+  img{display:block;width:100%;height:100%;object-fit:cover}
+  a{color:inherit;text-decoration:none}
+  :focus-visible{outline:1px solid var(--ink);outline-offset:4px}
+  .micro{font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase}
+  .mute{color:var(--mute)}
+  .row{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--pad);padding:0 var(--pad)}
+  .link{border-bottom:1px solid currentColor;padding-bottom:2px;transition:color .2s ease}
+  .link:hover{color:var(--oak)}
+
+  header{position:sticky;top:0;z-index:10;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--pad);align-items:center;padding:16px var(--pad);background:rgba(245,243,239,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--hair)}
+  header .name{grid-column:1/5;font-size:17px;font-weight:500;letter-spacing:-.01em}
+  header nav{grid-column:7/11;display:flex;gap:28px}
+  header nav a:hover{color:var(--oak)}
+  header .enq{grid-column:11/13;justify-self:end}
+  @media(max-width:820px){ header nav{display:none} header .name{grid-column:1/8} header .enq{grid-column:8/13} }
+
+  /* hero: one photograph, one sentence */
+  .hero{padding:var(--pad) var(--pad) 0}
+  .hero figure{height:min(74vh,760px);min-height:360px;overflow:hidden}
+  .hero img{transform:scale(1.04);animation:settle 2.4s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes settle{to{transform:scale(1)}}
+  .hero-text{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--pad);padding:clamp(20px,3vw,40px) 0 0;align-items:end}
+  .hero h1{grid-column:1/10;font-weight:300;font-size:clamp(44px,8.6vw,148px);line-height:.92;letter-spacing:-.055em}
+  .hero-text p{grid-column:10/13;padding-bottom:10px}
+  @media(max-width:820px){ .hero h1,.hero-text p{grid-column:1/-1} .hero-text p{margin-top:20px} }
+
+  section{margin-top:clamp(88px,13vw,200px)}
+  .rule{border-top:1px solid var(--ink);padding-top:14px;margin:0 var(--pad) clamp(28px,4vw,56px);display:flex;justify-content:space-between;gap:16px}
+
+  .statement p.big{grid-column:4/13;font-weight:300;font-size:clamp(26px,3.7vw,58px);line-height:1.1;letter-spacing:-.035em}
+  .statement p.big span{color:var(--mute)}
+  .statement .micro{grid-column:1/4}
+  .facts{grid-column:4/13;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--pad);margin-top:clamp(40px,6vw,88px)}
+  .facts div{border-top:1px solid var(--hair);padding-top:14px}
+  .facts b{display:block;font-weight:300;font-size:clamp(34px,4.4vw,64px);letter-spacing:-.05em;line-height:1}
+  @media(max-width:820px){ .statement p.big,.statement .micro,.facts{grid-column:1/-1} .statement .micro{margin-bottom:18px} .facts{grid-template-columns:1fr} }
+
+  /* projects: an uneven gallery */
+  .gallery{row-gap:clamp(40px,7vw,110px)}
+  .gallery figure{overflow:visible}
+  .gallery .ph{overflow:hidden;background:var(--hair)}
+  .gallery img{transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+  .gallery figure:hover img{transform:scale(1.035)}
+  .gallery figcaption{display:flex;justify-content:space-between;gap:16px;padding-top:12px;border-top:1px solid transparent}
+  .gallery figcaption b{font-weight:500}
+  .g1{grid-column:1/9} .g1 .ph{aspect-ratio:3/2}
+  .g2{grid-column:10/13;align-self:end} .g2 .ph{aspect-ratio:2/3}
+  .g3{grid-column:2/6} .g3 .ph{aspect-ratio:4/5}
+  .g4{grid-column:7/13;margin-top:clamp(40px,8vw,140px)} .g4 .ph{aspect-ratio:3/2}
+  @media(max-width:820px){ .g1,.g2,.g3,.g4{grid-column:1/-1;margin-top:0} }
+
+  /* the workshop, on black */
+  .shop{background:var(--ink);color:var(--paper);padding:clamp(72px,10vw,150px) 0}
+  .shop .rule{border-top-color:var(--paper)}
+  .shop h2{grid-column:1/8;font-weight:300;font-size:clamp(36px,6vw,104px);line-height:.95;letter-spacing:-.05em}
+  .shop .copy{grid-column:9/13;align-self:end;color:#BDB9B0}
+  .shop .copy p + p{margin-top:14px}
+  .strip{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:var(--pad);padding:0 var(--pad);margin-top:clamp(40px,6vw,96px)}
+  .strip figure{aspect-ratio:4/5;overflow:hidden}
+  .strip figure:first-child{aspect-ratio:auto}
+  .strip img{filter:saturate(.7) contrast(1.05)}
+  @media(max-width:820px){ .shop h2,.shop .copy{grid-column:1/-1} .shop .copy{margin-top:24px} .strip{grid-template-columns:1fr} .strip figure:first-child{aspect-ratio:4/3} }
+
+  /* what we make + how: tables, not cards */
+  .table{padding:0 var(--pad)}
+  .line{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--pad);padding:clamp(18px,2.4vw,30px) 0;border-top:1px solid var(--hair);align-items:baseline;transition:padding .35s ease,background .35s ease}
+  .line:last-child{border-bottom:1px solid var(--hair)}
+  .line:hover{padding-left:12px;background:#ECE8E0}
+  .line .n{grid-column:1/2}
+  .line h3{grid-column:2/7;font-weight:300;font-size:clamp(26px,3.4vw,52px);letter-spacing:-.04em;line-height:1}
+  .line p{grid-column:7/12;color:var(--mute)}
+  .line .t{grid-column:12/13;justify-self:end}
+  @media(max-width:820px){ .line h3{grid-column:2/-1} .line p{grid-column:2/-1;margin-top:8px} .line .t{display:none} }
+
+  .quote{padding:0 var(--pad)}
+  .quote blockquote{margin:0;font-weight:300;font-size:clamp(28px,4.6vw,76px);line-height:1.05;letter-spacing:-.045em;max-width:20ch}
+  .quote cite{display:block;font-style:normal;margin-top:28px}
+
+  .enquire{padding:0 var(--pad) clamp(64px,8vw,120px)}
+  .enquire a.huge{display:block;font-weight:300;font-size:clamp(46px,11.5vw,210px);line-height:.9;letter-spacing:-.06em;border-bottom:1px solid var(--ink);padding-bottom:.08em;transition:color .25s ease,border-color .25s ease}
+  .enquire a.huge:hover{color:var(--oak);border-color:var(--oak)}
+  .cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--pad);margin-top:clamp(28px,4vw,56px)}
+  .cols .micro{display:block;margin-bottom:10px}
+  @media(max-width:820px){ .cols{grid-template-columns:1fr 1fr} }
+  footer{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:18px var(--pad);border-top:1px solid var(--hair)}
+  @media(prefers-reduced-motion:reduce){ *{transition:none !important;animation:none !important} .hero img{transform:none} html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="name" href="#top">Hollis &amp; Grain</a>
+  <nav class="micro" aria-label="Main">
+    <a href="#work">Projects</a>
+    <a href="#shop">Workshop</a>
+    <a href="#make">What we make</a>
+  </nav>
+  <a class="micro link enq" href="#enquire">Enquire</a>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <figure><img src="img/k1.jpg" alt="A walnut kitchen island with a pale stone counter and wire bar stools"></figure>
+    <div class="hero-text">
+      <h1>Kitchens and millwork, made to measure.</h1>
+      <p class="mute">A small cabinetmaking studio in Port Alder. Every piece is drawn, cut and finished in our own workshop, then fitted by the people who built it.</p>
+    </div>
+  </div>
+
+  <section class="statement">
+    <div class="row">
+      <span class="micro mute">The studio</span>
+      <p class="big">We take on twelve projects a year. <span>That is how many we can build properly, with one maker responsible for each from the first drawing to the last hinge.</span></p>
+      <div class="facts">
+        <div><b>12</b><span class="micro mute">Projects a year</span></div>
+        <div><b>1</b><span class="micro mute">Maker per project</span></div>
+        <div><b>25 yr</b><span class="micro mute">Joinery guarantee</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="rule micro"><span>Selected projects</span><span class="mute">2023 to 2025</span></div>
+    <div class="row gallery">
+      <figure class="g1"><div class="ph"><img src="img/k3.jpg" alt="A long kitchen run in dark timber veneer beneath a wide window" loading="lazy"></div><figcaption class="micro"><b>Sandbar Point house</b><span class="mute">Smoked oak, quartz</span></figcaption></figure>
+      <figure class="g2"><div class="ph"><img src="img/k5.jpg" alt="A painted breakfast room with glazed cabinets either side of a window" loading="lazy"></div><figcaption class="micro"><b>Elm Creek pantry</b><span class="mute">Painted ash</span></figcaption></figure>
+      <figure class="g3"><div class="ph"><img src="img/k2.jpg" alt="A compact kitchen with warm timber cabinets and cream doors" loading="lazy"></div><figcaption class="micro"><b>Juniper Street flat</b><span class="mute">Cherry, lacquer</span></figcaption></figure>
+      <figure class="g4"><div class="ph"><img src="img/k4.jpg" alt="A white kitchen with a large island on a dark tiled floor" loading="lazy"></div><figcaption class="micro"><b>Harbourview loft</b><span class="mute">Matte lacquer, slate</span></figcaption></figure>
+    </div>
+  </section>
+
+  <section class="shop" id="shop">
+    <div class="rule micro"><span>The workshop</span><span>Port Alder</span></div>
+    <div class="row">
+      <h2>Made by hand, where hands still matter.</h2>
+      <div class="copy">
+        <p>Machines do the heavy cutting. Everything you touch, the edges, the drawer fronts, the way a door closes, is finished by hand at the bench.</p>
+        <p>You are welcome to visit while your project is being built.</p>
+      </div>
+    </div>
+    <div class="strip">
+      <figure><img src="img/hands.jpg" alt="Hands planing a length of timber" loading="lazy"></figure>
+      <figure><img src="img/caliper.jpg" alt="Hands measuring a turned wooden knob with calipers" loading="lazy"></figure>
+      <figure><img src="img/plane.jpg" alt="A block plane resting among wood shavings" loading="lazy"></figure>
+    </div>
+  </section>
+
+  <section id="make">
+    <div class="rule micro"><span>What we make</span><span class="mute">Typical lead time</span></div>
+    <div class="table">
+      <div class="line"><span class="micro mute n">A</span><h3>Kitchens</h3><p>Full kitchens designed around how you cook, with solid timber drawers and hand-fitted doors.</p><span class="micro t">14 wks</span></div>
+      <div class="line"><span class="micro mute n">B</span><h3>Built-in storage</h3><p>Wardrobes, bookcases and window seats scribed to walls that are never quite straight.</p><span class="micro t">8 wks</span></div>
+      <div class="line"><span class="micro mute n">C</span><h3>Bathroom vanities</h3><p>Moisture-stable construction, stone or timber tops, and plumbing planned in from the start.</p><span class="micro t">6 wks</span></div>
+      <div class="line"><span class="micro mute n">D</span><h3>Furniture</h3><p>Dining tables, sideboards and one-off pieces in locally milled hardwood.</p><span class="micro t">10 wks</span></div>
+    </div>
+  </section>
+
+  <section class="quote">
+    <blockquote>&ldquo;They measured our crooked old house three times and the cabinets went in without a single gap.&rdquo;</blockquote>
+    <cite class="micro mute">Client, Elm Creek pantry</cite>
+  </section>
+
+  <section class="enquire" id="enquire">
+    <div class="rule micro" style="margin-left:0;margin-right:0"><span>Enquiries</span><span class="mute">Now booking for spring</span></div>
+    <a class="huge" href="mailto:studio@hollisandgrain.example">Start a conversation</a>
+    <div class="cols">
+      <div><span class="micro mute">Studio</span>7 Chandlers Yard<br>Port Alder</div>
+      <div><span class="micro mute">Visits</span>By appointment<br>Tuesday to Friday</div>
+      <div><span class="micro mute">Telephone</span><a class="link" href="tel:+15555550176">(555) 555-0176</a></div>
+      <div><span class="micro mute">Email</span><a class="link" href="mailto:studio@hollisandgrain.example">studio@hollisandgrain.example</a></div>
+    </div>
+  </section>
+</main>
+
+<footer class="micro mute">
+  <span>Hollis &amp; Grain, cabinetmakers</span>
+  <span>Concept site by Jackdaw Marketing</span>
+</footer>
+
+</body>
+</html>

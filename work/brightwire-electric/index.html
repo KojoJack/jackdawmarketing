@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brightwire Electric | Licensed Electricians in Port Alder</title>
+<meta name="description" content="A concept site for a residential and commercial electrician, designed and built by Jackdaw Marketing.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0C0C0C; --coal:#191919; --line:#2E2E2E; --volt:#FFD400; --white:#F5F5F0; --grey:#A3A39B;
+    --display:'Big Shoulders Display',Impact,sans-serif; --body:'Barlow',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+    --pad:clamp(18px,4.5vw,56px);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--black);color:var(--white);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,p{margin:0}
+  a{color:inherit}
+  :focus-visible{outline:3px solid var(--volt);outline-offset:3px}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 var(--pad)}
+  h1,h2,h3{font-family:var(--display);font-weight:900;text-transform:uppercase;line-height:.88;letter-spacing:.005em}
+  .mono{font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase}
+  .stripe{height:18px;background:repeating-linear-gradient(-45deg,var(--volt) 0 18px,var(--black) 18px 36px)}
+  .btn{display:inline-block;text-decoration:none;font-family:var(--display);font-weight:900;font-size:22px;letter-spacing:.03em;text-transform:uppercase;padding:14px 26px;background:var(--volt);color:var(--black);border:3px solid var(--volt);transition:background .15s ease,color .15s ease,transform .15s ease}
+  .btn:hover{background:var(--black);color:var(--volt);transform:translateY(-2px)}
+  .btn.ghost{background:none;color:var(--white);border-color:var(--white)}
+  .btn.ghost:hover{background:var(--white);color:var(--black)}
+
+  header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px var(--pad);border-bottom:1px solid var(--line)}
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--display);font-weight:900;font-size:30px;text-transform:uppercase;line-height:1}
+  .logo span{display:grid;place-items:center;width:38px;height:38px;background:var(--volt)}
+  .logo svg{width:20px;height:26px}
+  header nav{display:flex;align-items:center;gap:26px}
+  header nav a{text-decoration:none}
+  header nav a.mono:hover{color:var(--volt)}
+  header .call{font-family:var(--display);font-weight:900;font-size:24px;color:var(--volt);letter-spacing:.02em}
+  @media(max-width:820px){ header nav a.mono{display:none} }
+
+  .hero{position:relative;padding:clamp(40px,6vw,84px) 0 clamp(44px,6vw,80px);overflow:hidden;background:
+    linear-gradient(var(--line) 1px,transparent 1px) 0 0/100% 64px,
+    linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/64px 100%}
+  .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--black) 38%,transparent 78%);pointer-events:none}
+  .hero .wrap{position:relative;z-index:1}
+  .status{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--volt);color:var(--volt);padding:7px 12px;margin-bottom:26px}
+  .status i{width:9px;height:9px;border-radius:50%;background:var(--volt);animation:blink 1.4s steps(2) infinite}
+  @keyframes blink{50%{opacity:.15}}
+  .hero h1{font-size:clamp(72px,14.5vw,230px)}
+  .hero h1 em{font-style:normal;color:var(--volt)}
+  .hero-row{display:flex;justify-content:space-between;align-items:flex-end;gap:28px;flex-wrap:wrap;margin-top:clamp(24px,3vw,40px)}
+  .hero-row p{font-size:clamp(18px,1.7vw,22px);max-width:40ch;color:#DDD}
+  .cta{display:flex;flex-wrap:wrap;gap:12px}
+  .shot{position:absolute;right:0;top:0;bottom:0;width:54%;background:#000 url(img/breaker.jpg) center/cover;filter:grayscale(1) contrast(1.2);opacity:.6}
+  .tint{position:absolute;right:0;top:0;bottom:0;width:54%;background:var(--volt);mix-blend-mode:multiply}
+  .bolt{position:absolute;right:clamp(10px,7vw,120px);top:14%;height:60%;width:auto;z-index:0;mix-blend-mode:normal;filter:drop-shadow(10px 10px 0 #000)}
+  @media(max-width:900px){ .bolt{opacity:.3} .shot,.tint{width:100%} .shot{opacity:.3} }
+  /* photo strip: black and white under a yellow wash */
+  .tools{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:6px;margin-top:clamp(64px,9vw,128px);background:var(--volt);border-top:6px solid var(--volt);border-bottom:6px solid var(--volt)}
+  @media(max-width:820px){ .tools{grid-template-columns:1fr} }
+  .tools figure{position:relative;margin:0;height:clamp(260px,34vw,460px);overflow:hidden;background:var(--volt)}
+  .tools img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.25);mix-blend-mode:multiply;transition:filter .3s ease,transform .6s ease}
+  .tools figure:hover img{filter:none;mix-blend-mode:normal;transform:scale(1.04)}
+  .tools figcaption{position:absolute;left:0;bottom:0;background:var(--black);color:var(--volt);padding:9px 14px}
+  .shout{padding:clamp(64px,9vw,128px) var(--pad) 0;max-width:1280px;margin:0 auto}
+  .shout blockquote{margin:0;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(44px,7.4vw,116px);line-height:.9}
+  .shout blockquote em{font-style:normal;color:var(--volt)}
+  .shout cite{display:block;font-style:normal;color:var(--grey);margin-top:22px}
+
+  .specs{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line)}
+  .specs div{padding:24px var(--pad);border-left:1px solid var(--line)}
+  .specs div:first-child{border-left:0}
+  .specs b{display:block;font-family:var(--display);font-weight:900;font-size:clamp(32px,3.6vw,52px);line-height:1;color:var(--volt);text-transform:uppercase}
+  .specs span{color:var(--grey);font-size:15px}
+  @media(max-width:820px){ .specs{grid-template-columns:1fr 1fr} .specs div:nth-child(3){border-left:0} .specs div:nth-child(n+3){border-top:1px solid var(--line)} }
+
+  section.wrap{margin-top:clamp(64px,9vw,128px)}
+  .top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:28px}
+  .top h2{font-size:clamp(52px,8vw,120px)}
+  .top p{max-width:36ch;color:var(--grey)}
+  .jobs{border-top:3px solid var(--white)}
+  .job{display:grid;grid-template-columns:110px 1.1fr 1.6fr 40px;gap:20px;align-items:center;padding:22px 0;border-bottom:1px solid var(--line);transition:background .15s ease,padding .2s ease,color .15s ease}
+  .job:hover{background:var(--volt);color:var(--black);padding-left:18px;padding-right:18px}
+  .job .mono{color:var(--volt)}
+  .job:hover .mono{color:var(--black)}
+  .job h3{font-size:clamp(30px,3.6vw,48px)}
+  .job p{color:var(--grey);font-size:16.5px}
+  .job:hover p{color:var(--black)}
+  .job svg{width:30px;height:30px;justify-self:end}
+  @media(max-width:820px){ .job{grid-template-columns:1fr 30px} .job .mono{grid-column:1/-1} .job p{grid-column:1/-1} }
+
+  .alarm{margin-top:clamp(64px,9vw,128px);background:var(--volt);color:var(--black)}
+  .alarm .inner{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(24px,5vw,72px);align-items:center;padding-top:clamp(44px,6vw,80px);padding-bottom:clamp(44px,6vw,80px)}
+  @media(max-width:820px){ .alarm .inner{grid-template-columns:1fr} }
+  .alarm h2{font-size:clamp(56px,9vw,136px)}
+  .alarm p{font-size:19px;font-weight:500;max-width:38ch;margin-bottom:20px}
+  .alarm .num{display:block;font-family:var(--display);font-weight:900;font-size:clamp(52px,7vw,104px);line-height:.9;text-decoration:none;border-bottom:8px solid var(--black);padding-bottom:10px;width:max-content;max-width:100%}
+  .alarm ul{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:8px;font-weight:600}
+  .alarm li::before{content:"\25A0";margin-right:10px}
+
+  .why{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:820px){ .why{grid-template-columns:1fr} }
+  .why article{background:var(--coal);padding:clamp(24px,3vw,40px)}
+  .why .mono{color:var(--volt);display:block;margin-bottom:44px}
+  .why h3{font-size:clamp(30px,3.2vw,44px);margin-bottom:12px}
+  .why p{color:var(--grey);font-size:16.5px}
+
+  .quote{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,80px);align-items:start}
+  @media(max-width:820px){ .quote{grid-template-columns:1fr} }
+  .quote h2{font-size:clamp(52px,7.6vw,112px);margin-bottom:20px}
+  .quote h2 em{font-style:normal;color:var(--volt)}
+  .quote p{color:var(--grey);max-width:40ch}
+  .area{margin-top:28px;display:flex;flex-wrap:wrap;gap:8px}
+  .area span{border:1px solid var(--line);padding:6px 12px}
+  form{background:var(--coal);border:1px solid var(--line);border-top:6px solid var(--volt);padding:clamp(22px,3vw,36px);display:grid;gap:16px}
+  label{display:grid;gap:6px;color:var(--grey)}
+  input,select,textarea{font:inherit;font-size:16.5px;color:var(--white);background:var(--black);border:1px solid #444;padding:12px 13px;border-radius:0;width:100%}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--volt);box-shadow:0 0 0 3px rgba(255,212,0,.25)}
+  textarea{min-height:104px;resize:vertical}
+  form .btn{width:100%;cursor:pointer}
+  footer{margin-top:clamp(64px,9vw,128px)}
+  footer .base{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:24px var(--pad);color:var(--grey)}
+  @media(prefers-reduced-motion:reduce){ *{transition:none !important;animation:none !important} html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#top"><span><svg viewBox="0 0 20 26" aria-hidden="true"><path d="M12 0 0 15h8L6 26l14-16h-9z" fill="#0C0C0C"/></svg></span>Brightwire</a>
+  <nav aria-label="Main">
+    <a class="mono" href="#work">Services</a>
+    <a class="mono" href="#why">Why us</a>
+    <a class="mono" href="#quote">Get a quote</a>
+    <a class="call" href="tel:+15555550167">(555) 555-0167</a>
+  </nav>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="shot" aria-hidden="true"></div><div class="tint" aria-hidden="true"></div>
+    <svg class="bolt" viewBox="0 0 300 520" aria-hidden="true"><path d="M190 0 20 290h110L84 520l196-320H166z" fill="#FFD400"/></svg>
+    <div class="wrap">
+      <p class="mono status"><i></i>Electricians on call now, 24 hours</p>
+      <h1>Power,<br>done <em>properly.</em></h1>
+      <div class="hero-row">
+        <p>Licensed, insured electricians for homes and businesses in Port Alder. Upfront pricing, tidy work, and we show up when we say we will.</p>
+        <div class="cta">
+          <a class="btn" href="#quote">Get a free quote</a>
+          <a class="btn ghost" href="tel:+15555550167">Call now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="specs">
+    <div><b>24/7</b><span>Emergency call-outs</span></div>
+    <div><b>Licensed</b><span>Master electrician on every job</span></div>
+    <div><b>Upfront</b><span>A fixed price before we start</span></div>
+    <div><b>Insured</b><span>Fully covered, fully permitted</span></div>
+  </div>
+
+  <section id="work" class="wrap">
+    <div class="top">
+      <h2>What we wire</h2>
+      <p>From a single dead outlet to a full commercial fit-out.</p>
+    </div>
+    <div class="jobs">
+      <div class="job"><span class="mono">Residential</span><h3>Panel upgrades</h3><p>Replace an old fuse box or 100-amp panel so your home can handle what you plug into it.</p><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 24 24 6M10 6h14v14"/></svg></div>
+      <div class="job"><span class="mono">Residential</span><h3>EV chargers</h3><p>Level 2 charger supply, install and permit, usually finished in a single visit.</p><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 24 24 6M10 6h14v14"/></svg></div>
+      <div class="job"><span class="mono">Residential</span><h3>Rewiring</h3><p>Knob-and-tube and aluminum wiring replaced safely, with as little mess as possible.</p><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 24 24 6M10 6h14v14"/></svg></div>
+      <div class="job"><span class="mono">Residential</span><h3>Lighting</h3><p>Pot lights, under-cabinet lighting, dimmers and outdoor lighting, designed and installed.</p><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 24 24 6M10 6h14v14"/></svg></div>
+      <div class="job"><span class="mono">Commercial</span><h3>Fit-outs</h3><p>Shops, offices and restaurants wired to code and ready for inspection on schedule.</p><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 24 24 6M10 6h14v14"/></svg></div>
+      <div class="job"><span class="mono">Any property</span><h3>Fault finding</h3><p>Tripping breakers, flickering lights and dead circuits traced and fixed at the source.</p><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 24 24 6M10 6h14v14"/></svg></div>
+    </div>
+  </section>
+
+  <div class="tools">
+    <figure><img src="img/panel.jpg" alt="An electrician in a hard hat working at a distribution board" loading="lazy"><figcaption class="mono">Panel upgrade, Port Alder</figcaption></figure>
+    <figure><img src="img/socket.jpg" alt="An electrician fitting a wall socket" loading="lazy"><figcaption class="mono">New circuits, Elm Creek</figcaption></figure>
+    <figure><img src="img/bulbs.jpg" alt="Hanging filament bulbs glowing in a dark room" loading="lazy"><figcaption class="mono">Feature lighting, Harbourview</figcaption></figure>
+  </div>
+
+  <div class="alarm" style="margin-top:0">
+    <div class="stripe"></div>
+    <div class="wrap inner">
+      <h2>Sparks?<br>Smoke?<br>No power?</h2>
+      <div>
+        <p>Switch off at the main breaker if it's safe to, then call. A real electrician answers, day or night.</p>
+        <a class="num" href="tel:+15555550167">(555) 555-0167</a>
+        <ul>
+          <li>On the road within the hour</li>
+          <li>No call-out fee if we do the repair</li>
+          <li>Stocked vans, so most faults are fixed on the first visit</li>
+        </ul>
+      </div>
+    </div>
+    <div class="stripe"></div>
+  </div>
+
+  <section id="why" class="wrap">
+    <div class="top">
+      <h2>Why Brightwire</h2>
+      <p>Three things we will not compromise on.</p>
+    </div>
+    <div class="why">
+      <article><span class="mono">Pricing</span><h3>The price is the price</h3><p>You get a fixed quote in writing before any work starts. If the job changes, we talk first.</p></article>
+      <article><span class="mono">Time</span><h3>We turn up</h3><p>A two-hour arrival window, and a text when we're on the way. Your day isn't spent waiting.</p></article>
+      <article><span class="mono">Finish</span><h3>Clean and to code</h3><p>Drop sheets down, boots off, permits pulled, and every job inspected and signed off.</p></article>
+    </div>
+  </section>
+
+  <div class="shout">
+    <blockquote>&ldquo;Showed up at 7, done by noon, and <em>cleaner than they found it.</em>&rdquo;</blockquote>
+    <cite class="mono">Homeowner, panel upgrade and EV charger</cite>
+  </div>
+
+  <section id="quote" class="wrap">
+    <div class="quote">
+      <div>
+        <h2>Get a <em>free</em> quote</h2>
+        <p>Tell us what you need and we'll reply the same day with a price or a time to come and look.</p>
+        <div class="area mono"><span>Port Alder</span><span>Elm Creek</span><span>Harbourview</span><span>Juniper Heights</span><span>Sandbar Point</span></div>
+      </div>
+      <form onsubmit="event.preventDefault();this.querySelector('button').textContent='Quote request sent'">
+        <label class="mono">Name<input type="text" name="name" autocomplete="name" required></label>
+        <label class="mono">Phone<input type="tel" name="phone" autocomplete="tel" required></label>
+        <label class="mono">Type of job<select name="job"><option>Panel upgrade</option><option>EV charger</option><option>Rewiring</option><option>Lighting</option><option>Commercial</option><option>Something else</option></select></label>
+        <label class="mono">What's going on?<textarea name="details"></textarea></label>
+        <button class="btn" type="submit">Request my quote</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="stripe"></div>
+  <div class="base mono"><span>Brightwire Electric, Port Alder</span><span>Concept site by Jackdaw Marketing</span></div>
+</footer>
+
+</body>
+</html>

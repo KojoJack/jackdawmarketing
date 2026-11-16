@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tres Chiles Taqueria | Tacos, Margaritas and Good Trouble</title>
+<meta name="description" content="A concept site for a neighbourhood taqueria, designed and built by Jackdaw Marketing.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Outfit:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sun:#FFD23F; --pink:#FF3E8A; --tang:#FF7A1A; --teal:#00A7A0; --cream:#FFF4DC; --ink:#2A1033; --lime:#B6E33B;
+    --fat:'Bagel Fat One','Arial Rounded MT Bold',system-ui,sans-serif; --sans:'Outfit',system-ui,sans-serif;
+    --pad:clamp(18px,4.5vw,56px);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  h1,h2,h3,p,figure{margin:0}
+  img{display:block;width:100%;height:100%;object-fit:cover}
+  a{color:inherit}
+  :focus-visible{outline:4px dashed var(--ink);outline-offset:4px;border-radius:14px}
+  .wrap{max-width:1220px;margin:0 auto;padding:0 var(--pad)}
+  h1,h2,h3{font-family:var(--fat);font-weight:400;line-height:.92;letter-spacing:.005em}
+  .btn{display:inline-block;text-decoration:none;font-family:var(--fat);font-size:22px;padding:14px 28px 16px;border-radius:999px;border:3.5px solid var(--ink);background:var(--pink);color:var(--cream);box-shadow:0 7px 0 var(--ink);transition:transform .15s ease,box-shadow .15s ease}
+  .btn:hover{transform:translateY(4px);box-shadow:0 3px 0 var(--ink)}
+  .btn.alt{background:var(--cream);color:var(--ink)}
+  .wave{display:block;width:100%;height:auto;margin-bottom:-1px}
+
+  header{position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px var(--pad);background:var(--sun)}
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--fat);font-size:30px;line-height:1}
+  .logo svg{width:44px;height:44px}
+  header nav{display:flex;align-items:center;gap:8px;font-weight:700}
+  header nav a{text-decoration:none;padding:9px 16px;border-radius:999px;transition:background .15s ease,color .15s ease}
+  header nav a:hover{background:var(--ink);color:var(--sun)}
+  header nav a.order{background:var(--ink);color:var(--sun)}
+  header nav a.order:hover{background:var(--pink);color:var(--cream)}
+  @media(max-width:760px){ header nav a:not(.order){display:none} }
+
+  .hero{background:var(--sun);position:relative}
+  .hero .wrap{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:clamp(20px,4vw,56px);align-items:center;padding-top:clamp(20px,3vw,40px);padding-bottom:clamp(40px,6vw,80px)}
+  @media(max-width:860px){ .hero .wrap{grid-template-columns:1fr} }
+  .hero h1{font-size:clamp(58px,9.6vw,134px);text-transform:uppercase}
+  .hero h1 span{display:block}
+  .hero h1 .p{color:var(--pink);-webkit-text-stroke:3.5px var(--ink);paint-order:stroke fill;transform:rotate(-3deg);transform-origin:left center}
+  .hero h1 .t{color:var(--cream);-webkit-text-stroke:3.5px var(--ink);paint-order:stroke fill}
+  .hero p{font-size:clamp(19px,1.8vw,23px);font-weight:500;max-width:36ch;margin:28px 0 30px}
+  .cta{display:flex;flex-wrap:wrap;gap:14px}
+  .pile{position:relative;width:100%;aspect-ratio:1/1.08}
+  .snap{position:absolute;border:3.5px solid var(--ink);border-radius:26px;overflow:hidden;box-shadow:10px 10px 0 var(--ink);background:var(--cream);transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+  .snap:hover{transform:rotate(0deg) scale(1.04) !important;z-index:4}
+  .snap.one{inset:0 12% 14% 0;transform:rotate(-5deg)}
+  .snap.two{width:52%;aspect-ratio:1;right:0;bottom:0;transform:rotate(7deg);border-radius:50%}
+  .badge{position:absolute;left:-6%;bottom:6%;width:36%;z-index:3;animation:spin 18s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .ticker{background:var(--pink);color:var(--cream);border-top:3.5px solid var(--ink);border-bottom:3.5px solid var(--ink);overflow:hidden;padding:12px 0;transform:rotate(-1.2deg) scale(1.03);margin:-8px 0 0}
+  .ticker div{display:flex;width:max-content;animation:run 22s linear infinite;font-family:var(--fat);font-size:26px;text-transform:uppercase;white-space:nowrap}
+  .ticker span{padding:0 22px}
+  @keyframes run{to{transform:translateX(-50%)}}
+
+  .menu{padding:clamp(72px,9vw,128px) 0 clamp(56px,7vw,96px)}
+  .title{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:clamp(30px,4vw,52px)}
+  .title h2{font-size:clamp(54px,9vw,128px);text-transform:uppercase}
+  .title h2 em{font-style:normal;color:var(--tang);-webkit-text-stroke:3px var(--ink);paint-order:stroke fill}
+  .title p{max-width:30ch;font-weight:500}
+  .tacos{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2.6vw,34px)}
+  @media(max-width:900px){ .tacos{grid-template-columns:1fr 1fr} }
+  @media(max-width:560px){ .tacos{grid-template-columns:1fr} }
+  .taco{border:3.5px solid var(--ink);border-radius:28px;overflow:hidden;background:var(--sun);box-shadow:8px 8px 0 var(--ink);transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+  .taco:nth-child(odd){transform:rotate(-1.4deg)}
+  .taco:nth-child(even){transform:rotate(1.2deg)}
+  .taco:hover{transform:rotate(0) translateY(-8px)}
+  .taco:nth-child(2){background:var(--teal);color:var(--cream)}
+  .taco:nth-child(3){background:var(--pink);color:var(--cream)}
+  .taco:nth-child(4){background:var(--lime)}
+  .taco:nth-child(5){background:var(--tang)}
+  .taco:nth-child(6){background:var(--cream)}
+  .taco figure{aspect-ratio:4/3;border-bottom:3.5px solid var(--ink)}
+  .taco .in{padding:18px 20px 22px}
+  .taco .top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+  .taco h3{font-size:30px}
+  .taco .price{font-family:var(--fat);font-size:26px;background:var(--ink);color:var(--sun);border-radius:999px;padding:2px 14px 5px}
+  .taco p{font-size:16.5px;margin-top:8px;font-weight:500}
+  .heat{display:inline-flex;gap:3px;margin-top:12px}
+  .heat i{width:13px;height:13px;border-radius:50% 0 50% 50%;background:var(--ink);transform:rotate(45deg);opacity:.2}
+  .heat i.on{opacity:1}
+  .extras{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,2.6vw,34px);margin-top:clamp(28px,4vw,52px)}
+  @media(max-width:760px){ .extras{grid-template-columns:1fr} }
+  .list{border:3.5px solid var(--ink);border-radius:28px;padding:26px 28px;background:var(--cream)}
+  .list h3{font-size:36px;text-transform:uppercase;margin-bottom:12px}
+  .list div{display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:3px dotted var(--ink);font-weight:500}
+  .list div:last-child{border-bottom:0}
+  .list b{font-family:var(--fat);font-weight:400;font-size:21px}
+
+  .margs{background:var(--teal);color:var(--cream)}
+  .margs .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);align-items:center;padding-top:clamp(48px,7vw,96px);padding-bottom:clamp(56px,8vw,110px)}
+  @media(max-width:860px){ .margs .wrap{grid-template-columns:1fr} }
+  .margs h2{font-size:clamp(54px,8.6vw,124px);text-transform:uppercase}
+  .margs h2 em{font-style:normal;color:var(--sun)}
+  .margs p{font-size:21px;font-weight:500;max-width:34ch;margin:22px 0 28px}
+  .happy{display:inline-block;background:var(--sun);color:var(--ink);border:3.5px solid var(--ink);border-radius:20px;padding:14px 20px;font-weight:700;transform:rotate(-2deg);box-shadow:6px 6px 0 var(--ink)}
+  .happy b{display:block;font-family:var(--fat);font-weight:400;font-size:30px;line-height:1}
+  .polas{position:relative;width:100%;aspect-ratio:1/.92}
+  .pola{position:absolute;background:var(--cream);padding:12px 12px 46px;border:3.5px solid var(--ink);box-shadow:9px 9px 0 var(--ink);transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+  .pola:hover{transform:rotate(0) scale(1.04) !important;z-index:3}
+  .pola figure{height:100%;border:3px solid var(--ink)}
+  .pola span{position:absolute;left:0;right:0;bottom:9px;text-align:center;font-family:var(--fat);font-size:20px;color:var(--ink)}
+  .pola.a{left:0;top:0;width:54%;height:86%;transform:rotate(-6deg)}
+  .pola.b{right:0;bottom:0;width:56%;height:70%;transform:rotate(5deg)}
+
+  .love{padding:clamp(64px,9vw,120px) 0;text-align:center}
+  .love blockquote{margin:0 auto;font-family:var(--fat);font-size:clamp(34px,5.6vw,80px);line-height:1;max-width:17ch}
+  .love blockquote em{font-style:normal;color:var(--pink)}
+  .love cite{display:block;font-style:normal;font-weight:700;margin-top:22px}
+  .stars{font-size:30px;letter-spacing:6px;color:var(--tang);margin-bottom:18px}
+
+  .find{background:var(--pink);color:var(--cream)}
+  .find .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);align-items:center;padding-top:clamp(40px,6vw,80px);padding-bottom:clamp(56px,8vw,104px)}
+  @media(max-width:860px){ .find .wrap{grid-template-columns:1fr} }
+  .find h2{font-size:clamp(54px,8.6vw,124px);text-transform:uppercase;margin-bottom:26px}
+  .find h2 em{font-style:normal;color:var(--sun);-webkit-text-stroke:3px var(--ink);paint-order:stroke fill}
+  .hours{background:var(--cream);color:var(--ink);border:3.5px solid var(--ink);border-radius:28px;padding:10px 26px;box-shadow:8px 8px 0 var(--ink);font-weight:500}
+  .hours div{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:3px dotted var(--ink)}
+  .hours div:last-child{border-bottom:0}
+  .hours b{font-family:var(--fat);font-weight:400;font-size:21px}
+  .find p{margin:26px 0;font-size:21px;font-weight:500}
+  .neon{border:3.5px solid var(--ink);border-radius:28px;overflow:hidden;box-shadow:10px 10px 0 var(--ink);aspect-ratio:4/3.4;transform:rotate(2.5deg)}
+  footer{background:var(--ink);color:var(--cream);text-align:center;padding:36px var(--pad) 40px}
+  footer b{display:block;font-family:var(--fat);font-weight:400;font-size:44px;color:var(--sun);line-height:1;margin-bottom:10px}
+  footer p{font-size:15px;opacity:.8}
+  @media(prefers-reduced-motion:reduce){ *{transition:none !important;animation:none !important} html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#top"><svg viewBox="0 0 44 44" aria-hidden="true"><path d="M8 22c2-12 14-16 22-12 6 3 8 10 6 16-3 9-14 12-22 8-5-3-7-7-6-12Z" fill="#FF3E8A" stroke="#2A1033" stroke-width="3"/><path d="M30 10c2-4 6-5 9-4" fill="none" stroke="#2A1033" stroke-width="3" stroke-linecap="round"/><path d="M33 9c-1-3 0-5 2-6" fill="none" stroke="#00A7A0" stroke-width="3" stroke-linecap="round"/></svg>Tres Chiles</a>
+  <nav aria-label="Main">
+    <a href="#menu">Menu</a>
+    <a href="#margs">Margs</a>
+    <a href="#find">Find us</a>
+    <a class="order" href="#menu">Order pickup</a>
+  </nav>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <h1><span>Tacos.</span><span class="p">Tequila.</span><span class="t">Trouble.</span></h1>
+        <p>Corn tortillas pressed every morning, salsas with opinions, and margaritas the size of your head. Harbourview's loudest little taqueria.</p>
+        <div class="cta">
+          <a class="btn" href="#menu">See the menu</a>
+          <a class="btn alt" href="#find">Find us</a>
+        </div>
+      </div>
+      <div class="pile">
+        <figure class="snap one"><img src="img/a.jpg" alt="Three tacos topped with onion and cilantro, with lime wedges"></figure>
+        <figure class="snap two"><img src="img/marg.jpg" alt="A frozen mango margarita with a lime wedge"></figure>
+        <svg class="badge" viewBox="0 0 200 200" aria-hidden="true">
+          <circle cx="100" cy="100" r="96" fill="#00A7A0" stroke="#2A1033" stroke-width="5"/>
+          <path id="ring" d="M100 100m-70 0a70 70 0 1 1 140 0a70 70 0 1 1-140 0" fill="none"/>
+          <text font-family="Bagel Fat One,sans-serif" font-size="25" fill="#FFF4DC" letter-spacing="2"><textPath href="#ring">OPEN LATE FRIDAY + SATURDAY ★ OPEN LATE ★</textPath></text>
+          <text x="100" y="116" text-anchor="middle" font-family="Bagel Fat One,sans-serif" font-size="46" fill="#FFD23F">2 AM</text>
+        </svg>
+      </div>
+    </div>
+    <div class="ticker" aria-hidden="true"><div>
+      <span>Taco Tuesday</span><span>★</span><span>$4 tacos all night</span><span>★</span><span>Fresh tortillas daily</span><span>★</span><span>Mango margs</span><span>★</span>
+      <span>Taco Tuesday</span><span>★</span><span>$4 tacos all night</span><span>★</span><span>Fresh tortillas daily</span><span>★</span><span>Mango margs</span><span>★</span>
+    </div></div>
+  </div>
+
+  <section class="menu wrap" id="menu">
+    <div class="title">
+      <h2>The <em>tacos</em></h2>
+      <p>Two to an order on house corn tortillas. Mix, match, and don't be shy with the salsa bar.</p>
+    </div>
+    <div class="tacos">
+      <article class="taco"><figure><img src="img/plate.jpg" alt="Crispy beef tacos with lettuce" loading="lazy"></figure><div class="in"><div class="top"><h3>Carne asada</h3><span class="price">$11</span></div><p>Charred flank steak, white onion, cilantro, salsa roja.</p><span class="heat" aria-label="Heat: 2 of 3"><i class="on"></i><i class="on"></i><i></i></span></div></article>
+      <article class="taco"><figure><img src="img/row.jpg" alt="A row of loaded chicken tacos" loading="lazy"></figure><div class="in"><div class="top"><h3>Pollo tinga</h3><span class="price">$10</span></div><p>Smoky chipotle chicken, black beans, queso fresco, crema.</p><span class="heat" aria-label="Heat: 1 of 3"><i class="on"></i><i></i><i></i></span></div></article>
+      <article class="taco"><figure><img src="img/white.jpg" alt="Folded tacos with corn and peppers" loading="lazy"></figure><div class="in"><div class="top"><h3>Elote verde</h3><span class="price">$9</span></div><p>Grilled corn, poblano, cotija and lime. Happily vegetarian.</p><span class="heat" aria-label="Heat: 1 of 3"><i class="on"></i><i></i><i></i></span></div></article>
+      <article class="taco"><figure><img src="img/tray.jpg" alt="A tray of fish and shrimp tacos" loading="lazy"></figure><div class="in"><div class="top"><h3>Baja fish</h3><span class="price">$12</span></div><p>Beer-battered cod, cabbage slaw, pickled onion, chipotle mayo.</p><span class="heat" aria-label="Heat: 2 of 3"><i class="on"></i><i class="on"></i><i></i></span></div></article>
+      <article class="taco"><figure><img src="img/a.jpg" alt="Tacos with onion, cilantro and lime" loading="lazy"></figure><div class="in"><div class="top"><h3>Al pastor</h3><span class="price">$11</span></div><p>Marinated pork off the spit, pineapple, onion, salsa verde.</p><span class="heat" aria-label="Heat: 3 of 3"><i class="on"></i><i class="on"></i><i class="on"></i></span></div></article>
+      <article class="taco"><figure><img src="img/salsa.jpg" alt="A tortilla chip scooping fresh salsa" loading="lazy"></figure><div class="in"><div class="top"><h3>Chips + salsa</h3><span class="price">$7</span></div><p>Warm chips with pico de gallo, roja and a green one that bites back.</p><span class="heat" aria-label="Heat: 3 of 3"><i class="on"></i><i class="on"></i><i class="on"></i></span></div></article>
+    </div>
+    <div class="extras">
+      <div class="list"><h3>On the side</h3><div><span>Street corn, cotija, tajin</span><b>$6</b></div><div><span>Rice and charro beans</span><b>$5</b></div><div><span>Guacamole, made to order</span><b>$9</b></div><div><span>Churros with dulce de leche</span><b>$8</b></div></div>
+      <div class="list"><h3>To drink</h3><div><span>Agua fresca, ask what's on</span><b>$4</b></div><div><span>Horchata</span><b>$5</b></div><div><span>Mexican lager, very cold</span><b>$7</b></div><div><span>House margarita</span><b>$12</b></div></div>
+    </div>
+  </section>
+
+  <div class="margs" id="margs">
+    <svg class="wave" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true"><rect width="1200" height="40" fill="#00A7A0"/><path d="M0 0v20c50-26 100-26 150 0s100 26 150 0 100-26 150 0 100 26 150 0 100-26 150 0 100 26 150 0 100-26 150 0 100 26 150 0V0z" fill="#FFF4DC"/></svg>
+    <div class="wrap">
+      <div class="polas">
+        <div class="pola a"><figure><img src="img/margs.jpg" alt="Three frozen margaritas raised in a toast" loading="lazy"></figure><span>Salud!</span></div>
+        <div class="pola b"><figure><img src="img/marg.jpg" alt="A frozen mango margarita" loading="lazy"></figure><span>The mango one</span></div>
+      </div>
+      <div>
+        <h2>Margs as big as <em>your head.</em></h2>
+        <p>Frozen or on the rocks, fresh lime only, and a salt rim we take far too seriously. Mango, classic, hibiscus or spicy pineapple.</p>
+        <div class="happy"><b>Happy hour</b>Weekdays 4 to 6. Half-price margs.</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="love wrap">
+    <div class="stars" aria-hidden="true">★★★★★</div>
+    <blockquote>&ldquo;I came for one taco and <em>left three hours later.</em>&rdquo;</blockquote>
+    <cite>A regular, probably at the bar right now</cite>
+  </section>
+
+  <div class="find" id="find">
+    <div class="wrap">
+      <div>
+        <h2>Come <em>hungry.</em></h2>
+        <div class="hours">
+          <div><span>Tuesday to Thursday</span><b>11:30 to 10</b></div>
+          <div><span>Friday and Saturday</span><b>11:30 to 2 am</b></div>
+          <div><span>Sunday</span><b>12 to 9</b></div>
+          <div><span>Monday</span><b>Resting</b></div>
+        </div>
+        <p>88 Sandbar Avenue, Harbourview. Walk-ins only, so just show up.</p>
+        <div class="cta"><a class="btn alt" href="tel:+15555550131">Call (555) 555-0131</a></div>
+      </div>
+      <figure class="neon"><img src="img/neon.jpg" alt="A glowing neon sign that says open" loading="lazy"></figure>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <b>Tres Chiles</b>
+  <p>Tacos, tequila and good trouble. Concept site by Jackdaw Marketing.</p>
+</footer>
+
+</body>
+</html>

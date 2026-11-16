@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>
+  /* set the theme before first paint so there is no flash of the wrong one */
   (function(){
     try{
       var stored = localStorage.getItem("jackdaw-theme");
@@ -12,35 +13,39 @@
     }catch(e){}
   })();
 </script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-7NPP9DSENG"></script>
 <script>
+  /* Google Analytics: only loads on the real domain, so previews and local
+     testing never pollute the numbers */
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-7NPP9DSENG');
+  if (/(^|\.)jackdawmarketing\.ca$/.test(location.hostname)) {
+    var ga = document.createElement("script");
+    ga.async = true;
+    ga.src = "https://www.googletagmanager.com/gtag/js?id=G-7NPP9DSENG";
+    document.head.appendChild(ga);
+    gtag("js", new Date());
+    gtag("config", "G-7NPP9DSENG");
+  }
 </script>
 <title>Jackdaw Marketing: Web Design for Service Businesses in Canada</title>
 <meta name="description" content="Jackdaw Marketing designs, builds and optimizes fast, modern websites that help small independent service companies across Canada get found and turn visitors into customers.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="canonical" href="https://jackdawmarketing.ca/">
 <meta name="theme-color" content="#221024">
+<link rel="canonical" href="https://jackdawmarketing.ca/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://jackdawmarketing.ca/">
 <meta property="og:site_name" content="Jackdaw Marketing">
 <meta property="og:title" content="Jackdaw Marketing: Web Design for Service Businesses in Canada">
-<meta property="og:description" content="Fast, modern websites that help small independent service companies across Canada get found and turn visitors into customers.">
+<meta property="og:description" content="Jackdaw Marketing designs, builds and optimizes fast, modern websites that help small independent service companies across Canada get found and turn visitors into customers.">
 <meta property="og:image" content="https://jackdawmarketing.ca/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:type" content="image/png">
 <meta property="og:image:alt" content="Jackdaw Marketing">
 <meta property="og:locale" content="en_CA">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Jackdaw Marketing: Web Design for Service Businesses in Canada">
-<meta name="twitter:description" content="Fast, modern websites that help small independent service companies across Canada get found and turn visitors into customers.">
+<meta name="twitter:description" content="Jackdaw Marketing designs, builds and optimizes fast, modern websites that help small independent service companies across Canada get found and turn visitors into customers.">
 <meta name="twitter:image" content="https://jackdawmarketing.ca/og.png">
 <script type="application/ld+json">
 {
@@ -59,425 +64,26 @@
   "knowsAbout":["Web design","Web development","Search engine optimization","Brand identity"]
 }
 </script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,900&family=Silkscreen:wght@700&family=UnifrakturCook:wght@700&family=Big+Shoulders+Display:wght@900&family=Caveat+Brush&family=Bodoni+Moda:wght@900&family=Monoton&family=Stardos+Stencil:wght@700&family=Bangers&family=Luckiest+Guy&family=Bungee+Shade&family=Bungee&family=Permanent+Marker&family=Rubik+Glitch&family=Shrikhand&family=Abril+Fatface&family=Rye&family=Rubik+Spray+Paint&family=Rubik+Wet+Paint&family=Rubik+Iso&family=Bungee+Inline&family=Codystar&family=Faster+One&family=Fredericka+the+Great&family=Press+Start+2P&family=Alfa+Slab+One&family=Londrina+Shadow&family=Rubik+Maze&family=Fascinate+Inline&family=Bowlby+One&text=JACKDAWMRETING&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --plum:#221024;
-    --plum-2:#2E1631;
-    --plum-3:#3A1C3E;
-    --cream:#FCF3E3;
-    --marigold:#FFC24B;
-    --jade:#29C39A;
-    --tomato:#FF5535;
-    --scrim-strong:rgba(34,16,36,.82);
-    --scrim-mobile:rgba(34,16,36,.97);
-
-    /* fixed brand colors: used where a swatch (logo, ticker, contact
-       band) must look the same regardless of light/dark mode */
-    --brand-marigold:#FFC24B;
-    --brand-tomato:#FF5535;
-    --brand-ink:#221024;
-    --brand-paper:#FCF3E3;
-
-    --display:'Archivo Black','Arial Black',Impact,sans-serif;
-    --body:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
-    --mono:'Space Mono',ui-monospace,'SF Mono',Menlo,monospace;
-
-    --pad:clamp(20px,5vw,72px);
-    --maxw:1240px;
-  }
-  :root[data-theme="light"]{
-    --plum:#FCF3E3;
-    --plum-2:#F4E4C8;
-    --plum-3:#E6CE9C;
-    --cream:#221024;
-    --marigold:#946000;
-    --jade:#0A7254;
-    --tomato:#BC3616;
-    --scrim-strong:rgba(252,243,227,.86);
-    --scrim-mobile:rgba(252,243,227,.97);
-  }
-
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    margin:0;
-    background:var(--plum);
-    color:var(--cream);
-    font-family:var(--body);
-    font-size:17px;
-    line-height:1.55;
-    -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
-  }
-  a{color:inherit}
-  ::selection{background:var(--brand-tomato);color:var(--brand-paper)}
-  :focus-visible{outline:3px solid var(--marigold);outline-offset:3px}
-
-  .wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
-  .label{
-    font-family:var(--mono);font-size:12px;letter-spacing:.14em;
-    text-transform:uppercase;opacity:.62;
-  }
-
-  /* ---------- mascot art ---------- */
-  .mascot{
-    transform:rotate(var(--rot,0deg));
-    transition:transform .35s cubic-bezier(.2,.8,.2,1);
-  }
-  .mascot:hover{transform:rotate(calc(var(--rot,0deg) + 8deg)) scale(1.12)}
-  @media(prefers-reduced-motion:reduce){ .mascot{transition:none} }
-  .outline-cream{filter:drop-shadow(2px 0 0 var(--cream)) drop-shadow(-2px 0 0 var(--cream)) drop-shadow(0 2px 0 var(--cream)) drop-shadow(0 -2px 0 var(--cream))}
-  .outline-plum{filter:drop-shadow(2px 0 0 var(--brand-ink)) drop-shadow(-2px 0 0 var(--brand-ink)) drop-shadow(0 2px 0 var(--brand-ink)) drop-shadow(0 -2px 0 var(--brand-ink))}
-
-  /* ---------- top bar ---------- */
-  .bar{
-    position:fixed;top:0;left:0;right:0;z-index:50;
-    display:flex;align-items:center;justify-content:space-between;
-    gap:16px;padding:14px var(--pad);
-    transition:background .3s ease,backdrop-filter .3s ease,border-color .3s ease;
-    border-bottom:1px solid transparent;
-  }
-  .bar-controls{display:flex;align-items:center;gap:clamp(10px,1.6vw,18px)}
-  .bar.stuck{background:var(--scrim-strong);backdrop-filter:blur(10px);border-bottom-color:var(--plum-3)}
-  .mark svg{shape-rendering:crispEdges}
-  .mark:hover{background:var(--brand-marigold);transform:translateY(-2px)}
-  .mark{
-    display:inline-grid;place-items:center;width:40px;height:40px;
-    background:var(--brand-tomato);color:var(--brand-paper);
-    text-decoration:none;transition:background .2s ease,transform .2s ease;
-  }
-  .theme-toggle{
-    display:inline-grid;place-items:center;width:40px;height:40px;flex-shrink:0;
-    background:none;border:2px solid var(--cream);color:var(--cream);
-    cursor:pointer;transition:background .2s ease,color .2s ease,border-color .2s ease;
-  }
-  .theme-toggle:hover{background:var(--marigold);border-color:var(--marigold);color:var(--plum)}
-  .theme-toggle svg{width:18px;height:18px;display:block;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
-  .theme-toggle:hover svg{transform:rotate(90deg)}
-  .theme-toggle .icon-moon{display:none}
-  :root[data-theme="light"] .theme-toggle .icon-sun{display:none}
-  :root[data-theme="light"] .theme-toggle .icon-moon{display:block}
-  .bar nav{display:flex;align-items:center;gap:clamp(14px,2.4vw,30px)}
-  .bar nav a{
-    font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;
-    text-decoration:none;padding:6px 0;border-bottom:2px solid transparent;
-  }
-  .bar nav a:not(.hire){position:relative;transition:color .18s ease}
-  .bar nav a:not(.hire)::after{
-    content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;
-    background:var(--marigold);transform:scaleX(0);transform-origin:left center;
-    transition:transform .24s cubic-bezier(.2,.8,.2,1);
-  }
-  .bar nav a:not(.hire):hover{color:var(--marigold)}
-  .bar nav a:not(.hire):hover::after{transform:scaleX(1)}
-  .bar nav .subnav a::after{display:none}
-  .bar nav a.hire{
-    border:2px solid var(--cream);border-bottom-width:2px;padding:7px 14px;
-    transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease;
-  }
-  .bar nav a.hire:hover{background:var(--marigold);border-color:var(--marigold);color:var(--plum);transform:translateY(-2px)}
-
-  .bar nav .nav-drop{position:relative;display:inline-flex;align-items:center}
-  .bar nav .subnav{
-    position:absolute;top:100%;left:0;min-width:200px;
-    display:flex;flex-direction:column;
-    background:var(--scrim-strong);backdrop-filter:blur(10px);
-    border:1px solid var(--plum-3);
-    opacity:0;visibility:hidden;transform:translateY(-6px);
-    transition:opacity .18s ease,transform .18s ease,visibility .18s;
-  }
-  .bar nav .nav-drop:hover .subnav,
-  .bar nav .nav-drop:focus-within .subnav{opacity:1;visibility:visible;transform:none}
-  .bar nav .subnav a{
-    padding:12px 16px;border-bottom:1px solid var(--plum-3);white-space:nowrap;
-    transition:background .16s ease,color .16s ease,padding-left .16s ease;
-  }
-  .bar nav .subnav a:last-child{border-bottom:none}
-  .bar nav .subnav a:hover,
-  .bar nav .subnav a[aria-current="page"]{
-    background:var(--marigold);color:var(--plum);border-bottom-color:transparent;
-  }
-  .bar nav .subnav a:hover{padding-left:20px}
-
-  .menu-btn{
-    display:none;align-items:center;
-    background:none;border:2px solid var(--cream);color:var(--cream);
-    font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
-    padding:10px 16px;cursor:pointer;
-    transition:background .2s ease,color .2s ease,border-color .2s ease;
-  }
-  .menu-btn:hover{background:var(--marigold);border-color:var(--marigold);color:var(--plum)}
-
-  @media(max-width:700px){
-    .menu-btn{display:inline-flex}
-    .bar nav{
-      display:none;
-      position:absolute;top:100%;left:0;right:0;
-      flex-direction:column;align-items:stretch;gap:0;
-      background:var(--scrim-mobile);backdrop-filter:blur(10px);
-      border-bottom:1px solid var(--plum-3);
-      padding:6px var(--pad) 20px;
-    }
-    .bar nav.open{display:flex}
-    .bar nav a{padding:14px 0;border-bottom:1px solid var(--plum-3)}
-    .bar nav a.hire{margin-top:12px;text-align:center}
-    .bar nav .nav-drop{flex-direction:column;align-items:stretch;width:100%}
-    .bar nav .subnav{
-      position:static;opacity:1;visibility:visible;transform:none;
-      background:none;border:none;backdrop-filter:none;
-    }
-    .bar nav .subnav a{padding:12px 0 12px 18px;font-size:13px;opacity:.72}
-    .bar nav a:not(.hire)::after{display:none}
-  }
-
-  /* ---------- hero ---------- */
-  .hero{padding-top:96px;padding-bottom:clamp(40px,7vw,80px)}
-  .stage{position:relative;width:100%;height:clamp(280px,40vw,440px)}
-  @media(max-width:640px){ .stage{height:clamp(170px,46vw,280px)} }
-  #blocks{display:block;width:100%;height:100%;touch-action:pan-y}
-
-  .pitch{
-    display:flex;flex-direction:column;align-items:flex-start;
-    gap:clamp(22px,3.4vw,32px);margin-top:clamp(14px,2.4vw,22px);
-  }
-  .pitch h1{
-    font-family:var(--body);font-weight:500;
-    font-size:clamp(23px,3.4vw,40px);line-height:1.22;letter-spacing:-.02em;
-    margin:0;max-width:34ch;
-  }
-  em.tomato,em.marigold,em.jade{font-style:normal}
-  .tomato{color:var(--tomato)}
-  .marigold{color:var(--marigold)}
-  .jade{color:var(--jade)}
-  .pitch .sub{
-    font-size:clamp(15px,1.6vw,18px);line-height:1.55;opacity:.78;
-    margin:0;max-width:52ch;
-  }
-  .pitch .secondary{
-    display:flex;align-items:center;gap:10px;
-    font-family:var(--mono);font-size:12.5px;letter-spacing:.05em;opacity:.68;margin:0;
-  }
-  .pitch .secondary::before{content:"";display:block;width:8px;height:8px;background:var(--jade);flex-shrink:0}
-  .actions{display:flex;flex-wrap:wrap;gap:12px}
-  .btn{
-    display:inline-block;text-decoration:none;padding:14px 22px;
-    font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;
-    border:2px solid var(--cream);background:none;cursor:pointer;
-    transition:transform .16s ease,background .16s ease,color .16s ease,border-color .16s ease,box-shadow .16s ease;
-  }
-  .btn:hover{transform:translate(-3px,-3px);box-shadow:5px 5px 0 var(--plum-3)}
-  .btn.solid{background:var(--cream);color:var(--plum);border-color:var(--cream)}
-  .btn.solid:hover{background:var(--marigold);border-color:var(--marigold)}
-
-  /* ---------- ticker ---------- */
-  .ticker{
-    background:var(--brand-tomato);color:var(--brand-paper);
-    border-top:2px solid var(--brand-ink);border-bottom:2px solid var(--brand-ink);
-    overflow:hidden;padding:11px 0;margin:clamp(30px,6vw,70px) 0;
-  }
-  .ticker-track{display:flex;width:max-content;animation:slide 26s linear infinite}
-  .ticker span{
-    font-family:var(--mono);font-weight:700;font-size:13px;letter-spacing:.16em;
-    text-transform:uppercase;padding:0 22px;white-space:nowrap;
-  }
-  @keyframes slide{to{transform:translateX(-50%)}}
-
-  /* ---------- sections ---------- */
-  section{scroll-margin-top:80px}
-  .head{
-    display:flex;align-items:baseline;justify-content:space-between;gap:20px;
-    flex-wrap:wrap;padding-bottom:22px;border-bottom:2px solid var(--plum-3);
-  }
-  .head h2{
-    font-family:var(--display);font-size:clamp(30px,5.4vw,62px);line-height:.95;
-    letter-spacing:-.02em;margin:0;text-transform:uppercase;
-  }
-
-  /* ---------- work ---------- */
-  #work{position:relative}
-  #work-mascot{position:absolute;top:10px;right:0;width:clamp(44px,5vw,60px);height:auto}
-  @media(max-width:760px){ #work-mascot{display:none} }
-  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:2px;background:var(--plum-3)}
-  @media(max-width:760px){ .grid{grid-template-columns:1fr} }
-  .card{
-    position:relative;display:block;text-decoration:none;background:var(--plum);
-    padding:clamp(22px,3vw,34px);min-height:290px;
-    display:flex;flex-direction:column;justify-content:space-between;gap:26px;
-    transition:background .25s ease;
-  }
-  .card:hover{background:var(--plum-2)}
-  .card .swatch{
-    width:100%;height:110px;position:relative;overflow:hidden;
-    transition:transform .3s cubic-bezier(.2,.8,.2,1);
-  }
-  .card:hover .swatch{transform:translateY(-4px)}
-  .swatch img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;display:block}
-  .card h3{
-    font-family:var(--display);font-size:clamp(21px,2.4vw,29px);line-height:1.05;
-    margin:0 0 8px;text-transform:uppercase;letter-spacing:-.01em;
-  }
-  .card p{margin:0 0 14px;font-size:15.5px;opacity:.78;max-width:38ch}
-  .tags{display:flex;flex-wrap:wrap;gap:7px}
-  .tags i{
-    font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.09em;
-    text-transform:uppercase;border:1px solid var(--plum-3);padding:4px 9px;opacity:.85;
-  }
-  .swatch{display:flex;align-items:flex-end;padding:12px 14px}
-  .stat{position:relative;color:var(--plum);line-height:1}
-  .stat b{display:block;font-family:var(--display);font-size:clamp(24px,3.2vw,34px);letter-spacing:-.02em}
-  .stat i{
-    font-style:normal;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
-    text-transform:uppercase;opacity:.72;
-  }
-  .card .go{
-    font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;
-    margin-top:14px;display:inline-block;color:var(--marigold);
-  }
-  .card:hover .go{text-decoration:underline;text-underline-offset:4px}
-
-  /* ---------- why ---------- */
-  .why-grid{display:flex;flex-wrap:wrap;gap:2px;margin-top:2px;background:var(--plum-3)}
-  .why-box{
-    position:relative;display:flex;flex-direction:column;gap:10px;background:var(--plum);
-    flex:1 1 220px;padding:clamp(20px,2.6vw,28px);text-decoration:none;color:inherit;min-height:170px;
-    transition:background .25s ease,transform .3s cubic-bezier(.2,.8,.2,1);
-  }
-  .why-box:hover{background:var(--plum-2);transform:translateY(-5px)}
-  .why-box .dot{width:10px;height:10px;border-radius:50%}
-  .why-box h3{font-family:var(--display);text-transform:uppercase;font-size:clamp(16px,1.8vw,19px);letter-spacing:-.01em;line-height:1.1;margin:0}
-  .why-box p{margin:0;font-size:14.5px;opacity:.78;max-width:32ch}
-  .why-box .go{
-    font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
-    color:var(--marigold);margin-top:auto;padding-top:6px;
-  }
-  .why-box:hover .go{text-decoration:underline;text-underline-offset:4px}
-
-  /* ---------- pricing teaser ---------- */
-  .pricing-teaser{
-    flex:1 1 100%;
-    display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:22px;
-    margin-top:2px;padding:clamp(24px,3.4vw,36px) clamp(22px,3vw,30px);
-    background:var(--plum-2);text-decoration:none;color:inherit;
-    transition:background .25s ease,transform .3s cubic-bezier(.2,.8,.2,1);
-  }
-  .pricing-teaser:hover{background:var(--plum-3);transform:translateY(-5px)}
-  .pricing-teaser h3{
-    font-family:var(--display);text-transform:uppercase;letter-spacing:-.01em;
-    font-size:clamp(19px,2.4vw,26px);margin:0 0 10px;
-  }
-  .pricing-teaser ul{list-style:none;display:flex;flex-wrap:wrap;gap:9px 24px;margin:0;padding:0;font-size:14.5px;opacity:.85}
-  .pricing-teaser li{display:flex;align-items:center;gap:8px}
-  .pricing-teaser li::before{content:"";width:6px;height:6px;flex:0 0 6px;background:var(--jade);border-radius:50%}
-  .pricing-teaser .go{
-    font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;
-    border:2px solid var(--cream);padding:12px 18px;transition:background .16s,color .16s,border-color .16s,transform .16s;
-  }
-  .pricing-teaser:hover .go{background:var(--marigold);border-color:var(--marigold);color:var(--plum)}
-  /* ---------- contact ---------- */
-  .contact{background:var(--brand-marigold);color:var(--brand-ink);margin-top:clamp(50px,8vw,110px);padding:clamp(40px,7vw,90px) 0}
-  .contact .label{opacity:.62}
-  .contact-inner{display:grid;grid-template-columns:1fr 1.05fr auto;gap:clamp(28px,4.5vw,72px);align-items:center}
-  .bird-lg{width:min(240px,18vw);height:auto;display:block;shape-rendering:crispEdges;align-self:center}
-  @media(max-width:960px){ .contact-inner{grid-template-columns:1fr 1fr} .bird-lg{display:none} }
-  @media(max-width:600px){ .contact-inner{grid-template-columns:1fr} }
-  .contact h2{
-    font-family:var(--display);text-transform:uppercase;letter-spacing:-.02em;
-    font-size:clamp(30px,6vw,60px);line-height:.98;margin:14px 0 18px;max-width:14ch;
-  }
-  .contact-text > p{margin:0;max-width:38ch;opacity:.82;font-size:15.5px}
-  .contact-meta{margin-top:30px;padding-top:18px;border-top:2px solid rgba(34,16,36,.18)}
-  .contact-meta div{
-    display:flex;justify-content:space-between;gap:16px;padding:10px 0;
-    border-bottom:1px solid rgba(34,16,36,.18);font-family:var(--mono);font-size:12.5px;
-  }
-  .contact-meta div:last-child{border-bottom:none}
-  .contact-meta div b{font-weight:400;opacity:.6;text-transform:uppercase;letter-spacing:.09em;font-size:11px}
-  .contact-meta div a{color:inherit;text-decoration:none}
-  .contact-meta div a:hover{text-decoration:underline}
-  .btn.dark{background:var(--brand-ink);border-color:var(--brand-ink);color:var(--brand-paper)}
-  .btn.dark:hover{background:var(--brand-marigold);border-color:var(--brand-marigold);color:var(--brand-ink);box-shadow:5px 5px 0 rgba(34,16,36,.25)}
-
-  /* ---------- contact form ---------- */
-  .contact-form{position:relative;display:flex;flex-direction:column;gap:14px}
-  .contact-form > .label{margin-bottom:2px}
-  .contact-form .mascot{
-    position:absolute;top:-18px;right:-6px;
-    width:clamp(46px,5.5vw,60px);height:auto;
-  }
-  @media(max-width:520px){ .contact-form .mascot{top:-14px;right:0} }
-  .field{display:flex;flex-direction:column;gap:5px}
-  .field label{
-    font-family:var(--mono);font-size:11px;letter-spacing:.13em;
-    text-transform:uppercase;font-weight:700;
-  }
-  .field input,.field textarea{
-    background:var(--brand-paper);color:var(--brand-ink);
-    border:2px solid var(--brand-ink);border-radius:0;
-    font-family:var(--body);font-size:16px;line-height:1.4;
-    padding:10px 12px;width:100%;box-sizing:border-box;
-    -webkit-appearance:none;appearance:none;
-    transition:box-shadow .15s ease;
-  }
-  .field input:focus-visible,.field textarea:focus-visible{box-shadow:4px 4px 0 rgba(34,16,36,.25)}
-  .field textarea{resize:vertical;min-height:110px}
-  .contact-form :focus-visible{outline:3px solid var(--brand-ink);outline-offset:2px}
-  .reply-note{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;margin:2px 0 0;opacity:.65}
-
-  /* ---------- project preview ---------- */
-  .preview{display:none;position:fixed;inset:0;flex-direction:column;background:var(--plum);z-index:60}
-  .preview.on{display:flex}
-  .preview-bar{
-    display:flex;align-items:center;justify-content:space-between;gap:16px;
-    padding:12px var(--pad);border-bottom:1px solid var(--plum-3);
-    font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;
-  }
-  .preview-bar .tag{opacity:.6}
-  .preview-bar .exit{
-    background:none;border:2px solid var(--cream);color:var(--cream);
-    font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
-    padding:8px 14px;cursor:pointer;transition:background .2s ease,color .2s ease,border-color .2s ease;
-  }
-  .preview-bar .exit:hover{background:var(--marigold);border-color:var(--marigold);color:var(--plum)}
-  .preview iframe{flex:1;width:100%;border:0;background:var(--cream)}
-
-  /* ---------- footer ---------- */
-  footer{padding:26px 0 34px;font-family:var(--mono);font-size:12px;letter-spacing:.08em}
-  footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;opacity:.55;text-transform:uppercase}
-  .foot-brand{display:inline-flex;align-items:center;gap:8px}
-  .foot-brand img{width:15px;height:auto;display:block;filter:drop-shadow(1px 0 0 var(--cream)) drop-shadow(-1px 0 0 var(--cream)) drop-shadow(0 1px 0 var(--cream)) drop-shadow(0 -1px 0 var(--cream))}
-
-  /* ---------- reveal ---------- */
-  .rev{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
-  .rev.in{opacity:1;transform:none}
-
-  @media(prefers-reduced-motion:reduce){
-    html{scroll-behavior:auto}
-    .ticker-track{animation:none}
-    .rev{opacity:1;transform:none;transition:none}
-    .btn:hover,.card:hover .swatch{transform:none}
-    .theme-toggle:hover svg,.bar nav a.hire:hover,.mark:hover{transform:none}
-    .bar nav a:not(.hire)::after{transition:none}
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
 </head>
-<body>
-
+<body class="home">
+<a class="skip" href="#main">Skip to content</a>
 <header class="bar" id="bar">
-  <a href="#top" class="mark" aria-label="Jackdaw Marketing, back to top"><svg viewBox="0 0 20 16" width="27" height="21.6" aria-hidden="true" focusable="false"><g fill="var(--brand-paper)"><rect x="13" y="0" width="4" height="1"/><rect x="12" y="1" width="6" height="1"/><rect x="12" y="2" width="2" height="1"/><rect x="15" y="2" width="3" height="1"/><rect x="12" y="3" width="6" height="1"/><rect x="11" y="4" width="7" height="1"/><rect x="10" y="5" width="8" height="1"/><rect x="9" y="6" width="9" height="1"/><rect x="8" y="7" width="4" height="1"/><rect x="13" y="7" width="5" height="1"/><rect x="7" y="8" width="4" height="1"/><rect x="13" y="8" width="5" height="1"/><rect x="5" y="9" width="5" height="1"/><rect x="12" y="9" width="6" height="1"/><rect x="3" y="10" width="7" height="1"/><rect x="12" y="10" width="7" height="1"/><rect x="0" y="11" width="9" height="1"/><rect x="11" y="11" width="8" height="1"/><rect x="1" y="12" width="17" height="1"/><rect x="4" y="13" width="4" height="1"/><rect x="13" y="13" width="4" height="1"/><rect x="4" y="14" width="1" height="1"/><rect x="16" y="14" width="1" height="1"/><rect x="3" y="15" width="3" height="1"/><rect x="15" y="15" width="3" height="1"/></g><g fill="var(--brand-ink)"><rect x="18" y="3" width="2" height="1"/><rect x="18" y="4" width="2" height="1"/></g></svg></a>
+  <a href="/" class="brand" aria-label="Jackdaw Marketing, home"><span class="mark"><svg class="bird" viewBox="0 0 23 16" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><g class="b-body" fill="var(--brand-paper)"><rect x="13" y="0" width="4" height="1"/><rect x="12" y="1" width="6" height="1"/><rect x="12" y="2" width="2" height="1"/><rect x="15" y="2" width="3" height="1"/><rect x="12" y="3" width="6" height="1"/><rect x="11" y="4" width="7" height="1"/><rect x="10" y="5" width="8" height="1"/><rect x="9" y="6" width="9" height="1"/><rect x="8" y="7" width="4" height="1"/><rect x="13" y="7" width="5" height="1"/><rect x="7" y="8" width="4" height="1"/><rect x="13" y="8" width="5" height="1"/><rect x="5" y="9" width="5" height="1"/><rect x="12" y="9" width="6" height="1"/><rect x="3" y="10" width="7" height="1"/><rect x="12" y="10" width="7" height="1"/><rect x="0" y="11" width="9" height="1"/><rect x="11" y="11" width="8" height="1"/><rect x="1" y="12" width="17" height="1"/><rect x="4" y="13" width="4" height="1"/><rect x="13" y="13" width="4" height="1"/><rect x="4" y="14" width="1" height="1"/><rect x="16" y="14" width="1" height="1"/><rect x="3" y="15" width="3" height="1"/><rect x="15" y="15" width="3" height="1"/></g><g class="b-detail" fill="var(--mark-bg)"><rect x="14" y="2" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/><rect x="11" y="8" width="2" height="1"/><rect x="10" y="9" width="2" height="1"/><rect x="10" y="10" width="2" height="1"/><rect x="9" y="11" width="2" height="1"/></g><g class="b-beak" fill="var(--brand-paper)"><rect x="18" y="3" width="2" height="1"/><rect x="18" y="4" width="2" height="1"/></g><g class="b-bright" fill="var(--brand-marigold)"><rect x="21" y="3" width="2" height="1"/><rect x="21" y="4" width="2" height="1"/></g></svg></span><span class="brand-name"><b>Jackdaw</b><i>Marketing</i></span></a>
   <div class="bar-controls">
-    <nav id="nav">
-      <a href="#top">Home</a>
-      <a href="#work">Work</a>
+    <nav id="nav" aria-label="Main">
+      <a href="/#work">Work</a>
       <span class="nav-drop">
-        <a href="/pricing/">Pricing</a>
-        <span class="subnav">
-          <a href="/pricing/">General</a>
-          <a href="/pricing/website/">Website Tier</a>
-          <a href="/pricing/growth/">Growth Tier</a>
-        </span>
+        <a href="/pricing/">Pricing<svg class="caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></a>
+        <span class="subnav"><span class="subnav-in">
+          <a href="/pricing/">Both plans<span>Compare</span></a>
+          <a href="/pricing/website/">Website plan<span>$250/mo</span></a>
+          <a href="/pricing/growth/">Growth plan<span>$1,000/mo</span></a>
+        </span></span>
       </span>
       <a href="/why/">Why Jackdaw</a>
       <a href="/the-vault/">The Vault</a>
@@ -491,102 +97,160 @@
   </div>
 </header>
 
-<main id="top">
+<main id="main">
 
-  <section class="hero wrap">
-    <div class="stage">
-      <canvas id="blocks" aria-label="Jackdaw Marketing"></canvas>
+  <section class="hero wrap" id="top">
+    <div class="wordmark" id="wordmark" role="img" aria-label="Jackdaw Marketing">
+      <span class="wm-line">JACKDAW</span>
+      <span class="wm-line">MARKETING</span>
     </div>
-
+    <p class="wm-tools" id="wmTools" hidden>
+      <span id="wmHint">Hover the letters</span>
+      <button type="button" id="wmShuffle">Shuffle</button>
+      <button type="button" id="wmReset">Reset</button>
+    </p>
     <div class="pitch">
-      <h1>Websites that make local businesses <em class="tomato">easier to find</em>, <em class="marigold">easier to trust</em>, and <em class="jade">easier to choose</em>.</h1>
-      <p class="sub">I design, build and manage fast, modern websites for small independent service companies across Canada.</p>
-      <p class="secondary">One person from strategy to launch, no agency handoffs.</p>
-      <div class="actions">
-        <a href="#work" class="btn solid">See the builds</a>
-        <a href="#contact" class="btn">Get in touch</a>
+      <h1>
+        <span class="lead">Websites that make your business</span>
+        <span class="big tomato">easier to find,</span>
+        <span class="big marigold">easier to trust,</span>
+        <span class="big jade">easier to choose.</span>
+      </h1>
+      <div class="pitch-side">
+        <p class="sub">I design, build and manage fast, modern websites for small independent service companies across Canada.</p>
+        <div class="actions">
+          <a href="#work" class="btn solid">See the builds</a>
+          <a href="#contact" class="btn">Get in touch</a>
+        </div>
       </div>
     </div>
+    <ul class="hero-facts">
+      <li>From $250/month, no start-up fees</li>
+      <li>A reply within one business day</li>
+    </ul>
   </section>
 
   <div class="ticker" aria-hidden="true">
     <div class="ticker-track" id="track"></div>
   </div>
 
-  <section id="work" class="wrap">
-    <img class="mascot outline-cream" id="work-mascot" src="Images/bird-look.png" alt="" loading="lazy" style="--rot:-8deg">
-    <div class="head rev">
+  <section id="work" class="wrap section">
+    <div class="head">
       <h2>Selected builds</h2>
-      <span class="label" id="work-count">Two portfolio builds</span>
+      <p>Four concept sites, each designed from scratch in a different style. Hover one to pull it off the shelf, then click to step inside.</p>
     </div>
-    <div class="grid" id="grid"></div>
+    <div class="shelf" id="shelf"></div>
   </section>
 
-  <section id="why" class="wrap" style="margin-top:clamp(50px,8vw,110px)">
-    <div class="head rev"><h2>Why Jackdaw</h2></div>
-    <div class="why-grid">
-      <a class="why-box rev" href="/why/#custom">
-        <span class="dot" style="background:var(--tomato)"></span>
-        <h3>Fully custom</h3>
-        <p>Designed and built from scratch around your business, not a template.</p>
-        <span class="go">Read more &rarr;</span>
-      </a>
-      <a class="why-box rev" href="/why/#discovered">
-        <span class="dot" style="background:var(--marigold)"></span>
-        <h3>Built to be found</h3>
-        <p>Structured for Google, Bing, and the AI platforms people now search with.</p>
-        <span class="go">Read more &rarr;</span>
-      </a>
-      <a class="why-box rev" href="/why/#seo">
-        <span class="dot" style="background:var(--jade)"></span>
-        <h3>SEO from day one</h3>
-        <p>Technical SEO, speed and structure built in, not bolted on after launch.</p>
-        <span class="go">Read more &rarr;</span>
-      </a>
-      <a class="why-box rev" href="/why/#technology">
-        <span class="dot" style="background:var(--tomato)"></span>
-        <h3>Modern technology</h3>
-        <p>A clean, code-based foundation that's easy to extend as tech evolves.</p>
-        <span class="go">Read more &rarr;</span>
-      </a>
-      <a class="why-box rev" href="/why/#measurable">
-        <span class="dot" style="background:var(--marigold)"></span>
-        <h3>Always improving</h3>
-        <p>I track performance and keep refining the site as real customers use it.</p>
-        <span class="go">Read more &rarr;</span>
-      </a>
-      <a class="pricing-teaser rev" href="/pricing/">
-        <div>
-          <h3>Simple pricing</h3>
-          <ul>
-            <li>No start-up fees</li>
-            <li>Month-to-month billing</li>
-          </ul>
-        </div>
-        <span class="go">View pricing &rarr;</span>
-      </a>
+  <section id="how" class="wrap section">
+    <svg id="how-mascot" class="bird mascot" viewBox="0 0 30 16" aria-hidden="true" focusable="false" shape-rendering="crispEdges" style="--rot:4deg"><g class="b-body" fill="var(--bird-body)"><rect x="13" y="0" width="4" height="1"/><rect x="12" y="1" width="6" height="1"/><rect x="12" y="2" width="2" height="1"/><rect x="15" y="2" width="3" height="1"/><rect x="12" y="3" width="6" height="1"/><rect x="11" y="4" width="7" height="1"/><rect x="10" y="5" width="8" height="1"/><rect x="9" y="6" width="9" height="1"/><rect x="8" y="7" width="4" height="1"/><rect x="13" y="7" width="5" height="1"/><rect x="7" y="8" width="4" height="1"/><rect x="13" y="8" width="5" height="1"/><rect x="5" y="9" width="5" height="1"/><rect x="12" y="9" width="6" height="1"/><rect x="3" y="10" width="7" height="1"/><rect x="12" y="10" width="7" height="1"/><rect x="0" y="11" width="9" height="1"/><rect x="11" y="11" width="8" height="1"/><rect x="1" y="12" width="17" height="1"/><rect x="4" y="13" width="4" height="1"/><rect x="13" y="13" width="4" height="1"/><rect x="4" y="14" width="1" height="1"/><rect x="16" y="14" width="1" height="1"/><rect x="3" y="15" width="3" height="1"/><rect x="15" y="15" width="3" height="1"/></g><g class="b-detail" fill="var(--bird-detail)"><rect x="14" y="2" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/><rect x="11" y="8" width="2" height="1"/><rect x="10" y="9" width="2" height="1"/><rect x="10" y="10" width="2" height="1"/><rect x="9" y="11" width="2" height="1"/></g><g class="b-beak" fill="var(--brand-tomato)"><rect x="18" y="3" width="2" height="1"/><rect x="18" y="4" width="2" height="1"/><rect x="20" y="11" width="10" height="1"/><rect x="21" y="12" width="1" height="1"/><rect x="28" y="12" width="1" height="1"/><rect x="21" y="13" width="1" height="1"/><rect x="28" y="13" width="1" height="1"/><rect x="21" y="14" width="1" height="1"/><rect x="28" y="14" width="1" height="1"/><rect x="21" y="15" width="1" height="1"/><rect x="28" y="15" width="1" height="1"/></g><g class="b-paper" fill="var(--brand-paper)"><rect x="24" y="7" width="3" height="1"/><rect x="24" y="8" width="3" height="1"/></g><g class="b-g1" fill="#D3CEC6"><rect x="23" y="6" width="5" height="1"/><rect x="23" y="7" width="1" height="1"/><rect x="27" y="7" width="1" height="1"/><rect x="23" y="8" width="1" height="1"/><rect x="27" y="8" width="1" height="1"/><rect x="23" y="9" width="5" height="1"/><rect x="21" y="10" width="8" height="1"/></g></svg>
+    <div class="head">
+      <h2>One person, start to finish</h2>
+      <p>No agency handoffs. You deal with me from the first message to long after launch.</p>
     </div>
+    <ol class="steps">
+      <li style="--accent:var(--tomato)">
+        <span class="num" aria-hidden="true">1</span>
+        <h3>Tell me about your business</h3>
+        <p>Send a message about what you do and what you need. I reply within one business day, and no sales call is required first.</p>
+      </li>
+      <li style="--accent:var(--marigold)">
+        <span class="num" aria-hidden="true">2</span>
+        <h3>I plan it around your customers</h3>
+        <p>The structure, content and customer journey are planned before anything is built, so visitors quickly see what you do and how to take the next step.</p>
+      </li>
+      <li style="--accent:var(--jade)">
+        <span class="num" aria-hidden="true">3</span>
+        <h3>I design and build it</h3>
+        <p>Custom code that's fast on every device, with on-page SEO, Google Analytics and Search Console set up from the start.</p>
+      </li>
+      <li style="--accent:var(--tomato)">
+        <span class="num" aria-hidden="true">4</span>
+        <h3>I keep it working</h3>
+        <p>After launch I handle hosting, maintenance, text and image changes, and ongoing improvements. Send changes over and they get done.</p>
+      </li>
+    </ol>
   </section>
 
-  <section id="contact" class="contact">
-    <div class="wrap contact-inner">
-      <div class="contact-text rev">
-        <span class="label">Contact</span>
-        <h2>Got something to build?</h2>
-        <p>Tell me a bit about the project and I'll reply within one business day with next steps. No sales call required first.</p>
-        <div class="contact-meta">
-          <div><b>Reply time</b><span>1 business day</span></div>
-          <div><b>Email</b><span><a href="mailto:jack@jackdawmarketing.ca">jack@jackdawmarketing.ca</a></span></div>
-          <div><b>Phone</b><span><a href="tel:+14034933231">+1 403 493 3231</a></span></div>
-          <div><b>Based in</b><span>Toronto, ON</span></div>
-          <div><b>Serving</b><span>Canada-wide</span></div>
-        </div>
+  <section id="why" class="wrap section">
+    <div class="head">
+      <h2>Why Jackdaw</h2>
+      <p>A Jackdaw site isn't a template with your logo dropped in. <a class="text-link" href="/why/">Read the full story</a></p>
+    </div>
+    <ul class="why-list">
+      <li><a class="why-row" href="/why/#custom" style="--accent:var(--tomato)"><span class="px"></span><h3>Fully custom</h3><p>Designed and built from scratch around your business, not a template.</p><span class="go" aria-hidden="true">Read more</span></a></li>
+      <li><a class="why-row" href="/why/#discovered" style="--accent:var(--marigold)"><span class="px"></span><h3>Built to be found</h3><p>Structured for Google, Bing, and the AI platforms people now search with.</p><span class="go" aria-hidden="true">Read more</span></a></li>
+      <li><a class="why-row" href="/why/#seo" style="--accent:var(--jade)"><span class="px"></span><h3>SEO from day one</h3><p>Technical SEO, speed and structure built in, not bolted on after launch.</p><span class="go" aria-hidden="true">Read more</span></a></li>
+      <li><a class="why-row" href="/why/#technology" style="--accent:var(--tomato)"><span class="px"></span><h3>Modern technology</h3><p>A clean, code-based foundation that's easy to extend as tech evolves.</p><span class="go" aria-hidden="true">Read more</span></a></li>
+      <li><a class="why-row" href="/why/#measurable" style="--accent:var(--marigold)"><span class="px"></span><h3>Always improving</h3><p>I track performance and keep refining the site as real customers use it.</p><span class="go" aria-hidden="true">Read more</span></a></li>
+    </ul>
+  </section>
+
+  <section id="pricing" class="wrap section">
+    <div class="head">
+      <h2>Simple pricing</h2>
+      <p>Two ways to work together, and no large upfront bill for either.</p>
+    </div>
+    <div class="plans">
+      <div class="plan">
+        <h3 class="jade">Website</h3>
+        <p class="plan-price">$250<span class="per">/month</span></p>
+        <p class="plan-tagline">A professionally built website, without the large upfront cost.</p>
+        <span class="plan-label">Included</span>
+        <ul>
+          <li>Custom website design and build</li>
+          <li>Hosting and website management</li>
+          <li>Essential on-page SEO</li>
+          <li>Reasonable text and image changes</li>
+          <li>Direct support from me</li>
+        </ul>
+        <p class="plan-fine">$250/month · 12-month initial commitment</p>
+        <p class="plan-more"><a class="btn" href="/pricing/website/">See the Website plan</a></p>
       </div>
-      <form class="contact-form rev" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you">
-        <img class="mascot outline-plum" src="Images/bird-mail.png" alt="" loading="lazy" style="--rot:6deg">
-        <span class="label">Send a message</span>
-        <input type="hidden" name="form-name" value="contact">
-        <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
+      <div class="plan growth">
+        <h3 class="marigold">Growth</h3>
+        <p class="plan-price">$1,000<span class="per">/month</span></p>
+        <p class="plan-tagline">Your website plus ongoing digital marketing designed to bring in more customers.</p>
+        <span class="plan-label">Everything in Website, plus</span>
+        <ul>
+          <li>Google Ads campaign setup and management</li>
+          <li>Google Business Profile optimization</li>
+          <li>Local SEO strategy</li>
+          <li>Landing pages for campaigns</li>
+          <li>Analytics and lead tracking</li>
+        </ul>
+        <p class="plan-fine">$1,000/month · Ad budgets billed separately and directly to you</p>
+        <p class="plan-more"><a class="btn" href="/pricing/growth/">See the Growth plan</a></p>
+      </div>
+    </div>
+    <ul class="pricing-facts">
+      <li>No start-up fees</li>
+      <li>Billed monthly</li>
+      <li><a class="text-link" href="/pricing/">Compare the two plans</a></li>
+    </ul>
+  </section>
+
+
+</main>
+
+<section id="contact" class="contact">
+  <div class="wrap contact-inner">
+    <div class="contact-text">
+      <h2>Got something to build?</h2>
+      <p>Tell me a bit about the project and I'll reply within one business day with next steps. No sales call required first.</p>
+      <dl class="contact-meta">
+        <div><dt>Reply time</dt><dd>1 business day</dd></div>
+        <div><dt>Email</dt><dd><a href="mailto:jack@jackdawmarketing.ca">jack@jackdawmarketing.ca</a></dd></div>
+        <div><dt>Phone</dt><dd><a href="tel:+14034933231">+1 403 493 3231</a></dd></div>
+        <div><dt>Based in</dt><dd>Toronto, ON</dd></div>
+        <div><dt>Serving</dt><dd>Canada-wide</dd></div>
+      </dl>
+    </div>
+    <form class="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you">
+      <svg class="bird mascot" viewBox="0 0 27 16" aria-hidden="true" focusable="false" shape-rendering="crispEdges" style="--rot:6deg"><g class="b-body" fill="var(--bird-body)"><rect x="13" y="0" width="4" height="1"/><rect x="12" y="1" width="6" height="1"/><rect x="12" y="2" width="2" height="1"/><rect x="15" y="2" width="3" height="1"/><rect x="12" y="3" width="6" height="1"/><rect x="11" y="4" width="7" height="1"/><rect x="10" y="5" width="8" height="1"/><rect x="9" y="6" width="9" height="1"/><rect x="8" y="7" width="4" height="1"/><rect x="13" y="7" width="5" height="1"/><rect x="7" y="8" width="4" height="1"/><rect x="13" y="8" width="5" height="1"/><rect x="5" y="9" width="5" height="1"/><rect x="12" y="9" width="6" height="1"/><rect x="3" y="10" width="7" height="1"/><rect x="12" y="10" width="7" height="1"/><rect x="0" y="11" width="9" height="1"/><rect x="11" y="11" width="8" height="1"/><rect x="1" y="12" width="17" height="1"/><rect x="4" y="13" width="4" height="1"/><rect x="13" y="13" width="4" height="1"/><rect x="4" y="14" width="1" height="1"/><rect x="16" y="14" width="1" height="1"/><rect x="3" y="15" width="3" height="1"/><rect x="15" y="15" width="3" height="1"/></g><g class="b-detail" fill="var(--bird-detail)"><rect x="14" y="2" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/><rect x="11" y="8" width="2" height="1"/><rect x="10" y="9" width="2" height="1"/><rect x="10" y="10" width="2" height="1"/><rect x="9" y="11" width="2" height="1"/></g><g class="b-beak" fill="var(--brand-tomato)"><rect x="18" y="3" width="2" height="1"/><rect x="18" y="4" width="2" height="1"/></g><g class="b-paper" fill="var(--brand-paper)"><rect x="22" y="2" width="3" height="1"/><rect x="21" y="3" width="1" height="1"/><rect x="23" y="3" width="1" height="1"/><rect x="25" y="3" width="1" height="1"/><rect x="21" y="4" width="2" height="1"/><rect x="24" y="4" width="2" height="1"/><rect x="21" y="5" width="5" height="1"/></g><g class="b-ink" fill="var(--brand-ink)"><rect x="20" y="1" width="7" height="1"/><rect x="20" y="2" width="2" height="1"/><rect x="25" y="2" width="2" height="1"/><rect x="20" y="3" width="1" height="1"/><rect x="22" y="3" width="1" height="1"/><rect x="24" y="3" width="1" height="1"/><rect x="26" y="3" width="1" height="1"/><rect x="20" y="4" width="1" height="1"/><rect x="23" y="4" width="1" height="1"/><rect x="26" y="4" width="1" height="1"/><rect x="20" y="5" width="1" height="1"/><rect x="26" y="5" width="1" height="1"/><rect x="20" y="6" width="7" height="1"/></g></svg>
+      <input type="hidden" name="form-name" value="contact">
+      <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
+      <div class="field-row">
         <div class="field">
           <label for="f-name">Name</label>
           <input type="text" id="f-name" name="name" autocomplete="name">
@@ -595,32 +259,62 @@
           <label for="f-business">Business name</label>
           <input type="text" id="f-business" name="business" autocomplete="organization">
         </div>
-        <div class="field">
-          <label for="f-email">Email *</label>
-          <input type="email" id="f-email" name="email" required autocomplete="email">
-        </div>
-        <div class="field">
-          <label for="f-message">Message *</label>
-          <textarea id="f-message" name="message" rows="5" required></textarea>
-        </div>
-        <button type="submit" class="btn dark">Send message</button>
-        <p class="reply-note">Straight to my inbox, no forms getting lost in a queue.</p>
-      </form>
-      <svg class="bird-lg" viewBox="0 0 23 16" aria-hidden="true" focusable="false">
-        <g fill="var(--brand-ink)"><rect x="13" y="0" width="4" height="1"/><rect x="12" y="1" width="6" height="1"/><rect x="12" y="2" width="2" height="1"/><rect x="15" y="2" width="3" height="1"/><rect x="12" y="3" width="6" height="1"/><rect x="11" y="4" width="7" height="1"/><rect x="10" y="5" width="8" height="1"/><rect x="9" y="6" width="9" height="1"/><rect x="8" y="7" width="4" height="1"/><rect x="13" y="7" width="5" height="1"/><rect x="7" y="8" width="4" height="1"/><rect x="13" y="8" width="5" height="1"/><rect x="5" y="9" width="5" height="1"/><rect x="12" y="9" width="6" height="1"/><rect x="3" y="10" width="7" height="1"/><rect x="12" y="10" width="7" height="1"/><rect x="0" y="11" width="9" height="1"/><rect x="11" y="11" width="8" height="1"/><rect x="1" y="12" width="17" height="1"/><rect x="4" y="13" width="4" height="1"/><rect x="13" y="13" width="4" height="1"/><rect x="4" y="14" width="1" height="1"/><rect x="16" y="14" width="1" height="1"/><rect x="3" y="15" width="3" height="1"/><rect x="15" y="15" width="3" height="1"/></g>
-        <g fill="var(--brand-tomato)"><rect x="18" y="3" width="2" height="1"/><rect x="18" y="4" width="2" height="1"/></g>
-        <g fill="var(--brand-paper)"><rect x="21" y="3" width="2" height="1"/><rect x="21" y="4" width="2" height="1"/></g>
-      </svg>
-    </div>
-  </section>
-
-</main>
+      </div>
+      <div class="field">
+        <label for="f-email">Email <span class="req">required</span></label>
+        <input type="email" id="f-email" name="email" required autocomplete="email">
+      </div>
+      <fieldset class="chips">
+        <legend>What are you after?</legend>
+        <label class="chip"><input type="radio" name="interest" value="Website plan"><span><b>Website</b>$250/month</span></label>
+        <label class="chip"><input type="radio" name="interest" value="Growth plan"><span><b>Growth</b>$1,000/month</span></label>
+        <label class="chip"><input type="radio" name="interest" value="Not sure yet"><span><b>Not sure yet</b>Let's talk it through</span></label>
+      </fieldset>
+      <div class="field">
+        <label for="f-message">Message <span class="req">required</span></label>
+        <textarea id="f-message" name="message" rows="5" required></textarea>
+      </div>
+      <button type="submit" class="btn send">Send message</button>
+      <p class="reply-note">Straight to my inbox, no forms getting lost in a queue.</p>
+    </form>
+  </div>
+</section>
 
 <footer>
   <div class="wrap">
-    <span class="foot-brand"><img class="mascot" src="Images/bird-marigold.png" alt="" loading="lazy">Jackdaw Marketing</span>
-    <span>A bird that collects bright things</span>
-    <span id="year"></span>
+    <p class="foot-line"><svg class="bird" viewBox="0 0 23 16" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><g class="b-body" fill="var(--bird-body)"><rect x="13" y="0" width="4" height="1"/><rect x="12" y="1" width="6" height="1"/><rect x="12" y="2" width="2" height="1"/><rect x="15" y="2" width="3" height="1"/><rect x="12" y="3" width="6" height="1"/><rect x="11" y="4" width="7" height="1"/><rect x="10" y="5" width="8" height="1"/><rect x="9" y="6" width="9" height="1"/><rect x="8" y="7" width="4" height="1"/><rect x="13" y="7" width="5" height="1"/><rect x="7" y="8" width="4" height="1"/><rect x="13" y="8" width="5" height="1"/><rect x="5" y="9" width="5" height="1"/><rect x="12" y="9" width="6" height="1"/><rect x="3" y="10" width="7" height="1"/><rect x="12" y="10" width="7" height="1"/><rect x="0" y="11" width="9" height="1"/><rect x="11" y="11" width="8" height="1"/><rect x="1" y="12" width="17" height="1"/><rect x="4" y="13" width="4" height="1"/><rect x="13" y="13" width="4" height="1"/><rect x="4" y="14" width="1" height="1"/><rect x="16" y="14" width="1" height="1"/><rect x="3" y="15" width="3" height="1"/><rect x="15" y="15" width="3" height="1"/></g><g class="b-detail" fill="var(--bird-detail)"><rect x="14" y="2" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/><rect x="11" y="8" width="2" height="1"/><rect x="10" y="9" width="2" height="1"/><rect x="10" y="10" width="2" height="1"/><rect x="9" y="11" width="2" height="1"/></g><g class="b-beak" fill="var(--brand-tomato)"><rect x="18" y="3" width="2" height="1"/><rect x="18" y="4" width="2" height="1"/></g><g class="b-bright" fill="var(--bird-bright)"><rect x="21" y="3" width="2" height="1"/><rect x="21" y="4" width="2" height="1"/></g></svg><span>A bird that collects <em>bright things.</em></span></p>
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">Jackdaw Marketing</div>
+        <p class="foot-tag">Websites for small independent service companies across Canada.</p>
+      </div>
+      <div>
+        <h2>Site</h2>
+        <ul>
+          <li><a href="/#work">Work</a></li>
+          <li><a href="/#how">How it works</a></li>
+          <li><a href="/why/">Why Jackdaw</a></li>
+          <li><a href="#contact">Start a project</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Pricing</h2>
+        <ul>
+          <li><a href="/pricing/">Both plans</a></li>
+          <li><a href="/pricing/website/">Website plan</a></li>
+          <li><a href="/pricing/growth/">Growth plan</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Contact</h2>
+        <ul>
+          <li><a href="mailto:jack@jackdawmarketing.ca">jack@jackdawmarketing.ca</a></li>
+          <li><a href="tel:+14034933231">+1 403 493 3231</a></li>
+          <li><a href="/the-vault/">Client previews (The Vault)</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-base"><span id="year">Jackdaw Marketing</span><span>Toronto, ON. Serving Canada-wide.</span></div>
   </div>
 </footer>
 
@@ -637,300 +331,213 @@
    EDIT ME: everything below is yours to change
    ============================================================ */
 const CONFIG = {
-  line1: "JACKDAW",   // set line2 to "" for a single-line wordmark
+  line1: "JACKDAW",     // the big letters at the top, one word per line
   line2: "MARKETING",
+  // the moving banner under the hero
   ticker: ["Web design","Front-end development","SEO","Brand identity","Landing pages","Web apps","Analytics","Available for work"],
-  // stat + statLabel are optional; leave them out and the swatch stays plain
+  // Each project is a concept site hosted under /work/. The shelf shows only the
+  // label (the kind of business), never the made-up company name. It sits on the shelf,
+  // pops out on hover, and opens in the on-site preview when clicked.
+  // accent: "marigold" | "jade" | "tomato" (the spine + shadow color)
   projects: [
-    { title:"True North Build Co.", blurb:"A portfolio build for a general contractor: bold, built to turn browsing homeowners into estimate requests.", tags:["Portfolio","Web Design","Local SEO"], url:"/work/contractor/", image:"Images/work-contractor.jpg", accent:"marigold" },
-    { title:"Bramble & Bloom", blurb:"A portfolio build for a flower shop: a working online stand with fresh cuts, subscriptions, and wedding bookings built in.", tags:["Portfolio","E-Commerce","Branding"], url:"/work/flower-shop/", image:"Images/work-flower-shop.jpg", accent:"jade" }
+    { label:"Sample hearing clinic", note:"Clean, glassy and minimal", url:"/work/northlight-hearing/", image:"/Images/work-northlight-hearing.jpg", accent:"jade" },
+    { label:"Sample electrician", note:"Bold and industrial", url:"/work/brightwire-electric/", image:"/Images/work-brightwire-electric.jpg", accent:"marigold" },
+    { label:"Sample cabinetmaker", note:"Quiet and photo-led", url:"/work/hollis-and-grain/", image:"/Images/work-hollis-and-grain.jpg", accent:"tomato" },
+    { label:"Sample restaurant", note:"Loud and playful", url:"/work/tres-chiles/", image:"/Images/work-tres-chiles.jpg", accent:"jade" }
   ]
 };
 /* ========================================================== */
 
-function readThemeColors() {
-  const cs = getComputedStyle(document.documentElement);
-  const v = (name) => cs.getPropertyValue(name).trim();
-  return { plum:v("--plum"), plum2:v("--plum-2"), cream:v("--cream"), marigold:v("--marigold"), jade:v("--jade"), tomato:v("--tomato") };
-}
-let C = readThemeColors();
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-/* ---------- theme toggle ---------- */
-const THEME_KEY = "jackdaw-theme";
-const themeToggleBtn = document.getElementById("themeToggle");
-const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-function currentTheme() { return document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark"; }
-function applyThemeChrome(theme) {
-  if (themeToggleBtn) themeToggleBtn.setAttribute("aria-label", theme === "light" ? "Switch to dark mode" : "Switch to light mode");
-  if (metaThemeColor) metaThemeColor.setAttribute("content", theme === "light" ? "#FCF3E3" : "#221024");
-}
-applyThemeChrome(currentTheme());
-if (themeToggleBtn) {
-  themeToggleBtn.addEventListener("click", () => {
-    const next = currentTheme() === "light" ? "dark" : "light";
-    document.documentElement.setAttribute("data-theme", next);
-    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
-    applyThemeChrome(next);
-    C = readThemeColors();
-    if (window.refreshWordmarkPalette) window.refreshWordmarkPalette();
-  });
-}
-
-/* ---------- footer ---------- */
-document.getElementById("year").textContent = "© " + new Date().getFullYear();
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
 
 /* ---------- ticker ---------- */
-const track = document.getElementById("track");
-const strip = CONFIG.ticker.map(t => `<span>${t}</span><span>&#9632;</span>`).join("");
-track.innerHTML = strip + strip;
+const STAR = '<svg class="star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0l2.6 7.2L22 4.4l-3.4 6.9L24 15l-7.3.9L17 24l-5-5.6L7 24l.3-8.1L0 15l5.4-3.7L2 4.4l7.4 2.8z" fill="currentColor"/></svg>';
+function fillBanner(id, items) {
+  const strip = items.map(t => `<span>${esc(t)}</span>${STAR}`).join("");
+  document.getElementById(id).innerHTML = strip + strip;      // doubled so the loop is seamless
+}
+fillBanner("track", CONFIG.ticker);
 
-/* ---------- project cards ---------- */
-const words = ["Zero","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten"];
-const grid = document.getElementById("grid");
-grid.innerHTML = CONFIG.projects.map(p => {
-  const a = C[p.accent] || C.marigold;
-  const swatch = p.image ? "" : `background:${a};background-image:repeating-linear-gradient(135deg,rgba(34,16,36,.22) 0 10px,transparent 10px 20px)`;
-  const preview = p.image ? `<img src="${p.image}" alt="${p.title} homepage preview" loading="lazy">` : "";
-  const stat = p.stat ? `<span class="stat"><b>${p.stat}</b><i>${p.statLabel || ""}</i></span>` : "";
-  return `<a class="card rev" href="${p.url}" data-title="${p.title}">
-    <div class="swatch" style="${swatch}">${preview}${stat}</div>
-    <div>
-      <h3>${p.title}</h3>
-      <p>${p.blurb}</p>
-      <div class="tags">${p.tags.map(t => `<i>${t}</i>`).join("")}</div>
-      <span class="go">View project &rarr;</span>
-    </div>
-  </a>`;
-}).join("");
-const n = CONFIG.projects.length;
-document.getElementById("work-count").textContent = (words[n] || n) + (n === 1 ? " portfolio build" : " portfolio builds");
+/* ---------- the shelf ---------- */
+const shelf = document.getElementById("shelf");
+shelf.innerHTML = CONFIG.projects.map((p) => `<a class="book" href="${esc(p.url)}" data-title="${esc(p.label)}" style="--accent:var(--${esc(p.accent || "marigold")})">
+    <span class="book-stage">
+      <span class="book-face">
+        <img src="${esc(p.image)}" alt="" loading="lazy">
+        <span class="book-open" aria-hidden="true">Click to open</span>
+      </span>
+    </span>
+    <span class="book-cap"><b>${esc(p.label)}</b><i>${esc(p.note)}</i></span>
+  </a>`).join("");
 
 /* ---------- project preview ----------
    Cards that link to an on-site build (/work/...) open in an overlay
    instead of navigating away, so people can exit back to the site
-   without losing their place. External or placeholder links (url:"#")
-   just navigate normally. */
+   without losing their place. */
 const previewView = document.getElementById("previewView");
 const previewLabel = document.getElementById("previewLabel");
 const previewFrame = document.getElementById("previewFrame");
 const exitPreviewBtn = document.getElementById("exitPreviewBtn");
+const topBar = document.getElementById("bar");
+let lastCard = null;
 
-function openPreview(url, title) {
-  bar.style.display = "none";
+function openPreview(url, title, card) {
+  lastCard = card;
+  topBar.style.display = "none";
   previewLabel.textContent = title;
   previewFrame.src = url;
   previewView.classList.add("on");
+  document.body.style.overflow = "hidden";
+  exitPreviewBtn.focus();
 }
 function closePreview() {
   previewView.classList.remove("on");
   previewFrame.src = "about:blank";
-  bar.style.display = "";
+  topBar.style.display = "";
+  document.body.style.overflow = "";
+  if (lastCard) lastCard.focus();
 }
-
-grid.addEventListener("click", (e) => {
-  const card = e.target.closest(".card");
+shelf.addEventListener("click", (e) => {
+  const card = e.target.closest(".book");
   if (!card) return;
   const url = card.getAttribute("href");
   if (!url || !url.startsWith("/work/")) return;
   if (e.metaKey || e.ctrlKey || e.shiftKey) return;
   e.preventDefault();
-  openPreview(url, card.dataset.title || "");
+  openPreview(url, card.dataset.title || "", card);
 });
 exitPreviewBtn.addEventListener("click", closePreview);
 addEventListener("keydown", (e) => {
   if (e.key === "Escape" && previewView.classList.contains("on")) closePreview();
 });
 
-/* ---------- scroll reveal + sticky bar ---------- */
-const bar = document.getElementById("bar");
-addEventListener("scroll", () => bar.classList.toggle("stuck", scrollY > 24), { passive:true });
-
-/* ---------- mobile menu ---------- */
-const nav = document.getElementById("nav");
-const menuBtn = document.getElementById("menuBtn");
-function closeMenu() {
-  nav.classList.remove("open");
-  menuBtn.setAttribute("aria-expanded", "false");
-  menuBtn.textContent = "Menu";
-}
-menuBtn.addEventListener("click", () => {
-  const open = nav.classList.toggle("open");
-  menuBtn.setAttribute("aria-expanded", String(open));
-  menuBtn.textContent = open ? "Close" : "Menu";
-});
-nav.addEventListener("click", (e) => { if (e.target.closest("a")) closeMenu(); });
-addEventListener("resize", () => { if (innerWidth > 700) closeMenu(); });
-
-/* ---------- analytics: key event tracking (phone, email, contact form) ---------- */
-function trackEvent(name, params) {
-  if (typeof gtag === "function") gtag("event", name, { transport_type: "beacon", ...params });
-}
-document.querySelectorAll('a[href^="tel:"]').forEach((link) => {
-  link.addEventListener("click", () => trackEvent("phone_click", { link_url: link.getAttribute("href") }));
-});
-document.querySelectorAll('a[href^="mailto:"]').forEach((link) => {
-  link.addEventListener("click", () => trackEvent("email_click", { link_url: link.getAttribute("href") }));
-});
-const contactForm = document.querySelector(".contact-form");
-if (contactForm) {
-  contactForm.addEventListener("submit", () => trackEvent("send_message", { form_name: "contact" }));
-}
-
-if (!reduced && "IntersectionObserver" in window) {
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        e.target.style.transitionDelay = (i * 70) + "ms";
-        e.target.classList.add("in");
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold:.15 });
-  document.querySelectorAll(".rev").forEach(el => io.observe(el));
-} else {
-  document.querySelectorAll(".rev").forEach(el => el.classList.add("in"));
-}
-
 /* ============================================================
-   THE WORDMARK: text sampled into a grid of blocks with springs
+   THE WORDMARK: plain capitals that change design style on hover.
+   Each letter sits in a fixed-width slot (so nothing shifts). Hovering
+   or tapping it pops it forward and gives it a random style that no
+   other letter is wearing; the style stays when you move away.
+   The styles themselves are the .s1 to .s40 rules in assets/site.css.
+   The change is announced with a stepped, colour-split glitch.
    ============================================================ */
 (function () {
-  const canvas = document.getElementById("blocks");
-  const ctx = canvas.getContext("2d");
-  const PALETTE = [C.cream, C.marigold, C.jade, C.tomato];
-  const WEIGHTS = [0.70, 0.16, 0.08, 0.06];
-  window.refreshWordmarkPalette = function () {
-    const c = readThemeColors();
-    PALETTE[0] = c.cream; PALETTE[1] = c.marigold; PALETTE[2] = c.jade; PALETTE[3] = c.tomato;
-  };
+  const STYLE_COUNT = 40;
+  const wm = document.getElementById("wordmark");
+  const tools = document.getElementById("wmTools");
+  const lines = [CONFIG.line1, CONFIG.line2].filter(t => t && t.trim()).map(t => t.toUpperCase());
 
-  let parts = [], W = 0, H = 0, dpr = 1, gap = 7, prevW = 0, hasBuilt = false;
-  const pointer = { x:-9999, y:-9999, on:false };
+  wm.innerHTML = lines.map((text) => `<span class="wm-line" aria-hidden="true">${[...text].map((ch) =>
+    `<span class="ltr" data-s="0"><span class="lift"><span class="tw"><span class="gl">${esc(ch)}</span></span></span></span>`
+  ).join("")}</span>`).join("");
+  const lineEls = [...wm.querySelectorAll(".wm-line")];
+  const cells = [...wm.querySelectorAll(".ltr")];
 
-  function pickColor() {
-    let r = Math.random(), acc = 0;
-    for (let i = 0; i < WEIGHTS.length; i++) { acc += WEIGHTS[i]; if (r < acc) return i; }
-    return 0;
-  }
-
-  function build() {
-    const rect = canvas.getBoundingClientRect();
-    const newW = Math.max(320, Math.floor(rect.width));
-    if (hasBuilt && newW === prevW) return;
-    W = newW; prevW = W;
-    H = Math.max(180, Math.floor(rect.height));
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-    gap = W < 400 ? 4 : W < 560 ? 5 : W < 900 ? 6 : 7;
-
-    // measure both lines so each fills the same width, stacked, flush left and right
-    const off = document.createElement("canvas");
-    const o = off.getContext("2d");
-    const targetW = W * 0.96;
-    const font = w => `${w}px 'Archivo Black','Arial Black',Impact,sans-serif`;
-
-    const texts = [CONFIG.line1, CONFIG.line2].filter(t => t && t.trim());
-    const capH = 0.72, lead = 0.10;
-    const sizeFor = (txt) => { o.font = font(100); return (targetW / o.measureText(txt).width) * 100; };
-
-    let sizes = texts.map(sizeFor);
-    let total = sizes.reduce((a, v) => a + v * capH, 0) + (sizes.length - 1) * sizes[0] * lead;
-    const maxH = H * 0.92;
-    if (total > maxH) { const k = maxH / total; sizes = sizes.map(v => v * k); total = maxH; }
-
-    off.width = W * dpr; off.height = H * dpr;
-    o.setTransform(dpr, 0, 0, dpr, 0, 0);
-    o.fillStyle = "#fff";
-    o.textAlign = "center";
-    o.textBaseline = "alphabetic";
-    let y = (H - total) / 2;
-    texts.forEach((t, i) => {
-      o.font = font(sizes[i]);
-      y += sizes[i] * capH;
-      o.fillText(t, W / 2, y);
-      if (i < texts.length - 1) y += sizes[0] * lead;
+  // size each line to fill the width, and lock every letter's slot to its plain width
+  function fit() {
+    const avail = wm.clientWidth;
+    lineEls.forEach((line) => {
+      const own = [...line.querySelectorAll(".ltr")];
+      if (!line.dataset.measured) {
+        line.style.fontSize = "100px";
+        own.forEach((c) => { c.style.width = ""; });
+        own.forEach((c) => { c.dataset.w = (c.querySelector(".gl").getBoundingClientRect().width / 100).toFixed(4); });
+        own.forEach((c) => { c.style.width = c.dataset.w + "em"; });
+        line.dataset.measured = "1";
+      }
+      const em = own.reduce((a, c) => a + parseFloat(c.dataset.w), 0);
+      line.style.fontSize = (avail / em).toFixed(2) + "px";
     });
-
-    const data = o.getImageData(0, 0, off.width, off.height).data;
-    const next = [];
-    for (let y = 0; y < H; y += gap) {
-      for (let x = 0; x < W; x += gap) {
-        const px = Math.floor(x * dpr), py = Math.floor(y * dpr);
-        const alpha = data[(py * off.width + px) * 4 + 3];
-        if (alpha > 128) {
-          next.push({
-            hx: x, hy: y,
-            x: hasBuilt ? x : Math.random() * W, y: hasBuilt ? y : Math.random() * H,
-            vx: 0, vy: 0,
-            c: pickColor()
-          });
-        }
-      }
-    }
-    next.sort((a, b) => a.c - b.c);
-    parts = next;
-    if (reduced) parts.forEach(p => { p.x = p.hx; p.y = p.hy; });
-    hasBuilt = true;
   }
 
-  function frame() {
-    ctx.clearRect(0, 0, W, H);
-    const size = Math.max(2, gap - 1.6);
-    const R = 105, R2 = R * R;
-    let cur = -1;
-
-    for (let i = 0; i < parts.length; i++) {
-      const p = parts[i];
-      if (!reduced) {
-        if (pointer.on) {
-          const dx = p.x - pointer.x, dy = p.y - pointer.y;
-          const d2 = dx * dx + dy * dy;
-          if (d2 < R2 && d2 > 0.01) {
-            const d = Math.sqrt(d2), f = (1 - d / R) * 5.2;
-            p.vx += (dx / d) * f;
-            p.vy += (dy / d) * f;
-          }
-        }
-        p.vx += (p.hx - p.x) * 0.055;
-        p.vy += (p.hy - p.y) * 0.055;
-        p.vx *= 0.87; p.vy *= 0.87;
-        p.x += p.vx; p.y += p.vy;
-      }
-      if (p.c !== cur) { cur = p.c; ctx.fillStyle = PALETTE[cur]; }
-      ctx.fillRect(p.x | 0, p.y | 0, size, size);
-    }
-    requestAnimationFrame(frame);
+  const rand = (lo, hi) => lo + Math.random() * (hi - lo);
+  // A random style that no other letter is showing right now, and that this letter
+  // hasn't worn recently, so the logo never fills up with repeats.
+  function pickStyle(cell) {
+    const showing = new Set(cells.map((c) => +c.dataset.s));
+    const recent = (cell.dataset.recent || "").split(",").map(Number);
+    let free = [];
+    for (let i = 1; i <= STYLE_COUNT; i++) if (!showing.has(i) && !recent.includes(i)) free.push(i);
+    if (!free.length) for (let i = 1; i <= STYLE_COUNT; i++) if (!showing.has(i)) free.push(i);
+    return free[Math.floor(Math.random() * free.length)];
+  }
+  // style 0 is the plain starting look
+  function setStyle(cell, style) {
+    if (style > 0) cell.dataset.recent = [style].concat((cell.dataset.recent || "").split(",").filter(Boolean)).slice(0, 6).join(",");
+    cell.dataset.s = style;
+    cell.className = "ltr" + (style > 0 ? " s" + style : "");
+    // no two visits look quite the same: a little random tilt, size, lift and letter width
+    const st = cell.style;
+    if (style <= 0) { ["--rot", "--sc", "--dy", "--wd"].forEach((p) => st.removeProperty(p)); return; }
+    st.setProperty("--rot", rand(-5, 5).toFixed(1) + "deg");
+    st.setProperty("--sc", rand(0.93, 1.09).toFixed(3));
+    st.setProperty("--dy", rand(-4, 4).toFixed(1) + "%");
+    st.setProperty("--wd", Math.round(rand(72, 125)) + "%");
+  }
+  function advance(cell) {
+    setStyle(cell, pickStyle(cell));
+    if (reduced) return;
+    cell.classList.remove("pop");
+    void cell.offsetWidth;                 // restart the pop animation
+    cell.classList.add("pop");
   }
 
-  function setPointer(e) {
-    const r = canvas.getBoundingClientRect();
-    const t = e.touches ? e.touches[0] : e;
-    pointer.x = t.clientX - r.left;
-    pointer.y = t.clientY - r.top;
-    pointer.on = true;
-  }
-  canvas.addEventListener("pointermove", setPointer);
-  canvas.addEventListener("pointerdown", (e) => {
-    setPointer(e);
-    for (const p of parts) {
-      const dx = p.x - pointer.x, dy = p.y - pointer.y;
-      const d = Math.hypot(dx, dy) || 1;
-      if (d < 190) { p.vx += (dx / d) * (190 - d) * 0.22; p.vy += (dy / d) * (190 - d) * 0.22; }
-    }
+  cells.forEach((cell) => {
+    cell.addEventListener("pointerenter", () => advance(cell));
+    cell.addEventListener("animationend", () => cell.classList.remove("pop"));
   });
-  canvas.addEventListener("pointerleave", () => { pointer.on = false; });
+  // dragging a finger across the letters changes each one it passes
+  let lastTouched = null;
+  wm.addEventListener("pointermove", (e) => {
+    if (e.pointerType === "mouse") return;
+    const el = document.elementFromPoint(e.clientX, e.clientY);
+    const cell = el && el.closest && el.closest(".ltr");
+    if (cell && cell !== lastTouched) { lastTouched = cell; advance(cell); }
+  });
+  wm.addEventListener("pointerleave", () => { lastTouched = null; });
 
-  let t;
-  addEventListener("resize", () => { clearTimeout(t); t = setTimeout(build, 180); });
+  document.getElementById("wmShuffle").addEventListener("click", () => {
+    cells.forEach((cell, i) => setTimeout(() => {
+      setStyle(cell, pickStyle(cell));
+      if (!reduced) { cell.classList.remove("pop"); void cell.offsetWidth; cell.classList.add("pop"); }
+    }, reduced ? 0 : i * 28));
+  });
+  document.getElementById("wmReset").addEventListener("click", () => cells.forEach((cell) => { cell.dataset.recent = ""; setStyle(cell, 0); }));
+  // Touch screens have no hover, so there the letters change by themselves:
+  // one random letter every second or so, only while the logo is on screen.
+  if (matchMedia("(hover: none)").matches) {
+    document.getElementById("wmHint").textContent = "Tap the letters";
+    if (!reduced) {
+      let onScreen = true;
+      if ("IntersectionObserver" in window) new IntersectionObserver((e) => { onScreen = e[0].isIntersecting; }).observe(wm);
+      const tick = () => {
+        if (onScreen && !document.hidden) advance(cells[Math.floor(Math.random() * cells.length)]);
+        setTimeout(tick, 650 + Math.random() * 750);
+      };
+      setTimeout(tick, 1300);
+    }
+  }
+  tools.hidden = false;
 
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { prevW = 0; build(); });
-  build();
-  frame();
+  let rt;
+  addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(fit, 120); });
+  // measure again once the real font has loaded, since slot widths depend on it
+  if (document.fonts && document.fonts.load) {
+    document.fonts.load("900 100px Archivo").then(() => { lineEls.forEach((l) => delete l.dataset.measured); fit(); }).catch(() => {});
+  }
+  fit();
+  // fetch the style typefaces up front, so the first hover doesn't flash a fallback font
+  if (document.fonts && document.fonts.load) {
+    ["italic 900 40px 'Playfair Display'", "700 40px Silkscreen", "700 40px UnifrakturCook", "900 40px 'Big Shoulders Display'",
+     "400 40px 'Caveat Brush'", "900 40px 'Bodoni Moda'", "400 40px Monoton", "700 40px 'Stardos Stencil'", "700 40px 'Space Mono'",
+     "400 40px Bangers", "400 40px 'Luckiest Guy'", "400 40px 'Bungee Shade'", "400 40px Bungee", "400 40px 'Permanent Marker'",
+     "400 40px 'Rubik Glitch'", "400 40px Shrikhand", "400 40px 'Abril Fatface'", "400 40px Rye", "400 40px 'Rubik Spray Paint'",
+     "400 40px 'Rubik Wet Paint'", "400 40px 'Rubik Iso'", "400 40px 'Bungee Inline'", "400 40px Codystar", "400 40px 'Faster One'",
+     "400 40px 'Fredericka the Great'", "400 40px 'Press Start 2P'", "400 40px 'Alfa Slab One'", "400 40px 'Londrina Shadow'",
+     "400 40px 'Rubik Maze'", "400 40px 'Fascinate Inline'", "400 40px 'Bowlby One'"]
+      .forEach((f) => document.fonts.load(f, "JACKDAWMRETING").catch(() => {}));
+  }
 })();
 </script>
+<script src="/assets/site.js"></script>
 </body>
 </html>

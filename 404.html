@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>
+  /* set the theme before first paint so there is no flash of the wrong one */
   (function(){
     try{
       var stored = localStorage.getItem("jackdaw-theme");
@@ -12,105 +13,68 @@
     }catch(e){}
   })();
 </script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-7NPP9DSENG"></script>
 <script>
+  /* Google Analytics: only loads on the real domain, so previews and local
+     testing never pollute the numbers */
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-7NPP9DSENG');
+  if (/(^|\.)jackdawmarketing\.ca$/.test(location.hostname)) {
+    var ga = document.createElement("script");
+    ga.async = true;
+    ga.src = "https://www.googletagmanager.com/gtag/js?id=G-7NPP9DSENG";
+    document.head.appendChild(ga);
+    gtag("js", new Date());
+    gtag("config", "G-7NPP9DSENG");
+  }
 </script>
 <title>Page not found: Jackdaw Marketing</title>
+<meta name="description" content="That page doesn't exist.">
 <meta name="robots" content="noindex">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <meta name="theme-color" content="#221024">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --plum:#221024;
-    --plum-3:#3A1C3E;
-    --cream:#FCF3E3;
-    --marigold:#FFC24B;
-    --tomato:#FF5535;
-    --display:'Archivo Black','Arial Black',Impact,sans-serif;
-    --body:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
-    --mono:'Space Mono',ui-monospace,'SF Mono',Menlo,monospace;
-  }
-  :root[data-theme="light"]{
-    --plum:#FCF3E3;
-    --plum-3:#E6CE9C;
-    --cream:#221024;
-    --marigold:#946000;
-    --tomato:#BC3616;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{height:100%}
-  body{
-    min-height:100%;
-    background:var(--plum);color:var(--cream);
-    font-family:var(--body);font-size:17px;line-height:1.55;
-    -webkit-font-smoothing:antialiased;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    padding:clamp(40px,8vw,80px) clamp(20px,5vw,72px);
-    text-align:center;
-  }
-  ::selection{background:var(--tomato);color:var(--cream)}
-  :focus-visible{outline:3px solid var(--marigold);outline-offset:3px}
-
-  .bird{
-    display:block;width:150px;height:auto;margin:0 auto 36px;
-    transition:transform .35s cubic-bezier(.2,.8,.2,1);
-    filter:drop-shadow(2px 0 0 var(--cream)) drop-shadow(-2px 0 0 var(--cream)) drop-shadow(0 2px 0 var(--cream)) drop-shadow(0 -2px 0 var(--cream));
-  }
-  .bird:hover{transform:rotate(6deg) scale(1.1)}
-  @media(prefers-reduced-motion:reduce){ .bird{transition:none} }
-
-  .label{
-    font-family:var(--mono);font-size:12px;letter-spacing:.14em;
-    text-transform:uppercase;opacity:.62;display:block;margin-bottom:14px;
-  }
-
-  h1{
-    font-family:var(--display);text-transform:uppercase;letter-spacing:-.02em;
-    font-size:clamp(36px,7vw,80px);line-height:.95;margin-bottom:22px;
-  }
-
-  p{
-    font-size:clamp(16px,1.8vw,19px);opacity:.78;max-width:36ch;margin-bottom:40px;
-  }
-
-  .links{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
-  .btn{
-    display:inline-block;text-decoration:none;
-    padding:14px 22px;
-    font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;
-    border:2px solid var(--cream);color:var(--cream);
-    transition:transform .16s ease,background .16s ease,color .16s ease,border-color .16s ease,box-shadow .16s ease;
-  }
-  .btn:hover{
-    background:var(--marigold);border-color:var(--marigold);color:var(--plum);
-    transform:translate(-3px,-3px);box-shadow:5px 5px 0 var(--plum-3);
-  }
-  .btn.solid{background:var(--cream);color:var(--plum);border-color:var(--cream)}
-  .btn.solid:hover{background:var(--marigold);border-color:var(--marigold);color:var(--plum)}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="bar" id="bar">
+  <a href="/" class="brand" aria-label="Jackdaw Marketing, home"><span class="mark"><svg class="bird" viewBox="0 0 23 16" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><g class="b-body" fill="var(--brand-paper)"><rect x="13" y="0" width="4" height="1"/><rect x="12" y="1" width="6" height="1"/><rect x="12" y="2" width="2" height="1"/><rect x="15" y="2" width="3" height="1"/><rect x="12" y="3" width="6" height="1"/><rect x="11" y="4" width="7" height="1"/><rect x="10" y="5" width="8" height="1"/><rect x="9" y="6" width="9" height="1"/><rect x="8" y="7" width="4" height="1"/><rect x="13" y="7" width="5" height="1"/><rect x="7" y="8" width="4" height="1"/><rect x="13" y="8" width="5" height="1"/><rect x="5" y="9" width="5" height="1"/><rect x="12" y="9" width="6" height="1"/><rect x="3" y="10" width="7" height="1"/><rect x="12" y="10" width="7" height="1"/><rect x="0" y="11" width="9" height="1"/><rect x="11" y="11" width="8" height="1"/><rect x="1" y="12" width="17" height="1"/><rect x="4" y="13" width="4" height="1"/><rect x="13" y="13" width="4" height="1"/><rect x="4" y="14" width="1" height="1"/><rect x="16" y="14" width="1" height="1"/><rect x="3" y="15" width="3" height="1"/><rect x="15" y="15" width="3" height="1"/></g><g class="b-detail" fill="var(--mark-bg)"><rect x="14" y="2" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/><rect x="11" y="8" width="2" height="1"/><rect x="10" y="9" width="2" height="1"/><rect x="10" y="10" width="2" height="1"/><rect x="9" y="11" width="2" height="1"/></g><g class="b-beak" fill="var(--brand-paper)"><rect x="18" y="3" width="2" height="1"/><rect x="18" y="4" width="2" height="1"/></g><g class="b-bright" fill="var(--brand-marigold)"><rect x="21" y="3" width="2" height="1"/><rect x="21" y="4" width="2" height="1"/></g></svg></span><span class="brand-name"><b>Jackdaw</b><i>Marketing</i></span></a>
+  <div class="bar-controls">
+    <nav id="nav" aria-label="Main">
+      <a href="/#work">Work</a>
+      <span class="nav-drop">
+        <a href="/pricing/">Pricing<svg class="caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></a>
+        <span class="subnav"><span class="subnav-in">
+          <a href="/pricing/">Both plans<span>Compare</span></a>
+          <a href="/pricing/website/">Website plan<span>$250/mo</span></a>
+          <a href="/pricing/growth/">Growth plan<span>$1,000/mo</span></a>
+        </span></span>
+      </span>
+      <a href="/why/">Why Jackdaw</a>
+      <a href="/the-vault/">The Vault</a>
+      <a href="/#contact" class="hire">Start a project</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" type="button">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8L6 18M18 6l1.8-1.8"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 1 0 10.5 10.5z"/></svg>
+    </button>
+    <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+  </div>
+</header>
 
-  <img class="bird" src="/Images/bird-look.png" alt="" aria-hidden="true">
-
-  <span class="label">404</span>
+<main id="main" class="wrap solo">
+  <svg class="bird mascot" viewBox="0 0 23 16" aria-hidden="true" focusable="false" shape-rendering="crispEdges" style="--rot:-6deg"><g class="b-body" fill="var(--bird-body)"><rect x="13" y="0" width="4" height="1"/><rect x="12" y="1" width="6" height="1"/><rect x="12" y="2" width="2" height="1"/><rect x="15" y="2" width="3" height="1"/><rect x="12" y="3" width="6" height="1"/><rect x="11" y="4" width="7" height="1"/><rect x="10" y="5" width="8" height="1"/><rect x="9" y="6" width="9" height="1"/><rect x="8" y="7" width="4" height="1"/><rect x="13" y="7" width="5" height="1"/><rect x="7" y="8" width="4" height="1"/><rect x="13" y="8" width="5" height="1"/><rect x="5" y="9" width="5" height="1"/><rect x="12" y="9" width="6" height="1"/><rect x="3" y="10" width="7" height="1"/><rect x="12" y="10" width="7" height="1"/><rect x="0" y="11" width="9" height="1"/><rect x="11" y="11" width="8" height="1"/><rect x="1" y="12" width="17" height="1"/><rect x="4" y="13" width="4" height="1"/><rect x="13" y="13" width="4" height="1"/><rect x="4" y="14" width="1" height="1"/><rect x="16" y="14" width="1" height="1"/><rect x="3" y="15" width="3" height="1"/><rect x="15" y="15" width="3" height="1"/></g><g class="b-detail" fill="var(--bird-detail)"><rect x="14" y="2" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/><rect x="11" y="8" width="2" height="1"/><rect x="10" y="9" width="2" height="1"/><rect x="10" y="10" width="2" height="1"/><rect x="9" y="11" width="2" height="1"/></g><g class="b-beak" fill="var(--brand-tomato)"><rect x="18" y="3" width="2" height="1"/><rect x="18" y="4" width="2" height="1"/></g><g class="b-bright" fill="var(--bird-bright)"><rect x="21" y="3" width="2" height="1"/><rect x="21" y="4" width="2" height="1"/></g></svg>
   <h1>This page flew<br>the coop.</h1>
   <p>The page you're looking for doesn't exist, or it's moved somewhere else.</p>
-  <div class="links">
+  <div class="actions">
     <a href="/" class="btn solid">Back to home</a>
     <a href="/#work" class="btn">See the work</a>
     <a href="/pricing/" class="btn">View pricing</a>
   </div>
-
+</main>
+<script src="/assets/site.js"></script>
 </body>
 </html>

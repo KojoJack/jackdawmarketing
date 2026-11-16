@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>
+  /* set the theme before first paint so there is no flash of the wrong one */
   (function(){
     try{
       var stored = localStorage.getItem("jackdaw-theme");
@@ -12,21 +13,26 @@
     }catch(e){}
   })();
 </script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-7NPP9DSENG"></script>
 <script>
+  /* Google Analytics: only loads on the real domain, so previews and local
+     testing never pollute the numbers */
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-7NPP9DSENG');
+  if (/(^|\.)jackdawmarketing\.ca$/.test(location.hostname)) {
+    var ga = document.createElement("script");
+    ga.async = true;
+    ga.src = "https://www.googletagmanager.com/gtag/js?id=G-7NPP9DSENG";
+    document.head.appendChild(ga);
+    gtag("js", new Date());
+    gtag("config", "G-7NPP9DSENG");
+  }
 </script>
 <title>Why Jackdaw: Jackdaw Marketing</title>
 <meta name="description" content="Every Jackdaw site is fully custom, built to be discovered by Google, Bing and AI search, with SEO and performance built into the foundation from day one and kept improving after launch.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" href="/favicon.ico" sizes="any">
-<link rel="canonical" href="https://jackdawmarketing.ca/why/">
 <meta name="theme-color" content="#221024">
+<link rel="canonical" href="https://jackdawmarketing.ca/why/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://jackdawmarketing.ca/why/">
 <meta property="og:site_name" content="Jackdaw Marketing">
@@ -35,288 +41,35 @@
 <meta property="og:image" content="https://jackdawmarketing.ca/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:type" content="image/png">
 <meta property="og:image:alt" content="Jackdaw Marketing">
 <meta property="og:locale" content="en_CA">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Why Jackdaw: Jackdaw Marketing">
 <meta name="twitter:description" content="Every Jackdaw site is fully custom, built to be discovered by Google, Bing and AI search, with SEO and performance built into the foundation from day one and kept improving after launch.">
 <meta name="twitter:image" content="https://jackdawmarketing.ca/og.png">
-<script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"BreadcrumbList",
-  "itemListElement":[
-    {"@type":"ListItem","position":1,"name":"Home","item":"https://jackdawmarketing.ca/"},
-    {"@type":"ListItem","position":2,"name":"Why Jackdaw","item":"https://jackdawmarketing.ca/why/"}
-  ]
-}
-</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --plum:#221024;
-    --plum-2:#2E1631;
-    --plum-3:#3A1C3E;
-    --cream:#FCF3E3;
-    --marigold:#FFC24B;
-    --jade:#29C39A;
-    --tomato:#FF5535;
-    --scrim-strong:rgba(34,16,36,.82);
-    --scrim-mobile:rgba(34,16,36,.97);
-
-    --brand-marigold:#FFC24B;
-    --brand-tomato:#FF5535;
-    --brand-ink:#221024;
-    --brand-paper:#FCF3E3;
-
-    --display:'Archivo Black','Arial Black',Impact,sans-serif;
-    --body:'DM Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
-    --mono:'Space Mono',ui-monospace,'SF Mono',Menlo,monospace;
-
-    --pad:clamp(20px,5vw,72px);
-    --maxw:1240px;
-  }
-  :root[data-theme="light"]{
-    --plum:#FCF3E3;
-    --plum-2:#F4E4C8;
-    --plum-3:#E6CE9C;
-    --cream:#221024;
-    --marigold:#946000;
-    --jade:#0A7254;
-    --tomato:#BC3616;
-    --scrim-strong:rgba(252,243,227,.86);
-    --scrim-mobile:rgba(252,243,227,.97);
-  }
-
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    margin:0;
-    background:var(--plum);
-    color:var(--cream);
-    font-family:var(--body);
-    font-size:17px;
-    line-height:1.55;
-    -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
-  }
-  a{color:inherit}
-  ::selection{background:var(--brand-tomato);color:var(--brand-paper)}
-  :focus-visible{outline:3px solid var(--marigold);outline-offset:3px}
-
-  .wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
-  .label{
-    font-family:var(--mono);font-size:12px;letter-spacing:.14em;
-    text-transform:uppercase;opacity:.62;
-  }
-
-  /* ---------- mascot art ---------- */
-  .mascot{
-    transform:rotate(var(--rot,0deg));
-    transition:transform .35s cubic-bezier(.2,.8,.2,1);
-  }
-  .mascot:hover{transform:rotate(calc(var(--rot,0deg) + 8deg)) scale(1.12)}
-  @media(prefers-reduced-motion:reduce){ .mascot{transition:none} }
-
-  /* ---------- top bar ---------- */
-  .bar{
-    position:fixed;top:0;left:0;right:0;z-index:50;
-    display:flex;align-items:center;justify-content:space-between;
-    gap:16px;padding:14px var(--pad);
-    transition:background .3s ease,backdrop-filter .3s ease,border-color .3s ease;
-    border-bottom:1px solid transparent;
-  }
-  .bar-controls{display:flex;align-items:center;gap:clamp(10px,1.6vw,18px)}
-  .bar.stuck{background:var(--scrim-strong);backdrop-filter:blur(10px);border-bottom-color:var(--plum-3)}
-  .mark svg{shape-rendering:crispEdges}
-  .mark:hover{background:var(--brand-marigold);transform:translateY(-2px)}
-  .mark{
-    display:inline-grid;place-items:center;width:40px;height:40px;
-    background:var(--brand-tomato);color:var(--brand-paper);
-    text-decoration:none;transition:background .2s ease,transform .2s ease;
-  }
-  .theme-toggle{
-    display:inline-grid;place-items:center;width:40px;height:40px;flex-shrink:0;
-    background:none;border:2px solid var(--cream);color:var(--cream);
-    cursor:pointer;transition:background .2s ease,color .2s ease,border-color .2s ease;
-  }
-  .theme-toggle:hover{background:var(--marigold);border-color:var(--marigold);color:var(--plum)}
-  .theme-toggle svg{width:18px;height:18px;display:block;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
-  .theme-toggle:hover svg{transform:rotate(90deg)}
-  .theme-toggle .icon-moon{display:none}
-  :root[data-theme="light"] .theme-toggle .icon-sun{display:none}
-  :root[data-theme="light"] .theme-toggle .icon-moon{display:block}
-  .bar nav{display:flex;align-items:center;gap:clamp(14px,2.4vw,30px)}
-  .bar nav a{
-    font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;
-    text-decoration:none;padding:6px 0;border-bottom:2px solid transparent;
-  }
-  .bar nav a:not(.hire){position:relative;transition:color .18s ease}
-  .bar nav a:not(.hire)::after{
-    content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;
-    background:var(--marigold);transform:scaleX(0);transform-origin:left center;
-    transition:transform .24s cubic-bezier(.2,.8,.2,1);
-  }
-  .bar nav a:not(.hire):hover{color:var(--marigold)}
-  .bar nav a:not(.hire):hover::after{transform:scaleX(1)}
-  .bar nav .subnav a::after{display:none}
-  .bar nav a.current::after{background:var(--tomato);transform:scaleX(1)}
-  .bar nav a.hire{
-    border:2px solid var(--cream);border-bottom-width:2px;padding:7px 14px;
-    transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease;
-  }
-  .bar nav a.hire:hover{background:var(--marigold);border-color:var(--marigold);color:var(--plum);transform:translateY(-2px)}
-
-  .bar nav .nav-drop{position:relative;display:inline-flex;align-items:center}
-  .bar nav .subnav{
-    position:absolute;top:100%;left:0;min-width:200px;
-    display:flex;flex-direction:column;
-    background:var(--scrim-strong);backdrop-filter:blur(10px);
-    border:1px solid var(--plum-3);
-    opacity:0;visibility:hidden;transform:translateY(-6px);
-    transition:opacity .18s ease,transform .18s ease,visibility .18s;
-  }
-  .bar nav .nav-drop:hover .subnav,
-  .bar nav .nav-drop:focus-within .subnav{opacity:1;visibility:visible;transform:none}
-  .bar nav .subnav a{
-    padding:12px 16px;border-bottom:1px solid var(--plum-3);white-space:nowrap;
-    transition:background .16s ease,color .16s ease,padding-left .16s ease;
-  }
-  .bar nav .subnav a:last-child{border-bottom:none}
-  .bar nav .subnav a:hover,
-  .bar nav .subnav a[aria-current="page"]{
-    background:var(--marigold);color:var(--plum);border-bottom-color:transparent;
-  }
-  .bar nav .subnav a:hover{padding-left:20px}
-
-  .menu-btn{
-    display:none;align-items:center;
-    background:none;border:2px solid var(--cream);color:var(--cream);
-    font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
-    padding:10px 16px;cursor:pointer;
-    transition:background .2s ease,color .2s ease,border-color .2s ease;
-  }
-  .menu-btn:hover{background:var(--marigold);border-color:var(--marigold);color:var(--plum)}
-
-  @media(max-width:700px){
-    .menu-btn{display:inline-flex}
-    .bar nav{
-      display:none;
-      position:absolute;top:100%;left:0;right:0;
-      flex-direction:column;align-items:stretch;gap:0;
-      background:var(--scrim-mobile);backdrop-filter:blur(10px);
-      border-bottom:1px solid var(--plum-3);
-      padding:6px var(--pad) 20px;
-    }
-    .bar nav.open{display:flex}
-    .bar nav a{padding:14px 0;border-bottom:1px solid var(--plum-3)}
-    .bar nav a.hire{margin-top:12px;text-align:center}
-    .bar nav .nav-drop{flex-direction:column;align-items:stretch;width:100%}
-    .bar nav .subnav{
-      position:static;opacity:1;visibility:visible;transform:none;
-      background:none;border:none;backdrop-filter:none;
-    }
-    .bar nav .subnav a{padding:12px 0 12px 18px;font-size:13px;opacity:.72}
-    .bar nav a:not(.hire)::after{display:none}
-  }
-
-  .btn{
-    display:inline-block;text-decoration:none;padding:14px 22px;
-    font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;
-    border:2px solid var(--cream);background:none;cursor:pointer;
-    transition:transform .16s ease,background .16s ease,color .16s ease,border-color .16s ease,box-shadow .16s ease;
-  }
-  .btn:hover{transform:translate(-3px,-3px);box-shadow:5px 5px 0 var(--plum-3)}
-  .btn.dark{background:var(--brand-ink);border-color:var(--brand-ink);color:var(--brand-paper)}
-  .btn.dark:hover{background:var(--brand-marigold);border-color:var(--brand-marigold);color:var(--brand-ink);box-shadow:5px 5px 0 rgba(34,16,36,.25)}
-
-  /* ---------- page header ---------- */
-  .page-head{padding-top:clamp(120px,16vw,150px);padding-bottom:clamp(30px,5vw,50px)}
-  .page-head .label{display:block;margin-bottom:14px}
-  .page-head h1{
-    font-family:var(--display);text-transform:uppercase;letter-spacing:-.02em;
-    font-size:clamp(30px,5.6vw,62px);line-height:1;margin:0 0 20px;max-width:22ch;
-  }
-  .page-head p{font-size:clamp(16px,1.9vw,19px);opacity:.78;max-width:60ch;margin:0}
-  em.tomato,em.marigold,em.jade{font-style:normal}
-  .tomato{color:var(--tomato)}
-  .marigold{color:var(--marigold)}
-  .jade{color:var(--jade)}
-
-  /* ---------- why detail ---------- */
-  .why{display:flex;flex-direction:column;gap:clamp(38px,6vw,64px);margin-top:36px;max-width:840px}
-  .why-item{scroll-margin-top:110px}
-  .why-item h2{
-    font-family:var(--display);text-transform:uppercase;letter-spacing:-.01em;
-    font-size:clamp(22px,2.8vw,30px);line-height:1.05;margin:0 0 16px;
-  }
-  .why-item p{margin:0 0 14px;max-width:62ch;opacity:.85}
-  .why-item p:last-child{margin-bottom:0}
-  .why-tag{
-    font-family:var(--display);text-transform:uppercase;letter-spacing:-.02em;
-    font-size:clamp(16px,2.4vw,28px);line-height:1.05;margin:10px 0 0;white-space:nowrap;
-    padding-top:clamp(30px,5vw,50px);border-top:2px solid var(--plum-3);
-  }
-  @media(max-width:480px){ .why-tag{white-space:normal;font-size:clamp(18px,5.6vw,24px)} }
-
-  /* ---------- cta band ---------- */
-  .cta-band{
-    position:relative;overflow:hidden;
-    background:var(--brand-marigold);color:var(--brand-ink);margin-top:clamp(50px,8vw,110px);
-    padding:clamp(44px,7vw,84px) 0;text-align:center;
-  }
-  .cta-band .label{opacity:.62;display:block;margin-bottom:14px}
-  .cta-band h2{
-    font-family:var(--display);text-transform:uppercase;letter-spacing:-.02em;
-    font-size:clamp(28px,5vw,52px);line-height:1;margin:0 auto 30px;max-width:20ch;
-  }
-  .cta-band .mascot{
-    position:absolute;bottom:clamp(-20px,-3vw,-10px);left:clamp(8px,4vw,64px);
-    width:clamp(90px,11vw,150px);height:auto;
-  }
-  @media(max-width:680px){ .cta-band .mascot{display:none} }
-
-  /* ---------- footer ---------- */
-  footer{padding:26px 0 34px;font-family:var(--mono);font-size:12px;letter-spacing:.08em}
-  footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;opacity:.55;text-transform:uppercase}
-  .foot-brand{display:inline-flex;align-items:center;gap:8px}
-  .foot-brand img{width:15px;height:auto;display:block;filter:drop-shadow(1px 0 0 var(--cream)) drop-shadow(-1px 0 0 var(--cream)) drop-shadow(0 1px 0 var(--cream)) drop-shadow(0 -1px 0 var(--cream))}
-
-  /* ---------- reveal ---------- */
-  .rev{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
-  .rev.in{opacity:1;transform:none}
-
-  @media(prefers-reduced-motion:reduce){
-    html{scroll-behavior:auto}
-    .rev{opacity:1;transform:none;transition:none}
-    .btn:hover{transform:none}
-    .theme-toggle:hover svg,.bar nav a.hire:hover,.mark:hover{transform:none}
-    .bar nav a:not(.hire)::after{transition:none}
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
 </head>
 <body>
-
+<a class="skip" href="#main">Skip to content</a>
 <header class="bar" id="bar">
-  <a href="/" class="mark" aria-label="Jackdaw Marketing, back to home"><svg viewBox="0 0 20 16" width="27" height="21.6" aria-hidden="true" focusable="false"><g fill="var(--brand-paper)"><rect x="13" y="0" width="4" height="1"/><rect x="12" y="1" width="6" height="1"/><rect x="12" y="2" width="2" height="1"/><rect x="15" y="2" width="3" height="1"/><rect x="12" y="3" width="6" height="1"/><rect x="11" y="4" width="7" height="1"/><rect x="10" y="5" width="8" height="1"/><rect x="9" y="6" width="9" height="1"/><rect x="8" y="7" width="4" height="1"/><rect x="13" y="7" width="5" height="1"/><rect x="7" y="8" width="4" height="1"/><rect x="13" y="8" width="5" height="1"/><rect x="5" y="9" width="5" height="1"/><rect x="12" y="9" width="6" height="1"/><rect x="3" y="10" width="7" height="1"/><rect x="12" y="10" width="7" height="1"/><rect x="0" y="11" width="9" height="1"/><rect x="11" y="11" width="8" height="1"/><rect x="1" y="12" width="17" height="1"/><rect x="4" y="13" width="4" height="1"/><rect x="13" y="13" width="4" height="1"/><rect x="4" y="14" width="1" height="1"/><rect x="16" y="14" width="1" height="1"/><rect x="3" y="15" width="3" height="1"/><rect x="15" y="15" width="3" height="1"/></g><g fill="var(--brand-ink)"><rect x="18" y="3" width="2" height="1"/><rect x="18" y="4" width="2" height="1"/></g></svg></a>
+  <a href="/" class="brand" aria-label="Jackdaw Marketing, home"><span class="mark"><svg class="bird" viewBox="0 0 23 16" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><g class="b-body" fill="var(--brand-paper)"><rect x="13" y="0" width="4" height="1"/><rect x="12" y="1" width="6" height="1"/><rect x="12" y="2" width="2" height="1"/><rect x="15" y="2" width="3" height="1"/><rect x="12" y="3" width="6" height="1"/><rect x="11" y="4" width="7" height="1"/><rect x="10" y="5" width="8" height="1"/><rect x="9" y="6" width="9" height="1"/><rect x="8" y="7" width="4" height="1"/><rect x="13" y="7" width="5" height="1"/><rect x="7" y="8" width="4" height="1"/><rect x="13" y="8" width="5" height="1"/><rect x="5" y="9" width="5" height="1"/><rect x="12" y="9" width="6" height="1"/><rect x="3" y="10" width="7" height="1"/><rect x="12" y="10" width="7" height="1"/><rect x="0" y="11" width="9" height="1"/><rect x="11" y="11" width="8" height="1"/><rect x="1" y="12" width="17" height="1"/><rect x="4" y="13" width="4" height="1"/><rect x="13" y="13" width="4" height="1"/><rect x="4" y="14" width="1" height="1"/><rect x="16" y="14" width="1" height="1"/><rect x="3" y="15" width="3" height="1"/><rect x="15" y="15" width="3" height="1"/></g><g class="b-detail" fill="var(--mark-bg)"><rect x="14" y="2" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/><rect x="11" y="8" width="2" height="1"/><rect x="10" y="9" width="2" height="1"/><rect x="10" y="10" width="2" height="1"/><rect x="9" y="11" width="2" height="1"/></g><g class="b-beak" fill="var(--brand-paper)"><rect x="18" y="3" width="2" height="1"/><rect x="18" y="4" width="2" height="1"/></g><g class="b-bright" fill="var(--brand-marigold)"><rect x="21" y="3" width="2" height="1"/><rect x="21" y="4" width="2" height="1"/></g></svg></span><span class="brand-name"><b>Jackdaw</b><i>Marketing</i></span></a>
   <div class="bar-controls">
-    <nav id="nav">
-      <a href="/">Home</a>
+    <nav id="nav" aria-label="Main">
       <a href="/#work">Work</a>
       <span class="nav-drop">
-        <a href="/pricing/">Pricing</a>
-        <span class="subnav">
-          <a href="/pricing/">General</a>
-          <a href="/pricing/website/">Website Tier</a>
-          <a href="/pricing/growth/">Growth Tier</a>
-        </span>
+        <a href="/pricing/">Pricing<svg class="caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></a>
+        <span class="subnav"><span class="subnav-in">
+          <a href="/pricing/">Both plans<span>Compare</span></a>
+          <a href="/pricing/website/">Website plan<span>$250/mo</span></a>
+          <a href="/pricing/growth/">Growth plan<span>$1,000/mo</span></a>
+        </span></span>
       </span>
-      <a href="/why/" class="current">Why Jackdaw</a>
+      <a href="/why/" aria-current="page">Why Jackdaw</a>
       <a href="/the-vault/">The Vault</a>
-      <a href="/#contact" class="hire">Start a project</a>
+      <a href="#contact" class="hire">Start a project</a>
     </nav>
     <button class="theme-toggle" id="themeToggle" type="button">
       <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8L6 18M18 6l1.8-1.8"/></svg>
@@ -326,127 +79,143 @@
   </div>
 </header>
 
-<main id="top">
-
+<main id="main">
   <section class="page-head wrap">
-    <span class="label">Why Jackdaw</span>
     <h1>Fully custom. Built to be found.</h1>
-    <p>A Jackdaw site isn't a template with your logo dropped in. Here's exactly what that means, and why it matters for how your business gets found.</p>
+    <p class="lede">A Jackdaw site isn't a template with your logo dropped in. Here's exactly what that means, and why it matters for how your business gets found.</p>
   </section>
-
-  <section id="why-detail" class="wrap" style="margin-top:clamp(30px,5vw,60px)">
-    <div class="why">
-      <div class="why-item rev" id="custom">
+  <div class="wrap split">
+    <aside class="side">
+      <p class="side-title">On this page</p>
+      <nav aria-label="On this page">
+        <a href="#custom" style="--dot:var(--tomato)">Fully custom</a>
+        <a href="#discovered" style="--dot:var(--marigold)">Built to be found</a>
+        <a href="#seo" style="--dot:var(--jade)">SEO from day one</a>
+        <a href="#technology" style="--dot:var(--tomato)">Modern technology</a>
+        <a href="#measurable" style="--dot:var(--marigold)">Always improving</a>
+      </nav>
+    </aside>
+    <div>
+      <div class="why-item" id="custom">
         <h2 class="tomato">Fully custom. Built from the ground up.</h2>
         <p>Every Jackdaw website is designed and developed specifically for the business it represents.</p>
         <p>The structure, content, navigation and technical foundation are built around your services, your customers and the way people search for businesses like yours.</p>
         <p>This creates a faster, cleaner and more flexible website that can grow alongside your business.</p>
       </div>
-      <div class="why-item rev" id="discovered">
+      <div class="why-item" id="discovered">
         <h2 class="marigold">Built to be discovered.</h2>
         <p>A modern website needs to be understood by more than just Google.</p>
         <p>Jackdaw sites are structured to make your business clear to major search engines like Google and Bing, while also creating strong foundations for the AI platforms people increasingly use to discover businesses, services and information.</p>
         <p>Clear page structure, structured data, service information, location signals, metadata, internal linking and technically accessible content all help search and AI systems better understand who you are, what you offer and where you operate.</p>
       </div>
-      <div class="why-item rev" id="seo">
+      <div class="why-item" id="seo">
         <h2 class="jade">SEO built into the foundation.</h2>
         <p>Search visibility starts during the build.</p>
         <p>Every site is developed with technical SEO, mobile performance, page speed, search-friendly content and logical site architecture in mind.</p>
         <p>From there, SEO becomes an ongoing process. Search performance can be monitored, new opportunities identified, service and location pages expanded, content improved and your presence strengthened across the searches that matter to your business.</p>
         <p>The goal is to steadily increase your reach and put your business in front of more people who are actively looking for what you offer.</p>
       </div>
-      <div class="why-item rev" id="technology">
+      <div class="why-item" id="technology">
         <h2 class="tomato">Built for modern technology.</h2>
         <p>The way people use the internet is changing quickly.</p>
         <p>Search engines are evolving, AI-powered discovery is growing, mobile expectations continue to rise and websites are increasingly connected to analytics, advertising platforms, booking systems, customer tools and other technology.</p>
         <p>Jackdaw sites are built with that future in mind.</p>
         <p>A clean, code-based foundation makes it easier to improve performance, add new functionality, connect new tools and adapt as technology changes.</p>
       </div>
-      <div class="why-item rev" id="measurable">
+      <div class="why-item" id="measurable">
         <h2 class="marigold">Fast, measurable and always improving.</h2>
         <p>Your website should be more than something people visit. It should be part of how your business grows.</p>
         <p>Jackdaw can monitor how people find the site, what pages they visit, where leads come from and how the website performs across search.</p>
         <p>That information gives us something valuable to build on. We can improve the site over time, expand your reach and make smarter decisions based on how real customers are actually interacting with your business online.</p>
       </div>
-      <p class="why-tag rev">Jackdaw. Truly built for the modern world.</p>
+      <p class="why-tag">Jackdaw. Truly built for the modern world.</p>
     </div>
-  </section>
-
+  </div>
 </main>
-
-<section class="cta-band">
-  <img class="mascot" src="/Images/bird-plum.png" alt="" loading="lazy" style="--rot:7deg">
-  <div class="wrap">
-    <span class="label">Ready to get started?</span>
-    <h2>Let's build something that works.</h2>
-    <a href="/#contact" class="btn dark">Start a project &rarr;</a>
+<section id="contact" class="contact">
+  <div class="wrap contact-inner">
+    <div class="contact-text">
+      <h2>Let's build something that works.</h2>
+      <p>Tell me a bit about the project and I'll reply within one business day with next steps. No sales call required first.</p>
+      <dl class="contact-meta">
+        <div><dt>Reply time</dt><dd>1 business day</dd></div>
+        <div><dt>Email</dt><dd><a href="mailto:jack@jackdawmarketing.ca">jack@jackdawmarketing.ca</a></dd></div>
+        <div><dt>Phone</dt><dd><a href="tel:+14034933231">+1 403 493 3231</a></dd></div>
+        <div><dt>Based in</dt><dd>Toronto, ON</dd></div>
+        <div><dt>Serving</dt><dd>Canada-wide</dd></div>
+      </dl>
+    </div>
+    <form class="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you">
+      <svg class="bird mascot" viewBox="0 0 27 16" aria-hidden="true" focusable="false" shape-rendering="crispEdges" style="--rot:6deg"><g class="b-body" fill="var(--bird-body)"><rect x="13" y="0" width="4" height="1"/><rect x="12" y="1" width="6" height="1"/><rect x="12" y="2" width="2" height="1"/><rect x="15" y="2" width="3" height="1"/><rect x="12" y="3" width="6" height="1"/><rect x="11" y="4" width="7" height="1"/><rect x="10" y="5" width="8" height="1"/><rect x="9" y="6" width="9" height="1"/><rect x="8" y="7" width="4" height="1"/><rect x="13" y="7" width="5" height="1"/><rect x="7" y="8" width="4" height="1"/><rect x="13" y="8" width="5" height="1"/><rect x="5" y="9" width="5" height="1"/><rect x="12" y="9" width="6" height="1"/><rect x="3" y="10" width="7" height="1"/><rect x="12" y="10" width="7" height="1"/><rect x="0" y="11" width="9" height="1"/><rect x="11" y="11" width="8" height="1"/><rect x="1" y="12" width="17" height="1"/><rect x="4" y="13" width="4" height="1"/><rect x="13" y="13" width="4" height="1"/><rect x="4" y="14" width="1" height="1"/><rect x="16" y="14" width="1" height="1"/><rect x="3" y="15" width="3" height="1"/><rect x="15" y="15" width="3" height="1"/></g><g class="b-detail" fill="var(--bird-detail)"><rect x="14" y="2" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/><rect x="11" y="8" width="2" height="1"/><rect x="10" y="9" width="2" height="1"/><rect x="10" y="10" width="2" height="1"/><rect x="9" y="11" width="2" height="1"/></g><g class="b-beak" fill="var(--brand-tomato)"><rect x="18" y="3" width="2" height="1"/><rect x="18" y="4" width="2" height="1"/></g><g class="b-paper" fill="var(--brand-paper)"><rect x="22" y="2" width="3" height="1"/><rect x="21" y="3" width="1" height="1"/><rect x="23" y="3" width="1" height="1"/><rect x="25" y="3" width="1" height="1"/><rect x="21" y="4" width="2" height="1"/><rect x="24" y="4" width="2" height="1"/><rect x="21" y="5" width="5" height="1"/></g><g class="b-ink" fill="var(--brand-ink)"><rect x="20" y="1" width="7" height="1"/><rect x="20" y="2" width="2" height="1"/><rect x="25" y="2" width="2" height="1"/><rect x="20" y="3" width="1" height="1"/><rect x="22" y="3" width="1" height="1"/><rect x="24" y="3" width="1" height="1"/><rect x="26" y="3" width="1" height="1"/><rect x="20" y="4" width="1" height="1"/><rect x="23" y="4" width="1" height="1"/><rect x="26" y="4" width="1" height="1"/><rect x="20" y="5" width="1" height="1"/><rect x="26" y="5" width="1" height="1"/><rect x="20" y="6" width="7" height="1"/></g></svg>
+      <input type="hidden" name="form-name" value="contact">
+      <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
+      <div class="field-row">
+        <div class="field">
+          <label for="f-name">Name</label>
+          <input type="text" id="f-name" name="name" autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="f-business">Business name</label>
+          <input type="text" id="f-business" name="business" autocomplete="organization">
+        </div>
+      </div>
+      <div class="field">
+        <label for="f-email">Email <span class="req">required</span></label>
+        <input type="email" id="f-email" name="email" required autocomplete="email">
+      </div>
+      <fieldset class="chips">
+        <legend>What are you after?</legend>
+        <label class="chip"><input type="radio" name="interest" value="Website plan"><span><b>Website</b>$250/month</span></label>
+        <label class="chip"><input type="radio" name="interest" value="Growth plan"><span><b>Growth</b>$1,000/month</span></label>
+        <label class="chip"><input type="radio" name="interest" value="Not sure yet"><span><b>Not sure yet</b>Let's talk it through</span></label>
+      </fieldset>
+      <div class="field">
+        <label for="f-message">Message <span class="req">required</span></label>
+        <textarea id="f-message" name="message" rows="5" required></textarea>
+      </div>
+      <button type="submit" class="btn send">Send message</button>
+      <p class="reply-note">Straight to my inbox, no forms getting lost in a queue.</p>
+    </form>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <span class="foot-brand"><img class="mascot" src="/Images/bird-marigold.png" alt="" loading="lazy">Jackdaw Marketing</span>
-    <span>A bird that collects bright things</span>
-    <span id="year"></span>
+    <p class="foot-line"><svg class="bird" viewBox="0 0 23 16" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><g class="b-body" fill="var(--bird-body)"><rect x="13" y="0" width="4" height="1"/><rect x="12" y="1" width="6" height="1"/><rect x="12" y="2" width="2" height="1"/><rect x="15" y="2" width="3" height="1"/><rect x="12" y="3" width="6" height="1"/><rect x="11" y="4" width="7" height="1"/><rect x="10" y="5" width="8" height="1"/><rect x="9" y="6" width="9" height="1"/><rect x="8" y="7" width="4" height="1"/><rect x="13" y="7" width="5" height="1"/><rect x="7" y="8" width="4" height="1"/><rect x="13" y="8" width="5" height="1"/><rect x="5" y="9" width="5" height="1"/><rect x="12" y="9" width="6" height="1"/><rect x="3" y="10" width="7" height="1"/><rect x="12" y="10" width="7" height="1"/><rect x="0" y="11" width="9" height="1"/><rect x="11" y="11" width="8" height="1"/><rect x="1" y="12" width="17" height="1"/><rect x="4" y="13" width="4" height="1"/><rect x="13" y="13" width="4" height="1"/><rect x="4" y="14" width="1" height="1"/><rect x="16" y="14" width="1" height="1"/><rect x="3" y="15" width="3" height="1"/><rect x="15" y="15" width="3" height="1"/></g><g class="b-detail" fill="var(--bird-detail)"><rect x="14" y="2" width="1" height="1"/><rect x="12" y="7" width="1" height="1"/><rect x="11" y="8" width="2" height="1"/><rect x="10" y="9" width="2" height="1"/><rect x="10" y="10" width="2" height="1"/><rect x="9" y="11" width="2" height="1"/></g><g class="b-beak" fill="var(--brand-tomato)"><rect x="18" y="3" width="2" height="1"/><rect x="18" y="4" width="2" height="1"/></g><g class="b-bright" fill="var(--bird-bright)"><rect x="21" y="3" width="2" height="1"/><rect x="21" y="4" width="2" height="1"/></g></svg><span>A bird that collects <em>bright things.</em></span></p>
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">Jackdaw Marketing</div>
+        <p class="foot-tag">Websites for small independent service companies across Canada.</p>
+      </div>
+      <div>
+        <h2>Site</h2>
+        <ul>
+          <li><a href="/#work">Work</a></li>
+          <li><a href="/#how">How it works</a></li>
+          <li><a href="/why/">Why Jackdaw</a></li>
+          <li><a href="#contact">Start a project</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Pricing</h2>
+        <ul>
+          <li><a href="/pricing/">Both plans</a></li>
+          <li><a href="/pricing/website/">Website plan</a></li>
+          <li><a href="/pricing/growth/">Growth plan</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Contact</h2>
+        <ul>
+          <li><a href="mailto:jack@jackdawmarketing.ca">jack@jackdawmarketing.ca</a></li>
+          <li><a href="tel:+14034933231">+1 403 493 3231</a></li>
+          <li><a href="/the-vault/">Client previews (The Vault)</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-base"><span id="year">Jackdaw Marketing</span><span>Toronto, ON. Serving Canada-wide.</span></div>
   </div>
 </footer>
-
-<script>
-document.getElementById("year").textContent = "© " + new Date().getFullYear();
-
-/* ---------- theme toggle ---------- */
-const THEME_KEY = "jackdaw-theme";
-const themeToggleBtn = document.getElementById("themeToggle");
-const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-function currentTheme() { return document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark"; }
-function applyThemeChrome(theme) {
-  if (themeToggleBtn) themeToggleBtn.setAttribute("aria-label", theme === "light" ? "Switch to dark mode" : "Switch to light mode");
-  if (metaThemeColor) metaThemeColor.setAttribute("content", theme === "light" ? "#FCF3E3" : "#221024");
-}
-applyThemeChrome(currentTheme());
-if (themeToggleBtn) {
-  themeToggleBtn.addEventListener("click", () => {
-    const next = currentTheme() === "light" ? "dark" : "light";
-    document.documentElement.setAttribute("data-theme", next);
-    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
-    applyThemeChrome(next);
-  });
-}
-
-const bar = document.getElementById("bar");
-addEventListener("scroll", () => bar.classList.toggle("stuck", scrollY > 24), { passive:true });
-
-/* ---------- mobile menu ---------- */
-const nav = document.getElementById("nav");
-const menuBtn = document.getElementById("menuBtn");
-function closeMenu() {
-  nav.classList.remove("open");
-  menuBtn.setAttribute("aria-expanded", "false");
-  menuBtn.textContent = "Menu";
-}
-menuBtn.addEventListener("click", () => {
-  const open = nav.classList.toggle("open");
-  menuBtn.setAttribute("aria-expanded", String(open));
-  menuBtn.textContent = open ? "Close" : "Menu";
-});
-nav.addEventListener("click", (e) => { if (e.target.closest("a")) closeMenu(); });
-addEventListener("resize", () => { if (innerWidth > 700) closeMenu(); });
-
-const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-if (!reduced && "IntersectionObserver" in window) {
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        e.target.style.transitionDelay = (i % 4 * 70) + "ms";
-        e.target.classList.add("in");
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold:.15 });
-  document.querySelectorAll(".rev").forEach(el => io.observe(el));
-} else {
-  document.querySelectorAll(".rev").forEach(el => el.classList.add("in"));
-}
-</script>
+<script src="/assets/site.js"></script>
 </body>
 </html>
