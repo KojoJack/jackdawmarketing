@@ -124,10 +124,15 @@
   "page": "https://stocksnap.io/photo/senior-woman-3IB4WLHMN6",
   "title": "Senior Woman"
  },
- "hearing-ear": {
-  "source": "stocksnap",
-  "page": "https://stocksnap.io/photo/portrait-girl-LGWI9MW3KR",
-  "title": "Portrait Girl"
+ "hearing-older-portrait": {
+  "source": "pexels",
+  "page": "https://www.pexels.com/photo/10057605/",
+  "title": "Portrait of an elegant senior woman"
+ },
+ "hearing-aid": {
+  "source": "supplied by Jack (Oticon Opn product cutout)",
+  "page": "",
+  "title": "Receiver-in-canal hearing aid"
  },
  "hearing-tablet": {
   "source": "stocksnap",
